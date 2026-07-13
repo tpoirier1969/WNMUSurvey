@@ -98,9 +98,9 @@
   async function importJson(event) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
+
     try {
-      const text = await file.text();
-      const parsed = JSON.parse(text);
+      const parsed = JSON.parse(await file.text());
       const responses = normalizeImportedData(parsed);
       if (!responses.length) throw new Error("No responses were found in that JSON file.");
       loadedResponses = responses;
@@ -147,13 +147,13 @@
   }
 
   function populateFilters() {
-    fillSelect(els.filterViewer, uniqueValues((response) => response.routeProfile.viewer_status), labelMap("viewer_status"), "All viewer types");
-    fillSelect(els.filterMethod, uniqueArrayValues((response) => response.routeProfile.viewing_methods), labelMap("viewing_methods"), "All methods");
-    fillSelect(els.filterAge, uniqueValues((response) => response.answers.age_range), labelMap("age_range"), "All ages");
-    fillSelect(els.filterGender, uniqueValues((response) => response.answers.gender), labelMap("gender"), "All genders");
-    fillSelect(els.filterEducation, uniqueValues((response) => response.answers.education_level), labelMap("education_level"), "All education levels");
-    fillSelect(els.filterCounty, uniqueValues((response) => response.answers.county_region), labelMap("county_region"), "All locations");
-    fillSelect(els.filterChildren, uniqueValues((response) => response.routeProfile.children_role), labelMap("children_role"), "All households and roles");
+    fillSelect(els.filterViewer, uniqueValues((response) => response.routeProfile?.viewer_status), labelMap("viewer_status"), "All viewer types");
+    fillSelect(els.filterMethod, uniqueArrayValues((response) => response.routeProfile?.viewing_methods), labelMap("viewing_methods"), "All methods");
+    fillSelect(els.filterAge, uniqueValues((response) => response.answers?.age_range), labelMap("age_range"), "All ages");
+    fillSelect(els.filterGender, uniqueValues((response) => response.answers?.gender), labelMap("gender"), "All genders");
+    fillSelect(els.filterEducation, uniqueValues((response) => response.answers?.education_level), labelMap("education_level"), "All education levels");
+    fillSelect(els.filterCounty, uniqueValues((response) => response.answers?.county_region), labelMap("county_region"), "All locations");
+    fillSelect(els.filterChildren, uniqueValues((response) => response.routeProfile?.children_role), labelMap("children_role"), "All households and roles");
   }
 
   function fillSelect(select, values, labels, firstLabel) {
@@ -164,15 +164,14 @@
   }
 
   function uniqueValues(getter) {
-    return Array.from(new Set(loadedResponses.map(getter).filter((value) => value !== undefined && value !== null && value !== "")));
+    return Array.from(new Set(loadedResponses.map(getter).filter(hasValue)));
   }
 
   function uniqueArrayValues(getter) {
-    const values = loadedResponses.flatMap((response) => {
+    return Array.from(new Set(loadedResponses.flatMap((response) => {
       const value = getter(response);
       return Array.isArray(value) ? value : [];
-    });
-    return Array.from(new Set(values));
+    })));
   }
 
   function filteredResponses() {
@@ -203,24 +202,24 @@
 
     els.dataStatus.textContent = `${loadedResponses.length} loaded from ${dataSourceLabel}; ${responses.length} match current filters.`;
     renderMetrics(responses);
-    renderCountBars(els.viewerMix, countSingle(responses, (response) => response.routeProfile.viewer_status), labelMap("viewer_status"), responses.length);
-    renderCountBars(els.methodMix, countArray(responses, (response) => response.routeProfile.viewing_methods), labelMap("viewing_methods"), responses.length);
+    renderCountBars(els.viewerMix, countSingle(responses, (response) => response.routeProfile?.viewer_status), labelMap("viewer_status"), responses.length);
+    renderCountBars(els.methodMix, countArray(responses, (response) => response.routeProfile?.viewing_methods), labelMap("viewing_methods"), responses.length);
     renderProgramInterest(responses);
     renderTopPriorities(responses);
     renderGapTable(responses);
-    renderCountBars(els.ageMix, countSingle(responses, (response) => response.answers.age_range), labelMap("age_range"), responses.length);
-    renderCountBars(els.genderMix, countSingle(responses, (response) => response.answers.gender), labelMap("gender"), responses.length);
-    renderCountBars(els.educationMix, countSingle(responses, (response) => response.answers.education_level), labelMap("education_level"), responses.length);
-    renderCountBars(els.countyMix, countSingle(responses, (response) => response.answers.county_region), labelMap("county_region"), responses.length);
+    renderCountBars(els.ageMix, countSingle(responses, (response) => response.answers?.age_range), labelMap("age_range"), responses.length);
+    renderCountBars(els.genderMix, countSingle(responses, (response) => response.answers?.gender), labelMap("gender"), responses.length);
+    renderCountBars(els.educationMix, countSingle(responses, (response) => response.answers?.education_level), labelMap("education_level"), responses.length);
+    renderCountBars(els.countyMix, countSingle(responses, (response) => response.answers?.county_region), labelMap("county_region"), responses.length);
     renderComments(responses);
   }
 
   function renderMetrics(responses) {
     const total = responses.length;
-    const current = responses.filter((response) => ["regular", "occasional", "once_twice"].includes(response.routeProfile.viewer_status)).length;
+    const current = responses.filter((response) => ["regular", "occasional", "once_twice"].includes(response.routeProfile?.viewer_status)).length;
     const onlineMethods = ["livestream", "pbs_site", "pbs_app", "passport", "youtube_social"];
-    const online = responses.filter((response) => (response.routeProfile.viewing_methods || []).some((method) => onlineMethods.includes(method))).length;
-    const children = responses.filter((response) => ["household", "educator", "both"].includes(response.routeProfile.children_role)).length;
+    const online = responses.filter((response) => (response.routeProfile?.viewing_methods || []).some((method) => onlineMethods.includes(method))).length;
+    const children = responses.filter((response) => ["household", "educator", "both"].includes(response.routeProfile?.children_role)).length;
 
     els.metricResponses.textContent = total;
     els.metricResponsesNote.textContent = `${loadedResponses.length} total loaded.`;
@@ -247,16 +246,13 @@
     const question = findQuestion("program_interest");
     const stats = question.rows.map((row) => {
       const values = responses
-        .map((response) => response.answers.program_interest && response.answers.program_interest[row.id])
+        .map((response) => response.answers?.program_interest?.[row.id])
         .filter(isNumericScore)
         .map(Number);
-      return {
-        id: row.id,
-        label: row.label,
-        average: average(values),
-        count: values.length
-      };
-    }).filter((item) => item.count > 0).sort((a, b) => b.average - a.average).slice(0, 12);
+      return { label: row.label, average: average(values), count: values.length };
+    }).filter((item) => item.count > 0)
+      .sort((a, b) => b.average - a.average)
+      .slice(0, 12);
 
     if (!stats.length) {
       els.programInterest.innerHTML = '<div class="empty-state">No programming interest ratings in this view.</div>';
@@ -272,7 +268,7 @@
       map[row.id] = row.label;
       return map;
     }, {});
-    const counts = countArray(responses, (response) => response.answers.top_program_priorities);
+    const counts = countArray(responses, (response) => response.answers?.top_program_priorities);
     const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12);
 
     if (!entries.length) {
@@ -284,43 +280,52 @@
     els.topPriorities.innerHTML = entries.map(([value, count]) => barMarkup(labels[value] || humanize(value), count, max, `${count} · ${percent(count, responses.length)}`)).join("");
   }
 
+  function pairedRoleStats(responses, roleId) {
+    const pairs = responses.flatMap((response) => {
+      const importance = response.answers?.importance_roles?.[roleId];
+      const delivery = response.answers?.performance_roles?.[roleId];
+      if (!isNumericScore(importance) || !isNumericScore(delivery)) return [];
+      const importanceScore = Number(importance);
+      const deliveryScore = Number(delivery);
+      return [{
+        importance: importanceScore,
+        delivery: deliveryScore,
+        gap: importanceScore - deliveryScore
+      }];
+    });
+
+    if (!pairs.length) return null;
+
+    return {
+      count: pairs.length,
+      importanceAverage: average(pairs.map((pair) => pair.importance)),
+      deliveryAverage: average(pairs.map((pair) => pair.delivery)),
+      gapAverage: average(pairs.map((pair) => pair.gap))
+    };
+  }
+
   function renderGapTable(responses) {
-    const importanceQuestion = findQuestion(survey.gapPairs.importanceQuestion);
-    const rows = importanceQuestion.rows.map((row) => {
-      const importance = responses
-        .map((response) => response.answers.importance_roles && response.answers.importance_roles[row.id])
-        .filter(isNumericScore)
-        .map(Number);
-      const performance = responses
-        .map((response) => response.answers.performance_roles && response.answers.performance_roles[row.id])
-        .filter(isNumericScore)
-        .map(Number);
-      const importanceAverage = average(importance);
-      const performanceAverage = average(performance);
-      const gap = importance.length && performance.length ? importanceAverage - performanceAverage : null;
-      return {
-        label: row.label,
-        importanceAverage,
-        performanceAverage,
-        importanceCount: importance.length,
-        performanceCount: performance.length,
-        gap
-      };
-    }).filter((row) => row.importanceCount || row.performanceCount)
-      .sort((a, b) => (b.gap ?? -99) - (a.gap ?? -99));
+    const importanceQuestion = findQuestion(survey.gapPairs?.importanceQuestion || "importance_roles");
+    const rows = importanceQuestion.rows
+      .map((row) => {
+        const stats = pairedRoleStats(responses, row.id);
+        return stats ? { label: row.label, ...stats } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.gapAverage - a.gapAverage);
 
     if (!rows.length) {
-      els.gapTable.innerHTML = '<tr><td colspan="5">No paired importance/performance ratings in this view.</td></tr>';
+      els.gapTable.innerHTML = '<tr><td colspan="5">No respondents in this view answered both ratings for the same station role.</td></tr>';
       return;
     }
 
     els.gapTable.innerHTML = rows.map((row) => `
       <tr>
         <td>${escapeHtml(row.label)}</td>
-        <td>${row.importanceCount ? row.importanceAverage.toFixed(2) : "—"}</td>
-        <td>${row.performanceCount ? row.performanceAverage.toFixed(2) : "—"}</td>
-        <td class="${row.gap !== null && row.gap >= 1 ? "gap-high" : ""}">${row.gap === null ? "—" : row.gap.toFixed(2)}</td>
-        <td>${row.importanceCount} / ${row.performanceCount}</td>
+        <td>${row.importanceAverage.toFixed(2)}</td>
+        <td>${row.deliveryAverage.toFixed(2)}</td>
+        <td class="${row.gapAverage >= 1 ? "gap-high" : ""}">${row.gapAverage.toFixed(2)}</td>
+        <td>${row.count}</td>
       </tr>
     `).join("");
   }
@@ -345,10 +350,8 @@
     const comments = [];
     responses.forEach((response) => {
       commentQuestions.forEach(([id, label]) => {
-        const value = response.answers[id];
-        if (typeof value === "string" && value.trim()) {
-          comments.push({ label, text: value.trim() });
-        }
+        const value = response.answers?.[id];
+        if (typeof value === "string" && value.trim()) comments.push({ label, text: value.trim() });
       });
     });
 
@@ -376,7 +379,7 @@
   function countSingle(responses, getter) {
     return responses.reduce((counts, response) => {
       const value = getter(response);
-      if (value !== undefined && value !== null && value !== "") counts[value] = (counts[value] || 0) + 1;
+      if (hasValue(value)) counts[value] = (counts[value] || 0) + 1;
       return counts;
     }, {});
   }
@@ -403,8 +406,7 @@
   }
 
   function labelMap(questionId) {
-    const question = findQuestion(questionId);
-    return (question.options || []).reduce((map, option) => {
+    return (findQuestion(questionId).options || []).reduce((map, option) => {
       map[option.value] = option.label;
       return map;
     }, {});
@@ -416,7 +418,11 @@
   }
 
   function isNumericScore(value) {
-    return value !== "na" && value !== null && value !== undefined && value !== "" && !Number.isNaN(Number(value));
+    return value !== "na" && hasValue(value) && !Number.isNaN(Number(value));
+  }
+
+  function hasValue(value) {
+    return value !== null && value !== undefined && value !== "";
   }
 
   function percent(part, total) {
@@ -439,33 +445,32 @@
     }
 
     const rows = [["section", "item", "value", "n"]];
-    const viewerCounts = countSingle(responses, (response) => response.routeProfile.viewer_status);
+    const viewerCounts = countSingle(responses, (response) => response.routeProfile?.viewer_status);
     Object.entries(viewerCounts).forEach(([value, count]) => rows.push(["Viewer mix", labelMap("viewer_status")[value] || value, count, responses.length]));
 
-    const methodCounts = countArray(responses, (response) => response.routeProfile.viewing_methods);
+    const methodCounts = countArray(responses, (response) => response.routeProfile?.viewing_methods);
     Object.entries(methodCounts).forEach(([value, count]) => rows.push(["Viewing methods", labelMap("viewing_methods")[value] || value, count, responses.length]));
 
     const programQuestion = findQuestion("program_interest");
     programQuestion.rows.forEach((row) => {
-      const values = responses.map((response) => response.answers.program_interest && response.answers.program_interest[row.id]).filter(isNumericScore).map(Number);
+      const values = responses.map((response) => response.answers?.program_interest?.[row.id]).filter(isNumericScore).map(Number);
       if (values.length) rows.push(["Program interest average", row.label, average(values).toFixed(3), values.length]);
     });
 
-    const importanceQuestion = findQuestion("importance_roles");
+    const importanceQuestion = findQuestion(survey.gapPairs?.importanceQuestion || "importance_roles");
     importanceQuestion.rows.forEach((row) => {
-      const importance = responses.map((response) => response.answers.importance_roles && response.answers.importance_roles[row.id]).filter(isNumericScore).map(Number);
-      const performance = responses.map((response) => response.answers.performance_roles && response.answers.performance_roles[row.id]).filter(isNumericScore).map(Number);
-      if (importance.length) rows.push(["Importance average", row.label, average(importance).toFixed(3), importance.length]);
-      if (performance.length) rows.push(["Performance average", row.label, average(performance).toFixed(3), performance.length]);
-      if (importance.length && performance.length) rows.push(["Expectation gap", row.label, (average(importance) - average(performance)).toFixed(3), Math.min(importance.length, performance.length)]);
+      const stats = pairedRoleStats(responses, row.id);
+      if (!stats) return;
+      rows.push(["Paired importance average", row.label, stats.importanceAverage.toFixed(3), stats.count]);
+      rows.push(["Paired viewer-rated delivery average", row.label, stats.deliveryAverage.toFixed(3), stats.count]);
+      rows.push(["Average paired expectation gap", row.label, stats.gapAverage.toFixed(3), stats.count]);
     });
 
     downloadText(`wnmu-viewer-summary-${dateStamp()}.csv`, rows.map((row) => row.map(csvCell).join(",")).join("\n"), "text/csv");
   }
 
   function csvCell(value) {
-    const string = String(value ?? "");
-    return `"${string.replace(/"/g, '""')}"`;
+    return `"${String(value ?? "").replace(/"/g, '""')}"`;
   }
 
   function downloadText(filename, text, type) {
@@ -485,9 +490,7 @@
   }
 
   function humanize(value) {
-    return String(value || "")
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (letter) => letter.toUpperCase());
+    return String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
   }
 
   function makeDemoData() {
@@ -536,12 +539,6 @@
       ["pbs_app", "youtube_social"], ["antenna"], ["cable", "pbs_site"], ["antenna", "passport"], ["pbs_app"],
       ["antenna"], ["cable"], ["antenna"], ["satellite"], ["not_watched"]
     ];
-    const employment = ages.map((age, index) => {
-      if (["65_74", "75_84", "85_plus"].includes(age)) return index % 5 === 0 ? ["part", "retired"] : ["retired"];
-      if (index % 7 === 0) return ["self"];
-      if (index % 6 === 0) return ["part"];
-      return ["full"];
-    });
     const focusSets = [
       ["up_history", "great_lakes", "local_people", "nature", "outdoors"],
       ["british_drama", "national_docs", "local_arts", "books_food", "up_history"],
@@ -568,9 +565,9 @@
       const isOnline = methods.some((method) => ["livestream", "pbs_site", "pbs_app", "passport", "youtube_social"].includes(method));
       const isRural = ["rural", "remote"].includes(communities[index]);
       const focus = new Set(focusSets[index % focusSets.length]);
-
       const importance = {};
-      const performance = {};
+      const delivery = {};
+
       roles.forEach((role, roleIndex) => {
         let score = 3 + ((index + roleIndex) % 2);
         if (["trusted_pbs", "local_programs", "regional_issues", "preserve_history", "reflect_region", "science_nature"].includes(role)) score += 1;
@@ -583,7 +580,7 @@
           let penalty = ((index + roleIndex) % 3 === 0) ? 1 : 0;
           if (["local_programs", "reflect_region", "online_access", "regional_issues"].includes(role)) penalty += 1;
           if (role === "trusted_pbs") penalty = 0;
-          performance[role] = clampScore(importance[role] - penalty);
+          delivery[role] = clampScore(importance[role] - penalty);
         }
       });
 
@@ -627,10 +624,9 @@
           county_region: counties[index],
           community_type: communities[index],
           household_size: index % 6 === 0 ? "1" : "2",
-          employment: employment[index],
           internet_quality: communities[index] === "remote" ? "unreliable" : (isRural && index % 3 === 0 ? "slow" : "adequate"),
           importance_roles: importance,
-          performance_roles: isViewer ? performance : undefined,
+          performance_roles: isViewer ? delivery : undefined,
           program_interest: interest,
           top_program_priorities: top,
           most_important_responsibility: index % 4 === 0 ? "Provide trusted programming while telling more stories from communities throughout the Upper Peninsula." : "",
