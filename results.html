@@ -51,7 +51,7 @@
 
         <section id="filters" class="filter-panel" aria-labelledby="filterHeading">
           <p class="eyebrow">Audience filters</p>
-          <h2 id="filterHeading">Compare viewing habits and programming priorities</h2>
+          <h2 id="filterHeading">Compare viewing habits, programming priorities, and perceived delivery</h2>
           <div class="filter-grid admin-filter-grid">
             <label>Viewer type
               <select id="filterViewer"><option value="">All viewer types</option></select>
@@ -119,12 +119,12 @@
           </div>
 
           <section id="gaps" class="result-section">
-            <p class="eyebrow">Importance minus performance</p>
-            <h2>Expectation and delivery gaps</h2>
-            <p>Larger positive gaps identify roles respondents consider important but believe WNMU-TV delivers less strongly.</p>
+            <p class="eyebrow">Importance minus viewer-rated delivery</p>
+            <h2>Where viewer expectations exceed perceived delivery</h2>
+            <p>Each row uses only respondents who rated both the importance of that station role and how well they believe WNMU-TV delivers it. The dashboard calculates each respondent's personal gap first, then averages those paired gaps. Larger positive gaps identify roles viewers consider important but believe are delivered less strongly.</p>
             <div class="data-table-wrap">
               <table class="data-table">
-                <thead><tr><th>Station role</th><th>Importance</th><th>Performance</th><th>Gap</th><th>Ratings</th></tr></thead>
+                <thead><tr><th>Station role</th><th>Paired importance</th><th>Viewer-rated delivery</th><th>Average paired gap</th><th>Paired respondents</th></tr></thead>
                 <tbody id="gapTable"></tbody>
               </table>
             </div>
