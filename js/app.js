@@ -23,12 +23,10 @@
     Object.assign(els, {
       welcomePanel: document.getElementById("welcomePanel"),
       routingPanel: document.getElementById("routingPanel"),
-      routeSummaryPanel: document.getElementById("routeSummaryPanel"),
       questionnairePanel: document.getElementById("questionnairePanel"),
       completePanel: document.getElementById("completePanel"),
       routingQuestions: document.getElementById("routingQuestions"),
       routingError: document.getElementById("routingError"),
-      routeSummary: document.getElementById("routeSummary"),
       sectionTabs: document.getElementById("sectionTabs"),
       sectionStage: document.getElementById("sectionStage"),
       progressBar: document.getElementById("progressBar"),
@@ -39,21 +37,15 @@
       nextSection: document.getElementById("nextSection"),
       submitSurvey: document.getElementById("submitSurvey"),
       changeRoute: document.getElementById("changeRoute"),
-      completionCount: document.getElementById("completionCount"),
       resumeBlock: document.getElementById("resumeBlock"),
       resumeDetails: document.getElementById("resumeDetails")
     });
 
     document.getElementById("startSurvey").addEventListener("click", startRouting);
-    document.getElementById("heroStartSurvey").addEventListener("click", startRouting);
     document.getElementById("resumeSurvey").addEventListener("click", resumeDraft);
     document.getElementById("discardDraft").addEventListener("click", discardDraft);
     document.getElementById("routingBack").addEventListener("click", () => showStage("welcome"));
-    document.getElementById("buildRoute").addEventListener("click", showRouteSummary);
-    document.getElementById("summaryBack").addEventListener("click", () => showStage("routing"));
-    document.getElementById("beginTailored").addEventListener("click", beginQuestionnaire);
-    document.getElementById("saveDraft").addEventListener("click", () => saveDraft(true));
-    document.getElementById("exportDraft").addEventListener("click", exportDraft);
+    document.getElementById("continueSurvey").addEventListener("click", beginQuestionnaire);
     document.getElementById("newResponse").addEventListener("click", startNewResponse);
     els.prevSection.addEventListener("click", () => navigateSection(-1));
     els.nextSection.addEventListener("click", () => navigateSection(1));
@@ -75,7 +67,6 @@
     const map = {
       welcome: els.welcomePanel,
       routing: els.routingPanel,
-      summary: els.routeSummaryPanel,
       questionnaire: els.questionnairePanel,
       complete: els.completePanel
     };
@@ -97,7 +88,7 @@
 
   function startNewResponse() {
     Object.assign(state, {
-      stage: "routing",
+      stage: "welcome",
       routeProfile: {},
       answers: {},
       routeSectionIds: [],
@@ -106,7 +97,7 @@
     });
     storage.clearDraft();
     renderRoutingQuestions();
-    showStage("routing");
+    showStage("welcome");
     updateResumeBlock();
   }
 
@@ -145,9 +136,6 @@
     if (draft.stage === "routing") {
       renderRoutingQuestions();
       showStage("routing");
-    } else if (draft.stage === "summary") {
-      renderRouteSummary();
-      showStage("summary");
     } else {
       showStage("questionnaire");
       renderSection(state.currentSectionIndex, 0);
@@ -163,8 +151,7 @@
 
     els.resumeBlock.hidden = false;
     const updated = draft.updatedAt ? new Date(draft.updatedAt).toLocaleString() : "an earlier session";
-    const routeCount = Array.isArray(draft.routeSectionIds) ? draft.routeSectionIds.length : buildRouteFromProfile(draft.routeProfile || {}).length;
-    els.resumeDetails.textContent = `Saved ${updated}${routeCount ? ` · ${routeCount} tailored sections` : ""}`;
+    els.resumeDetails.textContent = `Saved ${updated}`;
   }
 
   function renderRoutingQuestions() {
@@ -182,63 +169,14 @@
     });
 
     if (!missing.length) return true;
-    els.routingError.textContent = "Please answer the required starting questions so the site knows which path to build.";
+    els.routingError.textContent = "Please answer the required questions before continuing.";
     const first = els.routingQuestions.querySelector(`[data-question-block="${missing[0].id}"]`);
     if (first) first.scrollIntoView({ behavior: "smooth", block: "center" });
     return false;
   }
 
-  function showRouteSummary() {
-    if (!validateRouting()) return;
-    state.routeSectionIds = buildRoute().map((section) => section.id);
-    state.currentSectionIndex = 0;
-    renderRouteSummary();
-    saveDraft(false, "summary");
-    showStage("summary");
-  }
-
-  function renderRouteSummary() {
-    const route = buildRoute();
-    const visibleQuestionCount = route.reduce((count, section) => count + visibleQuestions(section).length, 0);
-    const matrixRows = route.reduce(
-      (count, section) => count + visibleQuestions(section).reduce((inner, question) => inner + (question.rows ? question.rows.length : 0), 0),
-      0
-    );
-    const estimate = Math.max(6, Math.round(visibleQuestionCount * 0.28 + matrixRows * 0.08));
-    const profileText = describeProfile();
-
-    els.routeSummary.innerHTML = `
-      <div class="tailored-summary">
-        <div class="summary-stat">
-          <span>${route.length}</span>
-          <strong>sections</strong>
-        </div>
-        <div class="summary-stat">
-          <span>${estimate}</span>
-          <strong>estimated minutes</strong>
-        </div>
-        <div class="summary-copy">
-          <p><strong>Your path:</strong> ${escapeHtml(profileText)}</p>
-          <p>Questions that do not apply to this viewing situation have been removed. Optional demographic questions remain at the end so interests can be compared across audience groups.</p>
-        </div>
-      </div>
-      <ol class="route-list">
-        ${route.map((section) => `<li><span>${escapeHtml(section.eyebrow)}</span><strong>${escapeHtml(section.title)}</strong></li>`).join("")}
-      </ol>
-    `;
-  }
-
-  function describeProfile() {
-    const statusLabels = optionLabels(survey.routingQuestions.find((q) => q.id === "viewer_status"));
-    const methodLabels = optionLabels(survey.routingQuestions.find((q) => q.id === "viewing_methods"));
-    const childLabels = optionLabels(survey.routingQuestions.find((q) => q.id === "children_role"));
-    const status = statusLabels[state.routeProfile.viewer_status] || "viewer status not specified";
-    const methods = (state.routeProfile.viewing_methods || []).map((value) => methodLabels[value]).filter(Boolean);
-    const children = childLabels[state.routeProfile.children_role] || "children's role not specified";
-    return `${status}; ${methods.length ? methods.join(", ") : "no viewing method selected"}; ${children.toLowerCase()}.`;
-  }
-
   function beginQuestionnaire() {
+    if (!validateRouting()) return;
     state.routeSectionIds = buildRoute().map((section) => section.id);
     state.currentSectionIndex = 0;
     showStage("questionnaire");
@@ -378,7 +316,7 @@
   function updateProgress(route) {
     const percent = Math.round(((state.currentSectionIndex + 1) / route.length) * 100);
     els.progressBar.style.width = `${percent}%`;
-    els.progressText.textContent = `${percent}% through your tailored path`;
+    els.progressText.textContent = `${percent}% complete`;
     els.sectionPosition.textContent = `Section ${state.currentSectionIndex + 1} of ${route.length}`;
   }
 
@@ -629,18 +567,11 @@
     updateResumeBlock();
   }
 
-  function exportDraft() {
-    saveDraft(false);
-    const draft = storage.loadDraft();
-    storage.downloadJson(`wnmu-viewer-survey-draft-${dateStamp()}.json`, draft);
-  }
-
   function submitSurvey() {
     saveDraft(false, "questionnaire");
     const draft = storage.loadDraft();
     const response = storage.saveResponse(draft);
     storage.clearDraft();
-    els.completionCount.textContent = `${storage.getResponses().length} response${storage.getResponses().length === 1 ? "" : "s"} stored in this browser.`;
     showStage("complete");
     updateResumeBlock();
     console.info("Saved local WNMU survey response", response.id);

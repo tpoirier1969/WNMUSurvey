@@ -11,6 +11,8 @@
     viewer: "",
     method: "",
     age: "",
+    gender: "",
+    education: "",
     county: "",
     children: ""
   };
@@ -29,6 +31,8 @@
       filterViewer: document.getElementById("filterViewer"),
       filterMethod: document.getElementById("filterMethod"),
       filterAge: document.getElementById("filterAge"),
+      filterGender: document.getElementById("filterGender"),
+      filterEducation: document.getElementById("filterEducation"),
       filterCounty: document.getElementById("filterCounty"),
       filterChildren: document.getElementById("filterChildren"),
       emptyState: document.getElementById("emptyState"),
@@ -44,6 +48,8 @@
       topPriorities: document.getElementById("topPriorities"),
       gapTable: document.getElementById("gapTable"),
       ageMix: document.getElementById("ageMix"),
+      genderMix: document.getElementById("genderMix"),
+      educationMix: document.getElementById("educationMix"),
       countyMix: document.getElementById("countyMix"),
       commentList: document.getElementById("commentList")
     });
@@ -59,6 +65,8 @@
       [els.filterViewer, "viewer"],
       [els.filterMethod, "method"],
       [els.filterAge, "age"],
+      [els.filterGender, "gender"],
+      [els.filterEducation, "education"],
       [els.filterCounty, "county"],
       [els.filterChildren, "children"]
     ].forEach(([select, key]) => {
@@ -68,7 +76,7 @@
       });
     });
 
-    loadLocalResponses();
+    loadDemoResponses();
   }
 
   function loadLocalResponses() {
@@ -81,7 +89,7 @@
 
   function loadDemoResponses() {
     loadedResponses = makeDemoData();
-    dataSourceLabel = "synthetic demonstration data";
+    dataSourceLabel = "25 synthetic Upper Peninsula PBS viewer responses";
     resetFilters();
     populateFilters();
     renderAnalysis();
@@ -133,7 +141,7 @@
     Object.keys(filters).forEach((key) => {
       filters[key] = "";
     });
-    [els.filterViewer, els.filterMethod, els.filterAge, els.filterCounty, els.filterChildren].forEach((select) => {
+    [els.filterViewer, els.filterMethod, els.filterAge, els.filterGender, els.filterEducation, els.filterCounty, els.filterChildren].forEach((select) => {
       select.value = "";
     });
   }
@@ -142,6 +150,8 @@
     fillSelect(els.filterViewer, uniqueValues((response) => response.routeProfile.viewer_status), labelMap("viewer_status"), "All viewer types");
     fillSelect(els.filterMethod, uniqueArrayValues((response) => response.routeProfile.viewing_methods), labelMap("viewing_methods"), "All methods");
     fillSelect(els.filterAge, uniqueValues((response) => response.answers.age_range), labelMap("age_range"), "All ages");
+    fillSelect(els.filterGender, uniqueValues((response) => response.answers.gender), labelMap("gender"), "All genders");
+    fillSelect(els.filterEducation, uniqueValues((response) => response.answers.education_level), labelMap("education_level"), "All education levels");
     fillSelect(els.filterCounty, uniqueValues((response) => response.answers.county_region), labelMap("county_region"), "All locations");
     fillSelect(els.filterChildren, uniqueValues((response) => response.routeProfile.children_role), labelMap("children_role"), "All households and roles");
   }
@@ -172,6 +182,8 @@
       if (filters.viewer && profile.viewer_status !== filters.viewer) return false;
       if (filters.method && !(profile.viewing_methods || []).includes(filters.method)) return false;
       if (filters.age && answers.age_range !== filters.age) return false;
+      if (filters.gender && answers.gender !== filters.gender) return false;
+      if (filters.education && answers.education_level !== filters.education) return false;
       if (filters.county && answers.county_region !== filters.county) return false;
       if (filters.children && profile.children_role !== filters.children) return false;
       return true;
@@ -197,6 +209,8 @@
     renderTopPriorities(responses);
     renderGapTable(responses);
     renderCountBars(els.ageMix, countSingle(responses, (response) => response.answers.age_range), labelMap("age_range"), responses.length);
+    renderCountBars(els.genderMix, countSingle(responses, (response) => response.answers.gender), labelMap("gender"), responses.length);
+    renderCountBars(els.educationMix, countSingle(responses, (response) => response.answers.education_level), labelMap("education_level"), responses.length);
     renderCountBars(els.countyMix, countSingle(responses, (response) => response.answers.county_region), labelMap("county_region"), responses.length);
     renderComments(responses);
   }
@@ -479,69 +493,154 @@
   function makeDemoData() {
     const roles = findQuestion("importance_roles").rows.map((row) => row.id);
     const programs = findQuestion("program_interest").rows.map((row) => row.id);
-    const viewers = ["regular", "regular", "occasional", "occasional", "once_twice", "former", "former", "never", "unsure", "regular", "occasional", "never"];
-    const ages = ["65_74", "55_64", "45_54", "35_44", "25_34", "75_84", "55_64", "18_24", "45_54", "65_74", "35_44", "25_34"];
-    const counties = ["marquette", "delta", "houghton", "dickinson", "marquette", "alger", "northern_wi", "marquette", "baraga", "ontonagon", "menominee", "chippewa"];
-    const childrenRoles = ["neither", "neither", "household", "both", "educator", "neither", "neither", "household", "neither", "neither", "household", "neither"];
+
+    const viewers = [
+      "regular", "regular", "regular", "regular", "regular", "regular", "regular", "regular", "regular",
+      "occasional", "occasional", "occasional", "occasional", "occasional", "occasional", "occasional", "occasional", "occasional", "occasional",
+      "once_twice", "once_twice", "once_twice", "former", "former", "never"
+    ];
+    const ages = [
+      "55_64", "65_74", "65_74", "75_84", "55_64", "65_74", "75_84", "55_64", "65_74",
+      "45_54", "55_64", "65_74", "75_84", "55_64", "65_74", "45_54", "75_84", "55_64", "65_74",
+      "45_54", "55_64", "65_74", "75_84", "65_74", "85_plus"
+    ];
+    const genders = [
+      "woman", "woman", "man", "woman", "man", "woman", "woman", "man", "woman", "woman",
+      "man", "woman", "man", "woman", "woman", "man", "woman", "man", "woman", "man",
+      "woman", "man", "woman", "man", "woman"
+    ];
+    const education = [
+      "bachelor", "graduate", "associate", "bachelor", "graduate", "bachelor", "some_college", "associate", "graduate", "bachelor",
+      "bachelor", "graduate", "associate", "bachelor", "graduate", "some_college", "bachelor", "associate", "graduate", "bachelor",
+      "some_college", "graduate", "bachelor", "bachelor", "graduate"
+    ];
+    const counties = [
+      "marquette", "marquette", "delta", "dickinson", "houghton", "marquette", "alger", "marquette", "menominee", "delta",
+      "marquette", "houghton", "dickinson", "northern_wi", "marquette", "schoolcraft", "delta", "houghton", "marquette", "menominee",
+      "alger", "dickinson", "delta", "northern_wi", "marquette"
+    ];
+    const communities = [
+      "city", "small_town", "rural", "small_town", "rural", "city", "rural", "small_town", "rural", "city",
+      "small_town", "rural", "small_town", "rural", "city", "remote", "small_town", "rural", "city", "rural",
+      "remote", "small_town", "rural", "small_town", "city"
+    ];
+    const childrenRoles = [
+      "neither", "household", "neither", "neither", "educator", "neither", "household", "neither", "neither", "both",
+      "neither", "neither", "household", "neither", "educator", "neither", "neither", "neither", "household", "neither",
+      "neither", "neither", "neither", "neither", "neither"
+    ];
     const methodSets = [
-      ["antenna", "pbs_app", "passport"],
-      ["cable"],
-      ["pbs_app", "youtube_social"],
-      ["antenna", "livestream"],
-      ["pbs_site", "pbs_app"],
-      ["cable"],
-      ["antenna"],
-      ["not_watched"],
-      ["youtube_social"],
-      ["satellite", "passport"],
-      ["antenna", "pbs_app"],
-      ["not_watched"]
+      ["antenna", "pbs_app", "passport"], ["cable", "passport"], ["antenna"], ["cable"], ["antenna", "pbs_app"],
+      ["satellite", "passport"], ["antenna", "pbs_site"], ["cable", "pbs_app"], ["antenna"], ["pbs_app", "passport"],
+      ["cable"], ["antenna", "livestream"], ["satellite"], ["antenna", "pbs_app"], ["cable", "passport"],
+      ["pbs_app", "youtube_social"], ["antenna"], ["cable", "pbs_site"], ["antenna", "passport"], ["pbs_app"],
+      ["antenna"], ["cable"], ["antenna"], ["satellite"], ["not_watched"]
+    ];
+    const employment = ages.map((age, index) => {
+      if (["65_74", "75_84", "85_plus"].includes(age)) return index % 5 === 0 ? ["part", "retired"] : ["retired"];
+      if (index % 7 === 0) return ["self"];
+      if (index % 6 === 0) return ["part"];
+      return ["full"];
+    });
+    const focusSets = [
+      ["up_history", "great_lakes", "local_people", "nature", "outdoors"],
+      ["british_drama", "national_docs", "local_arts", "books_food", "up_history"],
+      ["local_news", "civil_discussion", "state_policy", "economy", "great_lakes"],
+      ["health", "nature", "home_garden", "how_to", "local_people"],
+      ["outdoors", "resources", "great_lakes", "nature", "travel"]
+    ];
+    const comments = [
+      "Keep telling stories from outside Marquette as well as in town.",
+      "I value programs that treat viewers like adults and do not rush every subject.",
+      "A weekly program about the Great Lakes and Upper Peninsula communities would get watched in our house.",
+      "It is sometimes difficult to know when a local program will be repeated.",
+      "Please keep the British mysteries, but make local programs easier to find online.",
+      "More practical coverage of rural health care and services would be useful.",
+      "Outdoor programming should include conservation, access, and local history—not only hunting shows.",
+      "I would like more performances and programs featuring artists from across the U.P.",
+      "The station is trusted, but it can feel too centered on Marquette County.",
+      "A simple weekly email with local program highlights would help me watch more often."
     ];
 
     return viewers.map((viewer, index) => {
+      const methods = methodSets[index];
       const isViewer = viewer !== "never";
+      const isOnline = methods.some((method) => ["livestream", "pbs_site", "pbs_app", "passport", "youtube_social"].includes(method));
+      const isRural = ["rural", "remote"].includes(communities[index]);
+      const focus = new Set(focusSets[index % focusSets.length]);
+
       const importance = {};
       const performance = {};
       roles.forEach((role, roleIndex) => {
-        importance[role] = clampScore(3 + ((index + roleIndex) % 3));
-        if (isViewer) performance[role] = clampScore(2 + ((index * 2 + roleIndex) % 4));
+        let score = 3 + ((index + roleIndex) % 2);
+        if (["trusted_pbs", "local_programs", "regional_issues", "preserve_history", "reflect_region", "science_nature"].includes(role)) score += 1;
+        if (role === "limited_internet" && isRural) score += 1;
+        if (role === "online_access" && isOnline) score += 1;
+        if (role === "children" && childrenRoles[index] !== "neither") score += 1;
+        importance[role] = clampScore(score);
+
+        if (isViewer) {
+          let penalty = ((index + roleIndex) % 3 === 0) ? 1 : 0;
+          if (["local_programs", "reflect_region", "online_access", "regional_issues"].includes(role)) penalty += 1;
+          if (role === "trusted_pbs") penalty = 0;
+          performance[role] = clampScore(importance[role] - penalty);
+        }
       });
 
       const interest = {};
       programs.forEach((program, programIndex) => {
-        let score = 1 + ((index + programIndex * 2) % 5);
-        if (["up_history", "great_lakes", "local_people", "nature", "outdoors"].includes(program)) score = Math.min(5, score + 1);
-        if (childrenRoles[index] !== "neither" && program === "kids") score = 5;
-        interest[program] = score;
+        let score = 2 + ((index + programIndex * 3) % 3);
+        if (["up_history", "great_lakes", "local_people", "nature", "outdoors", "national_docs"].includes(program)) score += 1;
+        if (focus.has(program)) score += 1;
+        if (program === "kids" && childrenRoles[index] !== "neither") score = 5;
+        if (program === "kids" && childrenRoles[index] === "neither") score = Math.min(score, 3);
+        interest[program] = clampScore(score);
       });
 
-      const top = Object.entries(interest).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([id]) => id);
+      const top = Object.entries(interest)
+        .sort((a, b) => b[1] - a[1] || programs.indexOf(a[0]) - programs.indexOf(b[0]))
+        .slice(0, 5)
+        .map(([id]) => id);
+
+      const relationships = [];
+      if (index < 10 || index === 14 || index === 18) relationships.push("donor");
+      if (methods.includes("passport")) relationships.push("passport_user");
+      if ([0, 4, 9, 14, 19].includes(index)) relationships.push("nmu_affiliation");
+      if ([4, 9, 14].includes(index)) relationships.push("educator");
+      if (!relationships.length) relationships.push("none");
+
       return {
-        id: `demo-${index + 1}`,
+        id: `sample-${String(index + 1).padStart(2, "0")}`,
         createdAt: new Date(Date.now() - index * 86400000).toISOString(),
         surveyVersion: survey.version,
-        source: "synthetic-demo",
+        source: "synthetic-up-pbs-sample",
         routeProfile: {
           viewer_status: viewer,
-          viewing_methods: methodSets[index],
+          viewing_methods: methods,
           children_role: childrenRoles[index],
-          station_relationships: index % 4 === 0 ? ["donor"] : ["none"]
+          station_relationships: relationships
         },
         answers: {
           age_range: ages[index],
+          gender: genders[index],
+          education_level: education[index],
           county_region: counties[index],
-          internet_quality: index % 4 === 0 ? "unreliable" : "adequate",
+          community_type: communities[index],
+          household_size: index % 6 === 0 ? "1" : "2",
+          employment: employment[index],
+          internet_quality: communities[index] === "remote" ? "unreliable" : (isRural && index % 3 === 0 ? "slow" : "adequate"),
           importance_roles: importance,
           performance_roles: isViewer ? performance : undefined,
           program_interest: interest,
           top_program_priorities: top,
-          most_important_responsibility: index % 3 === 0 ? "Tell more stories from communities outside Marquette and keep local history available." : "",
-          never_lose: index % 4 === 0 ? "Trusted educational programming without commercial clutter." : "",
-          does_well: isViewer && index % 3 === 1 ? "National PBS programs and thoughtful long-form material." : "",
-          falls_short: isViewer && index % 3 === 2 ? "It can be hard to know when local programs are airing or where to find them online." : "",
-          nonviewer_return: !isViewer ? "A clearer explanation of what is local and an easy place to browse it online." : "",
-          missing_subject: index % 4 === 2 ? "More coverage of rural health, outdoor access, and small-town economic changes." : "",
-          final_comment: index === 0 ? "This is demonstration data, not a real viewer comment." : ""
+          most_important_responsibility: index % 4 === 0 ? "Provide trusted programming while telling more stories from communities throughout the Upper Peninsula." : "",
+          never_lose: index % 5 === 0 ? "Educational programs and thoughtful documentaries without commercial clutter." : "",
+          does_well: isViewer && index % 4 === 1 ? "Trusted national PBS programs, documentaries, and programs that take time with a subject." : "",
+          falls_short: isViewer && index % 4 === 2 ? "Local programs and repeat times can be hard to find, especially online." : "",
+          underrepresented: index % 6 === 0 ? "Smaller rural communities and the western Upper Peninsula could appear more often." : "",
+          missing_subject: index % 3 === 0 ? comments[index % comments.length] : "",
+          one_program_change: index % 7 === 0 ? "Create a dependable weekly slot for new Upper Peninsula programs and repeat it at another time." : "",
+          final_comment: index === 0 ? "Synthetic sample response for dashboard testing—not a real viewer comment." : ""
         }
       };
     });

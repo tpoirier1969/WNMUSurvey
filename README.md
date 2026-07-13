@@ -1,119 +1,43 @@
-# WNMU-TV Viewer Direction Questionnaire — Local Prototype
+# WNMU-TV Viewer Questionnaire — Local Prototype v2
 
-A standalone adaptive viewer questionnaire and local response analyzer.
+This package contains two separate experiences:
 
-## What is included
+- `index.html` — the public-facing viewer questionnaire
+- `admin.html` — the local administrative results dashboard
 
-- `index.html` — adaptive questionnaire.
-- `results.html` — local analyzer with demographic and viewing-method filters.
-- `js/questions.js` — questionnaire wording, options, routing rules, and expectation/performance pairs.
-- `js/app.js` — routing, section rendering, slide transitions, autosave, export, and local submission.
-- `js/storage.js` — isolated local storage adapter. This is the seam to replace or extend with Supabase later.
-- `js/results.js` — local/imported JSON analysis, filters, gap calculation, comments, and CSV export.
-- `css/styles.css` — responsive layout and questionnaire styling.
-- `start-local.bat` — Windows launcher using Python's local web server.
-- `start-local.sh` — macOS/Linux launcher.
+The public page does not show administrative controls or explain the internal branching. A viewer answers four initial questions about viewing behavior, then the site quietly includes or skips later sections as appropriate.
 
-## Run it on Windows
+## Start the local site
 
-1. Extract the ZIP.
-2. Double-click `start-local.bat`.
-3. A browser should open to `http://localhost:8765`.
-4. Keep the command window open while using the site.
+On Windows, double-click:
 
-If Python is not installed, opening `index.html` directly may still work, but a local server is more reliable for browser storage and file behavior.
+`start-local.bat`
 
-## Data behavior
+Then open:
 
-- Drafts save to browser local storage as the respondent works.
-- Submitted responses also save only to browser local storage.
-- Responses can be exported from `results.html` as JSON.
-- Summary statistics can be exported as CSV.
-- Imported JSON is analyzed in memory and is not automatically added to browser storage.
-- Demonstration data is synthetic and is never stored unless manually exported.
+- Questionnaire: `http://localhost:8765/index.html`
+- Admin results: `http://localhost:8765/admin.html`
 
-## Adaptive routing
+## Current data behavior
 
-The first four answers determine the route:
+- Drafts save automatically in the browser.
+- Submitted responses are stored in browser local storage.
+- No information is sent to WNMU, Supabase, or any external service.
+- The admin page opens with 25 synthetic test respondents.
+- The synthetic sample is weighted toward older, educated Upper Peninsula PBS viewers, with a 60/40 woman-to-man split and strong interest in local history, Great Lakes topics, nature, outdoor recreation, documentaries, public affairs, and arts programming.
+- Religion and race are not displayed because the questionnaire does not currently collect those fields.
 
-- Viewer status controls whether station-performance questions appear.
-- Broadcast/cable/satellite methods add the reception and traditional-TV section.
-- Online methods add usability-specific questions inside the online section.
-- Former viewers, non-viewers, and uncertain viewers receive a barrier/re-entry section.
-- Households, educators, and caregivers who select children's content receive the PBS KIDS/education section.
-- Everyone receives expectations, programming interests, communication, and optional demographics.
+## Admin access
 
-## Analyzer filters
+Authentication is intentionally disabled for this local prototype. Before any public deployment, `admin.html` should be protected by an approved login system and the local storage adapter should be replaced with the approved response database.
 
-All results recalculate when filtered by:
+## Files
 
-- Viewer type
-- Viewing method
-- Age range
-- County/region
-- Children's-programming role
-
-The expectation gap is calculated as:
-
-`importance average - performance average`
-
-A larger positive result means respondents rate that role as important but rate WNMU-TV's delivery lower.
-
-## Editing the questionnaire
-
-Most wording is in `js/questions.js`.
-
-Keep existing question IDs stable after real responses begin. Changing labels is generally safe; changing IDs will split old and new answers during analysis.
-
-Question types currently supported:
-
-- `radio`
-- `checkbox`
-- `select`
-- `text`
-- `textarea`
-- `scale`
-- `matrix`
-
-Routing conditions currently supported:
-
-- `viewerStatusIn`
-- `viewerStatusNotIn`
-- `hasAnyMethod`
-- `hasAnyRelationship`
-- `childrenRoleIn`
-- `answerIn`
-- `answerNotIn`
-- nested `all` and `any`
-
-## Future Supabase conversion
-
-Do not scatter database calls through `app.js`. Extend `js/storage.js` with a remote submission method while preserving the current response object:
-
-```js
-{
-  id,
-  createdAt,
-  surveyVersion,
-  source,
-  routeProfile,
-  answers,
-  routeSectionIds
-}
-```
-
-Recommended public deployment behavior:
-
-- Anonymous users may insert responses.
-- Public users should not be allowed to select/read all responses.
-- Results should be analyzed through a private admin path or exported data.
-- Use a WNMU-specific table name rather than sharing another project's table.
-
-## Before management or public distribution
-
-1. Review every question and remove anything management will not actually analyze.
-2. Decide whether household income has a defined use; remove it if not.
-3. Confirm the preferred service area/county list.
-4. Replace draft branding with approved WNMU-TV assets.
-5. Test antenna, online, non-viewer, and children's paths on phone and desktop.
-6. Decide how non-digital viewers will be included so the sample is not merely “people who saw an online survey.”
+- `index.html` — questionnaire
+- `admin.html` — results dashboard
+- `results.html` — redirects old bookmarks to `admin.html`
+- `js/questions.js` — questions and conditional rules
+- `js/app.js` — questionnaire flow and browser draft handling
+- `js/results.js` — dashboard calculations and synthetic sample
+- `js/storage.js` — replaceable local storage adapter
+- `css/styles.css` — shared visual styling

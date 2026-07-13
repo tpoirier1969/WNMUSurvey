@@ -3,213 +3,114 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Draft local WNMU-TV viewer direction questionnaire with adaptive question routing." />
+  <meta name="description" content="WNMU-TV viewer questionnaire about viewing habits, programming interests, and community needs." />
   <meta name="theme-color" content="#12344a" />
-  <title>WNMU-TV Viewer Direction Questionnaire</title>
+  <title>WNMU-TV Viewer Questionnaire</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
+<body class="public-survey-page">
   <a class="skip-link" href="#surveyApp">Skip to questionnaire</a>
 
-  <header class="site-header">
+  <header class="site-header public-header">
     <div class="container header-inner">
-      <a class="wordmark" href="#top" aria-label="WNMU-TV Viewer Direction Questionnaire home">
+      <div class="wordmark" aria-label="WNMU-TV Viewer Questionnaire">
         <span class="wordmark-main">WNMU-TV</span>
-        <span class="wordmark-sub">Viewer Direction Questionnaire</span>
-      </a>
-      <nav aria-label="Main navigation">
-        <a href="#overview">What it measures</a>
-        <a href="#surveyApp">Take questionnaire</a>
-        <a href="results.html">Local results</a>
-      </nav>
+        <span class="wordmark-sub">Viewer Questionnaire</span>
+      </div>
     </div>
   </header>
 
-  <main id="top">
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Draft for internal review</p>
-          <h1>Learn who watches, how they watch, and what they expect from WNMU-TV.</h1>
-          <p class="lead">This local prototype adapts itself to each respondent. Broadcast viewers, streamers, former viewers, non-viewers, and households using children’s programming receive different paths instead of the same sprawling questionnaire.</p>
-          <div class="hero-actions">
-            <button class="button primary" id="heroStartSurvey" type="button">Build my questionnaire</button>
-            <a class="button ghost" href="results.html">Open local analyzer</a>
-          </div>
-          <div class="trust-strip" aria-label="Questionnaire focus areas">
-            <span>Broadcast</span>
-            <span>Streaming</span>
-            <span>Expectations</span>
-            <span>Programming</span>
-            <span>Demographics</span>
+  <main id="surveyApp" class="survey-shell public-survey-shell" aria-labelledby="survey-title">
+    <div class="container survey-container public-survey-container">
+      <section id="welcomePanel" class="app-panel welcome-panel">
+        <div class="welcome-copy">
+          <p class="eyebrow">WNMU-TV Viewer Questionnaire</p>
+          <h1 id="survey-title">Help us better understand what you watch and what you need from WNMU-TV.</h1>
+          <p class="lead">Your answers will help guide programming, local productions, broadcast access, and online services throughout Upper Michigan and northern Wisconsin.</p>
+          <div class="survey-facts" aria-label="Questionnaire details">
+            <span>Anonymous</span>
+            <span>About 8–12 minutes</span>
+            <span>Questions may vary based on your answers</span>
           </div>
         </div>
 
-        <aside class="hero-visual" aria-label="Questionnaire routing preview">
-          <div class="signal-card">
-            <span class="signal-dot"></span>
-            <strong>Viewer path</strong>
-            <p>Reception, schedule, station performance</p>
+        <div id="resumeBlock" class="resume-block" hidden>
+          <div>
+            <strong>Continue where you left off?</strong>
+            <p id="resumeDetails"></p>
           </div>
-          <div class="signal-card offset">
-            <span class="signal-dot"></span>
-            <strong>Online path</strong>
-            <p>Apps, discoverability, Passport, barriers</p>
+          <div class="button-row">
+            <button class="button primary" id="resumeSurvey" type="button">Continue questionnaire</button>
+            <button class="button quiet" id="discardDraft" type="button">Start over</button>
           </div>
-          <div class="signal-card offset-more">
-            <span class="signal-dot"></span>
-            <strong>Non-viewer path</strong>
-            <p>Awareness, relevance, reasons not watching</p>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="overview" class="overview-section">
-      <div class="container">
-        <p class="eyebrow">What this is designed to learn</p>
-        <div class="overview-grid">
-          <article class="overview-card">
-            <span>01</span>
-            <h2>Where viewers are</h2>
-            <p>Broadcast, cable, satellite, apps, livestreams, online video, and the devices and times people actually use.</p>
-          </article>
-          <article class="overview-card">
-            <span>02</span>
-            <h2>What they expect</h2>
-            <p>Which station roles matter most, then how viewers believe WNMU-TV performs in those same areas.</p>
-          </article>
-          <article class="overview-card">
-            <span>03</span>
-            <h2>What they would watch</h2>
-            <p>Programming interest, local formats, top-five priorities, and open suggestions for missing subjects.</p>
-          </article>
-          <article class="overview-card">
-            <span>04</span>
-            <h2>Who those interests represent</h2>
-            <p>Optional location, age, household, internet, education, and employment information for audience comparison.</p>
-          </article>
         </div>
-      </div>
-    </section>
 
-    <section id="surveyApp" class="survey-shell" aria-labelledby="survey-title">
-      <div class="container survey-container">
-        <section id="welcomePanel" class="app-panel">
-          <div class="panel-heading">
-            <p class="eyebrow">Start here</p>
-            <h2 id="survey-title">WNMU-TV Viewer Direction Questionnaire</h2>
-            <p>Four starting questions build a shorter path around the respondent. Draft answers are saved only in this browser.</p>
-          </div>
+        <div class="button-row roomy">
+          <button class="button primary large-button" id="startSurvey" type="button">Start questionnaire</button>
+        </div>
+        <p class="privacy-line">Answers are saved only in this browser during this local test.</p>
+      </section>
 
-          <div class="local-note">
-            <strong>Local prototype</strong>
-            <p>No responses leave this computer. The analyzer reads only responses stored in this browser or JSON files you import.</p>
-          </div>
+      <section id="routingPanel" class="app-panel" hidden>
+        <div class="panel-heading">
+          <p class="eyebrow">First, a little about your viewing</p>
+          <h2>Tell us how you currently use WNMU-TV and PBS.</h2>
+          <p>These questions help us avoid asking you about services you do not use.</p>
+        </div>
+        <div id="routingQuestions" class="question-stack"></div>
+        <p id="routingError" class="form-error" aria-live="polite"></p>
+        <div class="form-actions">
+          <button class="button secondary" id="routingBack" type="button">Back</button>
+          <button class="button primary" id="continueSurvey" type="button">Continue</button>
+        </div>
+      </section>
 
-          <div id="resumeBlock" class="resume-block" hidden>
-            <div>
-              <strong>Saved draft found</strong>
-              <p id="resumeDetails"></p>
-            </div>
-            <div class="button-row">
-              <button class="button primary" id="resumeSurvey" type="button">Resume draft</button>
-              <button class="button quiet" id="discardDraft" type="button">Discard draft</button>
-            </div>
+      <section id="questionnairePanel" class="app-panel questionnaire-panel" hidden>
+        <div class="questionnaire-toolbar">
+          <div>
+            <span id="sectionPosition">Section 1</span>
+            <strong id="saveStatus">Answers save automatically</strong>
           </div>
+          <button class="text-button" id="changeRoute" type="button">Review first answers</button>
+        </div>
 
-          <div class="button-row roomy">
-            <button class="button primary" id="startSurvey" type="button">Start a new response</button>
-          </div>
-        </section>
+        <div class="progress-wrap" aria-hidden="true">
+          <div class="progress-track"><span id="progressBar"></span></div>
+          <span id="progressText">0% complete</span>
+        </div>
 
-        <section id="routingPanel" class="app-panel" hidden>
-          <div class="panel-heading">
-            <p class="eyebrow">Tailor the path</p>
-            <h2>First, tell us what kind of viewer you are.</h2>
-            <p>These answers control which later sections appear. They are part of the final response.</p>
+        <div class="questionnaire-layout">
+          <aside class="section-nav" aria-label="Questionnaire sections">
+            <div id="sectionTabs"></div>
+          </aside>
+          <div class="section-viewport">
+            <div id="sectionStage" class="section-stage"></div>
           </div>
-          <div id="routingQuestions" class="question-stack"></div>
-          <p id="routingError" class="form-error" aria-live="polite"></p>
-          <div class="form-actions">
-            <button class="button secondary" id="routingBack" type="button">Back</button>
-            <button class="button primary" id="buildRoute" type="button">Build my questionnaire</button>
-          </div>
-        </section>
+        </div>
 
-        <section id="routeSummaryPanel" class="app-panel" hidden>
-          <div class="panel-heading">
-            <p class="eyebrow">Your tailored route</p>
-            <h2>Here is what this respondent will see.</h2>
-          </div>
-          <div id="routeSummary"></div>
-          <div class="form-actions">
-            <button class="button secondary" id="summaryBack" type="button">Change starting answers</button>
-            <button class="button primary" id="beginTailored" type="button">Begin questionnaire</button>
-          </div>
-        </section>
+        <div class="form-actions questionnaire-actions">
+          <button class="button secondary" id="prevSection" type="button">Previous</button>
+          <div class="action-spacer"></div>
+          <button class="button primary" id="nextSection" type="button">Next</button>
+          <button class="button primary" id="submitSurvey" type="button" hidden>Submit questionnaire</button>
+        </div>
+      </section>
 
-        <section id="questionnairePanel" class="app-panel questionnaire-panel" hidden>
-          <div class="questionnaire-toolbar">
-            <div>
-              <span id="sectionPosition">Section 1</span>
-              <strong id="saveStatus">Draft not yet saved</strong>
-            </div>
-            <button class="text-button" id="changeRoute" type="button">Change starting answers</button>
-          </div>
-
-          <div class="progress-wrap" aria-hidden="true">
-            <div class="progress-track"><span id="progressBar"></span></div>
-            <span id="progressText">0% through your tailored path</span>
-          </div>
-
-          <div class="questionnaire-layout">
-            <aside class="section-nav" aria-label="Questionnaire sections">
-              <div id="sectionTabs"></div>
-            </aside>
-            <div class="section-viewport">
-              <div id="sectionStage" class="section-stage"></div>
-            </div>
-          </div>
-
-          <div class="form-actions questionnaire-actions">
-            <button class="button secondary" id="prevSection" type="button">Previous</button>
-            <div class="action-spacer"></div>
-            <button class="button quiet" id="saveDraft" type="button">Save draft</button>
-            <button class="button quiet" id="exportDraft" type="button">Export draft JSON</button>
-            <button class="button primary" id="nextSection" type="button">Next section</button>
-            <button class="button primary" id="submitSurvey" type="button" hidden>Submit local response</button>
-          </div>
-        </section>
-
-        <section id="completePanel" class="app-panel completion-panel" hidden>
-          <div class="completion-mark" aria-hidden="true">✓</div>
-          <p class="eyebrow">Response stored locally</p>
-          <h2>That response is ready for local analysis.</h2>
-          <p id="completionCount"></p>
-          <div class="button-row centered">
-            <a class="button primary" href="results.html">Analyze responses</a>
-            <button class="button secondary" id="newResponse" type="button">Enter another response</button>
-          </div>
-        </section>
-      </div>
-    </section>
+      <section id="completePanel" class="app-panel completion-panel" hidden>
+        <div class="completion-mark" aria-hidden="true">✓</div>
+        <p class="eyebrow">Questionnaire complete</p>
+        <h2>Thank you for helping WNMU-TV better understand its viewers and communities.</h2>
+        <p>Your response has been recorded in this local test.</p>
+        <div class="button-row centered">
+          <button class="button secondary" id="newResponse" type="button">Return to start</button>
+        </div>
+      </section>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <strong>WNMU-TV Viewer Direction Questionnaire</strong>
-        <p>Local draft for management review. This is not an official public WNMU-TV site or final approved wording.</p>
-      </div>
-      <div>
-        <strong>Data behavior</strong>
-        <p>Drafts and submitted responses remain in browser local storage until exported or cleared.</p>
-      </div>
-      <div>
-        <strong>Future seam</strong>
-        <p>The storage layer is isolated so a Supabase submission adapter can be added later without rebuilding the questionnaire.</p>
-      </div>
+  <footer class="site-footer public-footer">
+    <div class="container">
+      <p>WNMU-TV Viewer Questionnaire · Local review version</p>
     </div>
   </footer>
 

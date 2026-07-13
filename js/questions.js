@@ -1,5 +1,5 @@
 window.WNMU_SURVEY = {
-  version: "wnmu-viewer-direction-v1-local",
+  version: "wnmu-viewer-questionnaire-v2-local",
   storageKeys: {
     draft: "wnmuViewerSurveyDraft:v1",
     responses: "wnmuViewerSurveyResponses:v1"
@@ -36,7 +36,7 @@ window.WNMU_SURVEY = {
       type: "radio",
       required: true,
       label: "During the past 12 months, how often have you knowingly watched WNMU-TV or WNMU-TV programming?",
-      help: "This first answer determines how much station-performance detail you will see.",
+      help: "Choose the answer that best describes the past year.",
       options: [
         { value: "regular", label: "Daily or several times a week" },
         { value: "occasional", label: "Several times a month or about weekly" },
@@ -159,7 +159,7 @@ window.WNMU_SURVEY = {
       shortTitle: "Viewing habits",
       eyebrow: "How you watch",
       title: "Your television and video habits",
-      intro: "These questions describe the viewing environment WNMU-TV is competing inside—not merely whether someone owns a television.",
+      intro: "Tell us how television and longer-form video fit into your household.",
       questions: [
         {
           id: "tv_services",
@@ -250,7 +250,7 @@ window.WNMU_SURVEY = {
       shortTitle: "Broadcast",
       eyebrow: "Broadcast viewers",
       title: "Receiving WNMU-TV on television",
-      intro: "This section appears because you indicated some form of broadcast, cable, or satellite viewing.",
+      intro: "Tell us about your television reception and any problems that make WNMU-TV difficult to watch.",
       when: { hasAnyMethod: ["antenna", "cable", "satellite", "public_location"] },
       questions: [
         {
@@ -298,7 +298,7 @@ window.WNMU_SURVEY = {
       shortTitle: "Online access",
       eyebrow: "Streaming and online",
       title: "Finding WNMU-TV beyond the broadcast signal",
-      intro: "Everyone sees this section, but the questions change depending on whether you already use online WNMU-TV or PBS services.",
+      intro: "Tell us what you know about WNMU-TV and PBS online options, even if you do not currently use them.",
       questions: [
         {
           id: "online_awareness",
@@ -419,7 +419,7 @@ window.WNMU_SURVEY = {
       shortTitle: "Why not watch?",
       eyebrow: "Former and non-viewers",
       title: "What is keeping WNMU-TV out of your viewing routine?",
-      intro: "This section replaces performance questions for people who do not currently know the station well enough to judge it.",
+      intro: "Tell us what has kept you from watching and what might make WNMU-TV more useful or relevant to you.",
       when: { viewerStatusIn: ["former", "never", "unsure"] },
       questions: [
         {
@@ -496,7 +496,7 @@ window.WNMU_SURVEY = {
       shortTitle: "Performance",
       eyebrow: "How WNMU-TV is doing",
       title: "How well is WNMU-TV meeting those expectations?",
-      intro: "Only respondents with at least some station familiarity see this section. “Not familiar enough” is a legitimate answer, not a failure to cooperate.",
+      intro: "Please rate only the areas you know enough about. Choose “Not familiar enough” whenever appropriate.",
       when: { viewerStatusNotIn: ["never"] },
       questions: [
         {
@@ -571,7 +571,7 @@ window.WNMU_SURVEY = {
       shortTitle: "Programming",
       eyebrow: "What you would watch",
       title: "Programming interests and priorities",
-      intro: "Interest scores reveal broad demand. The top-five question forces actual choices, which is where the useful pain begins.",
+      intro: "First rate your interest in each category, then choose the five you believe deserve the most attention.",
       questions: [
         {
           id: "program_interest",
@@ -676,7 +676,7 @@ window.WNMU_SURVEY = {
       shortTitle: "Children",
       eyebrow: "PBS KIDS and education",
       title: "Children, families, and classroom use",
-      intro: "This section appears only for households and professionals who select or recommend children's programming.",
+      intro: "Tell us how children’s public-media programming is used in your household, classroom, library, or childcare setting.",
       when: { childrenRoleIn: ["household", "educator", "both"] },
       questions: [
         {
@@ -738,7 +738,7 @@ window.WNMU_SURVEY = {
       shortTitle: "Community",
       eyebrow: "Finding and supporting the station",
       title: "Communication and community connection",
-      intro: "Programming cannot matter if viewers never hear about it. This section separates content problems from discoverability problems.",
+      intro: "Tell us how you currently learn about programs and how WNMU-TV could communicate with you more effectively.",
       questions: [
         {
           id: "learn_currently",
@@ -868,8 +868,8 @@ window.WNMU_SURVEY = {
       id: "demographics",
       shortTitle: "About you",
       eyebrow: "About your household",
-      title: "Demographics for understanding—not identifying—viewers",
-      intro: "These questions are optional. They allow programming interests and access problems to be compared across audiences.",
+      title: "A little about you and your household",
+      intro: "These questions are optional and help WNMU-TV understand whether needs differ across communities and households.",
       questions: [
         {
           id: "county_region",
@@ -1020,7 +1020,6 @@ window.WNMU_SURVEY = {
           type: "select",
           label: "Annual household income range",
           optionalLabel: true,
-          help: "Included for management review, but easy to remove if there is no defined analysis use.",
           options: [
             { value: "under_25", label: "Under $25,000" },
             { value: "25_49", label: "$25,000–$49,999" },
