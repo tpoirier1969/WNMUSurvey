@@ -1,43 +1,33 @@
-# WNMU-TV Viewer Questionnaire — Local Prototype v2
+# WNMU-TV Viewer Questionnaire — Local Test
 
-This package contains two separate experiences:
+This package has two separate entry points so the public questionnaire stays clean.
 
-- `index.html` — the public-facing viewer questionnaire
-- `admin.html` — the local administrative results dashboard
+## Open the questionnaire
 
-The public page does not show administrative controls or explain the internal branching. A viewer answers four initial questions about viewing behavior, then the site quietly includes or skips later sections as appropriate.
+Double-click **`OPEN-QUESTIONNAIRE.bat`**.
 
-## Start the local site
+This opens the respondent-facing questionnaire. The first few answers quietly control which later questions appear. Respondents are not asked to build or select a questionnaire.
 
-On Windows, double-click:
+## Open the results preview
 
-`start-local.bat`
+Double-click **`OPEN-RESULTS.bat`**.
 
-Then open:
+No login is required in this test version. The results page automatically opens with **25 synthetic Upper Peninsula PBS audience responses**. The sample is weighted toward:
+
+- viewers over age 50
+- a 60/40 woman-to-man split
+- college or technical education
+- rural and small-town Upper Peninsula households
+- antenna, cable, satellite, PBS app, Passport, and online viewing
+- strong interest in Upper Peninsula history, Great Lakes, outdoors, nature, documentaries, public affairs, arts, and British programming
+
+The synthetic responses are marked as test data. Use **Use submitted browser responses** to switch to questionnaires completed on that browser.
+
+## Addresses while the local server is running
 
 - Questionnaire: `http://localhost:8765/index.html`
-- Admin results: `http://localhost:8765/admin.html`
+- Results: `http://localhost:8765/results.html`
 
-## Current data behavior
+## Future deployment
 
-- Drafts save automatically in the browser.
-- Submitted responses are stored in browser local storage.
-- No information is sent to WNMU, Supabase, or any external service.
-- The admin page opens with 25 synthetic test respondents.
-- The synthetic sample is weighted toward older, educated Upper Peninsula PBS viewers, with a 60/40 woman-to-man split and strong interest in local history, Great Lakes topics, nature, outdoor recreation, documentaries, public affairs, and arts programming.
-- Religion and race are not displayed because the questionnaire does not currently collect those fields.
-
-## Admin access
-
-Authentication is intentionally disabled for this local prototype. Before any public deployment, `admin.html` should be protected by an approved login system and the local storage adapter should be replaced with the approved response database.
-
-## Files
-
-- `index.html` — questionnaire
-- `admin.html` — results dashboard
-- `results.html` — redirects old bookmarks to `admin.html`
-- `js/questions.js` — questions and conditional rules
-- `js/app.js` — questionnaire flow and browser draft handling
-- `js/results.js` — dashboard calculations and synthetic sample
-- `js/storage.js` — replaceable local storage adapter
-- `css/styles.css` — shared visual styling
+The public questionnaire and results page are separate now. Before launch, the results page should be placed behind an admin login and local browser storage should be replaced with the approved database, such as Supabase.
