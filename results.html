@@ -8,6 +8,7 @@
   <title>WNMU-TV Questionnaire Results Preview</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/gap-summary.css" />
+  <link rel="stylesheet" href="css/channel-results.css" />
 </head>
 <body>
   <a class="skip-link" href="#resultsApp">Skip to results</a>
@@ -21,6 +22,7 @@
       <nav aria-label="Results navigation">
         <a href="index.html">View questionnaire</a>
         <a href="#filters">Filters</a>
+        <a href="#channels">Channels</a>
         <a href="#gaps">Expectation gaps</a>
       </nav>
     </div>
@@ -103,6 +105,19 @@
               <div id="methodMix" class="bar-list"></div>
             </section>
           </div>
+
+          <section id="channels" class="result-section" aria-labelledby="channelResultsHeading">
+            <p class="eyebrow">Four-channel awareness and use</p>
+            <h2 id="channelResultsHeading">Which WNMU-TV channels viewers know, receive, and watch</h2>
+            <p>Counts respond to the audience filters above. Percentages use only respondents who answered each new channel question, so older saved responses do not dilute the results.</p>
+            <div class="data-table-wrap">
+              <table class="data-table channel-results-table">
+                <thead><tr><th>Channel</th><th>Knew about it</th><th>Can receive it</th><th>Watches it</th></tr></thead>
+                <tbody id="channelResultsBody"></tbody>
+              </table>
+            </div>
+            <p id="channelResultsNote" class="channel-results-note"></p>
+          </section>
 
           <div class="result-grid">
             <section class="result-section">
@@ -219,8 +234,10 @@
   </footer>
 
   <script src="js/questions.js"></script>
+  <script src="js/questions-revision.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/results.js"></script>
   <script src="js/gap-summary.js"></script>
+  <script src="js/channel-results.js"></script>
 </body>
 </html>
