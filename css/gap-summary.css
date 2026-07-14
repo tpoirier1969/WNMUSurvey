@@ -1,0 +1,141 @@
+.gap-overview-section {
+  margin-bottom: 24px;
+}
+
+.gap-overview-heading {
+  margin-bottom: 20px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--white);
+}
+
+.gap-overview-heading h2 {
+  font-size: 1.75rem;
+}
+
+.gap-overview-heading > p:last-child {
+  max-width: 980px;
+  color: var(--ink-soft);
+}
+
+.gap-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.gap-summary-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-top-width: 6px;
+  border-radius: 18px;
+  background: var(--white);
+}
+
+.gap-summary-card.gap-needs {
+  border-top-color: var(--danger);
+}
+
+.gap-summary-card.gap-meeting {
+  border-top-color: var(--gold);
+}
+
+.gap-summary-card.gap-exceeding {
+  border-top-color: var(--success);
+}
+
+.gap-summary-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.gap-summary-head h3 {
+  margin-bottom: 0;
+  font-size: 1.35rem;
+}
+
+.gap-summary-card > p {
+  min-height: 44px;
+  margin: 12px 0 18px;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+}
+
+.gap-role-count {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  background: #edf1f2;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.gap-role-list {
+  display: grid;
+  gap: 10px;
+}
+
+.gap-role-item {
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fbfcfc;
+}
+
+.gap-role-item strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
+.gap-role-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+
+.gap-role-metrics b {
+  color: var(--ink);
+}
+
+.gap-value {
+  font-weight: 800;
+}
+
+.gap-bucket-empty {
+  padding: 18px 12px;
+  color: var(--ink-soft);
+  border: 1px dashed var(--line-dark);
+  border-radius: 11px;
+  text-align: center;
+  font-size: 0.82rem;
+}
+
+.gap-detail-panel summary {
+  cursor: pointer;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 850;
+}
+
+.gap-detail-panel[open] summary {
+  margin-bottom: 14px;
+}
+
+@media (max-width: 1050px) {
+  .gap-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gap-summary-card > p {
+    min-height: 0;
+  }
+}
