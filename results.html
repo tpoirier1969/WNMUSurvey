@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#12344a" />
   <title>WNMU-TV Questionnaire Results Preview</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/gap-summary.css" />
 </head>
 <body>
   <a class="skip-link" href="#resultsApp">Skip to results</a>
@@ -118,17 +119,62 @@
             </section>
           </div>
 
-          <section id="gaps" class="result-section">
-            <p class="eyebrow">Importance minus viewer-rated delivery</p>
-            <h2>Where viewer expectations exceed perceived delivery</h2>
-            <p>Each row uses only respondents who rated both the importance of that station role and how well they believe WNMU-TV delivers it. The dashboard calculates each respondent's personal gap first, then averages those paired gaps. Larger positive gaps identify roles viewers consider important but believe are delivered less strongly.</p>
+          <section id="gaps" class="gap-overview-section" aria-labelledby="gapOverviewHeading">
+            <div class="gap-overview-heading">
+              <p class="eyebrow">Importance compared with viewer-rated delivery</p>
+              <h2 id="gapOverviewHeading">Where WNMU-TV needs attention—and where it is succeeding</h2>
+              <p>Each role is placed according to its average paired gap. A positive gap means viewers consider the role more important than they believe WNMU-TV delivers it. A negative gap means perceived delivery is higher than stated importance.</p>
+            </div>
+
+            <div class="gap-summary-grid">
+              <article class="gap-summary-card gap-needs">
+                <div class="gap-summary-head">
+                  <div>
+                    <p class="eyebrow">Priority</p>
+                    <h3>Needs attention</h3>
+                  </div>
+                  <span id="needsAttentionCount" class="gap-role-count">0 roles</span>
+                </div>
+                <p>Importance exceeds viewer-rated delivery by 0.50 points or more.</p>
+                <div id="needsAttentionList" class="gap-role-list"></div>
+              </article>
+
+              <article class="gap-summary-card gap-meeting">
+                <div class="gap-summary-head">
+                  <div>
+                    <p class="eyebrow">Maintain</p>
+                    <h3>Meeting expectations</h3>
+                  </div>
+                  <span id="meetingExpectationsCount" class="gap-role-count">0 roles</span>
+                </div>
+                <p>Viewer-rated delivery is within 0.49 points of stated importance.</p>
+                <div id="meetingExpectationsList" class="gap-role-list"></div>
+              </article>
+
+              <article class="gap-summary-card gap-exceeding">
+                <div class="gap-summary-head">
+                  <div>
+                    <p class="eyebrow">Strength</p>
+                    <h3>Exceeding expectations</h3>
+                  </div>
+                  <span id="exceedingExpectationsCount" class="gap-role-count">0 roles</span>
+                </div>
+                <p>Viewer-rated delivery exceeds stated importance by 0.50 points or more.</p>
+                <div id="exceedingExpectationsList" class="gap-role-list"></div>
+              </article>
+            </div>
+          </section>
+
+          <details class="result-section gap-detail-panel">
+            <summary>View the detailed paired-gap table</summary>
+            <p>Only respondents who rated both importance and delivery for the same role are included. Each person's gap is calculated first, then those gaps are averaged.</p>
             <div class="data-table-wrap">
               <table class="data-table">
                 <thead><tr><th>Station role</th><th>Paired importance</th><th>Viewer-rated delivery</th><th>Average paired gap</th><th>Paired respondents</th></tr></thead>
                 <tbody id="gapTable"></tbody>
               </table>
             </div>
-          </section>
+          </details>
 
           <div class="result-grid demographics-grid">
             <section class="result-section">
@@ -175,5 +221,6 @@
   <script src="js/questions.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/results.js"></script>
+  <script src="js/gap-summary.js"></script>
 </body>
 </html>
