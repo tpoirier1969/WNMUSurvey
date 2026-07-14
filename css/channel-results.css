@@ -63,18 +63,33 @@
   .channel-results-table td {
     display: grid;
     grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
     align-items: baseline;
-    gap: 8px;
+    column-gap: 8px;
     padding: 5px 0;
+  }
+
+  .channel-results-table td::before {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
   }
 
   .channel-results-table td:nth-child(2)::before { content: "Knew about it"; }
   .channel-results-table td:nth-child(3)::before { content: "Can receive it"; }
   .channel-results-table td:nth-child(4)::before { content: "Watches it"; }
 
-  .channel-results-table td strong,
+  .channel-results-table td strong {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
+    text-align: right;
+  }
+
   .channel-results-table td span {
-    display: inline;
+    grid-column: 2;
+    grid-row: 2;
+    display: block;
     text-align: right;
   }
 }
