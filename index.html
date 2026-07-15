@@ -19,6 +19,7 @@
         <span class="wordmark-main">WNMU-TV</span>
         <span class="wordmark-sub">Viewer Questionnaire</span>
       </div>
+      <button class="button quiet" id="soundToggle" type="button" aria-pressed="true">Sound On</button>
     </div>
   </header>
 
@@ -27,74 +28,78 @@
       <section id="welcomePanel" class="app-panel welcome-panel">
         <div class="welcome-copy">
           <p class="eyebrow">WNMU-TV Viewer Questionnaire</p>
-          <h1 id="survey-title">Help us better understand what you watch and what you need from WNMU-TV.</h1>
-          <p class="lead">Your answers will help guide programming, local productions, broadcast access, and online services throughout Upper Michigan and northern Wisconsin.</p>
-          <div class="survey-facts" aria-label="Questionnaire details">
-            <span>Anonymous</span>
-            <span>About 10–15 minutes</span>
-            <span>Questions may vary based on your answers</span>
-          </div>
+          <h1 id="survey-title">We value your voice.</h1>
+          <p class="lead">Choose a stage to begin or continue.</p>
         </div>
 
         <div id="resumeBlock" class="resume-block" hidden>
           <div>
-            <strong>Continue where you left off?</strong>
+            <strong>Your answers are saved.</strong>
             <p id="resumeDetails"></p>
           </div>
           <div class="button-row">
-            <button class="button primary" id="resumeSurvey" type="button">Continue questionnaire</button>
+            <button class="button primary" id="resumeSurvey" type="button">Continue where I left off</button>
             <button class="button quiet" id="discardDraft" type="button">Start over</button>
           </div>
         </div>
 
-        <div class="button-row roomy">
-          <button class="button primary large-button" id="startSurvey" type="button">Start questionnaire</button>
-        </div>
-        <p class="privacy-line">Answers are saved only in this browser during this local test.</p>
-        <p class="privacy-line"><strong>Test version:</strong> <a href="results.html">View sample results</a></p>
-      </section>
+        <nav class="stage-hub" aria-label="Questionnaire stages">
+          <button class="stage-card" type="button" data-stage-id="about_you" data-status="not_started">
+            <span class="stage-number">1</span><strong>About You</strong><span class="stage-status">Not started</span>
+          </button>
+          <button class="stage-card" type="button" data-stage-id="wnmu_you" data-status="not_started">
+            <span class="stage-number">2</span><strong>WNMU &amp; You</strong><span class="stage-status">Not started</span>
+          </button>
+          <button class="stage-card" type="button" data-stage-id="what_watch" data-status="not_started">
+            <span class="stage-number">3</span><strong>What You Watch</strong><span class="stage-status">Not started</span>
+          </button>
+          <button class="stage-card" type="button" data-stage-id="what_want" data-status="not_started">
+            <span class="stage-number">4</span><strong>What You Want</strong><span class="stage-status">Not started</span>
+          </button>
+          <button class="stage-card" type="button" data-stage-id="how_doing" data-status="not_started">
+            <span class="stage-number">5</span><strong>How We’re Doing</strong><span class="stage-status">Not started</span>
+          </button>
+        </nav>
 
-      <section id="routingPanel" class="app-panel" hidden>
-        <div class="panel-heading">
-          <p class="eyebrow">First, a little about your viewing</p>
-          <h2>Tell us how you currently use WNMU-TV and PBS.</h2>
-          <p>These questions help us avoid asking you about services you do not use.</p>
+        <div class="survey-facts" aria-label="Questionnaire details">
+          <span>Takes about 6–8 minutes</span>
+          <span>You can save and return anytime</span>
+          <span>Questions change based on your answers</span>
         </div>
-        <div id="routingQuestions" class="question-stack"></div>
-        <p id="routingError" class="form-error" aria-live="polite"></p>
-        <div class="form-actions">
-          <button class="button secondary" id="routingBack" type="button">Back</button>
-          <button class="button primary" id="continueSurvey" type="button">Continue</button>
+
+        <div class="button-row roomy">
+          <button class="text-button" type="button" data-dialog-open="aboutSurveyDialog">About This Survey</button>
+          <button class="text-button" type="button" data-dialog-open="privacyDialog">Privacy</button>
+          <a class="text-button" href="results.html">View test results</a>
         </div>
+        <p class="privacy-line"><span id="versionLabel">v4.0.0</span> · <strong id="modeLabel">Test Mode</strong></p>
       </section>
 
       <section id="questionnairePanel" class="app-panel questionnaire-panel" hidden>
         <div class="questionnaire-toolbar">
           <div>
-            <span id="sectionPosition">Section 1</span>
+            <span id="sectionPosition">Stage 1 of 5</span>
             <strong id="saveStatus">Answers save automatically</strong>
           </div>
-          <button class="text-button" id="changeRoute" type="button">Review first answers</button>
+          <button class="text-button" id="returnToStages" type="button">Return to stages</button>
         </div>
 
         <div class="progress-wrap" aria-hidden="true">
           <div class="progress-track"><span id="progressBar"></span></div>
-          <span id="progressText">0% complete</span>
+          <span id="progressText">0% of this stage</span>
         </div>
 
         <div class="questionnaire-layout">
-          <aside class="section-nav" aria-label="Questionnaire sections">
-            <div id="sectionTabs"></div>
-          </aside>
-          <div class="section-viewport">
-            <div id="sectionStage" class="section-stage"></div>
-          </div>
+          <aside class="section-nav" aria-label="Pages in this stage"><div id="sectionTabs"></div></aside>
+          <div class="section-viewport"><div id="sectionStage" class="section-stage"></div></div>
         </div>
 
+        <p id="pageError" class="form-error" aria-live="assertive"></p>
         <div class="form-actions questionnaire-actions">
           <button class="button secondary" id="prevSection" type="button">Previous</button>
           <div class="action-spacer"></div>
           <button class="button primary" id="nextSection" type="button">Next</button>
+          <button class="button primary" id="completeStage" type="button" hidden>Complete stage</button>
           <button class="button primary" id="submitSurvey" type="button" hidden>Submit questionnaire</button>
         </div>
       </section>
@@ -103,26 +108,32 @@
         <div class="completion-mark" aria-hidden="true">✓</div>
         <p class="eyebrow">Questionnaire complete</p>
         <h2>Thank you for helping WNMU-TV better understand its viewers and communities.</h2>
-        <p>Your response has been recorded in this local test.</p>
-        <div class="button-row centered">
-          <button class="button secondary" id="newResponse" type="button">Return to start</button>
-        </div>
+        <p>Your response has been recorded in this browser for local testing.</p>
+        <div class="button-row centered"><button class="button secondary" id="newResponse" type="button">Return to stages</button></div>
       </section>
     </div>
   </main>
 
+  <dialog id="aboutSurveyDialog">
+    <h2>About this survey</h2>
+    <p>This five-stage questionnaire asks about who WNMU-TV reaches, how people watch, what they value, and where the station should improve. Most questions are optional.</p>
+    <button class="button primary" type="button" data-dialog-close>Close</button>
+  </dialog>
+
+  <dialog id="privacyDialog">
+    <h2>Privacy in this test version</h2>
+    <p>Drafts and submitted test responses are stored only in this browser. A random respondent ID supports future linked questionnaires without using a name or email address. Public production will require an approved database, protected results, and a final privacy notice.</p>
+    <button class="button primary" type="button" data-dialog-close>Close</button>
+  </dialog>
+
   <footer class="site-footer public-footer">
-    <div class="container">
-      <p>WNMU-TV Viewer Questionnaire · Local review version</p>
-    </div>
+    <div class="container"><p>WNMU-TV Viewer Questionnaire · Local review version</p></div>
   </footer>
 
-  <script src="js/questions.js"></script>
-  <script src="js/questions-revision.js"></script>
-  <script src="js/test-mode.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/questionnaire-enhancements.js"></script>
+  <script src="js/config-v4-temp.js"></script>
+  <script src="js/questions-v4-temp.js"></script>
+  <script src="js/storage-v4-temp.js"></script>
+  <script src="js/app-v4-temp.js"></script>
   <script src="js/phone-layout.js"></script>
 </body>
 </html>
