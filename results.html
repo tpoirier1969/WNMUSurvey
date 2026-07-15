@@ -13,18 +13,13 @@
 </head>
 <body>
   <a class="skip-link" href="#resultsApp">Skip to results</a>
-
   <header class="site-header">
     <div class="container header-inner">
       <a class="wordmark" href="index.html" aria-label="Return to WNMU-TV questionnaire">
-        <span class="wordmark-main">WNMU-TV</span>
-        <span class="wordmark-sub">Questionnaire Results</span>
+        <span class="wordmark-main">WNMU-TV</span><span class="wordmark-sub">Questionnaire Results</span>
       </a>
       <nav aria-label="Results navigation">
-        <a href="index.html">View questionnaire</a>
-        <a href="#filters">Filters</a>
-        <a href="#channels">Channels</a>
-        <a href="#gaps">Expectation gaps</a>
+        <a href="index.html">View questionnaire</a><a href="#filters">Filters</a><a href="#channels">Channels</a><a href="#gaps">Expectation gaps</a>
       </nav>
     </div>
   </header>
@@ -34,8 +29,8 @@
       <div class="container">
         <p class="eyebrow">Results preview · local test</p>
         <h1>WNMU-TV viewer questionnaire results</h1>
-        <p class="lead">This page opens with 25 synthetic Upper Peninsula PBS viewer responses so the dashboard can be evaluated before real responses exist.</p>
-        <div class="admin-warning"><strong>No sign-in is required in this local test.</strong> The page opens directly with 25 synthetic responses. Before public launch, this results page should be placed behind an admin login.</div>
+        <p class="lead">This page opens with 25 synthetic Upper Peninsula PBS audience responses aligned with the current five-stage questionnaire.</p>
+        <div class="admin-warning"><strong>No sign-in is required in this local test.</strong> Before public launch, this page must be protected and browser storage replaced with the approved production database.</div>
       </div>
     </section>
 
@@ -44,9 +39,7 @@
         <div class="result-controls">
           <button class="button primary" id="loadDemo" type="button">Reload 25 sample responses</button>
           <button class="button secondary" id="loadLocal" type="button">Use submitted browser responses</button>
-          <label class="button secondary file-button">Import response JSON
-            <input id="jsonUpload" type="file" accept="application/json,.json" />
-          </label>
+          <label class="button secondary file-button">Import response JSON<input id="jsonUpload" type="file" accept="application/json,.json" /></label>
           <button class="button quiet" id="exportRaw" type="button">Export loaded JSON</button>
           <button class="button quiet" id="exportSummary" type="button">Export summary CSV</button>
           <button class="button quiet danger-button" id="clearLocal" type="button">Clear submitted browser responses</button>
@@ -57,34 +50,15 @@
           <p class="eyebrow">Audience filters</p>
           <h2 id="filterHeading">Compare viewing habits, programming priorities, and perceived delivery</h2>
           <div class="filter-grid admin-filter-grid">
-            <label>Viewer type
-              <select id="filterViewer"><option value="">All viewer types</option></select>
-            </label>
-            <label>Viewing method
-              <select id="filterMethod"><option value="">All methods</option></select>
-            </label>
-            <label>Age range
-              <select id="filterAge"><option value="">All ages</option></select>
-            </label>
-            <label>Gender
-              <select id="filterGender"><option value="">All genders</option></select>
-            </label>
-            <label>Education
-              <select id="filterEducation"><option value="">All education levels</option></select>
-            </label>
-            <label>Location
-              <select id="filterCounty"><option value="">All locations</option></select>
-            </label>
-            <label>Children's role
-              <select id="filterChildren"><option value="">All households and roles</option></select>
-            </label>
+            <label>Viewer type<select id="filterViewer"><option value="">All viewer types</option></select></label>
+            <label>Viewing method<select id="filterMethod"><option value="">All methods</option></select></label>
+            <label>Age range<select id="filterAge"><option value="">All ages</option></select></label>
+            <label>Location<select id="filterCounty"><option value="">All locations</option></select></label>
+            <label>Children's role<select id="filterChildren"><option value="">All households and roles</option></select></label>
           </div>
         </section>
 
-        <div id="emptyState" class="empty-state">
-          <h2>No response data loaded</h2>
-          <p>Load the sample responses, use submitted browser responses, or import exported JSON.</p>
-        </div>
+        <div id="emptyState" class="empty-state"><h2>No response data loaded</h2><p>Load sample responses, use submitted browser responses, or import exported JSON.</p></div>
 
         <div id="analysisContent" hidden>
           <section class="metric-grid" aria-label="Response summary">
@@ -95,150 +69,50 @@
           </section>
 
           <div class="result-grid">
-            <section class="result-section">
-              <p class="eyebrow">Audience composition</p>
-              <h2>Viewer relationship</h2>
-              <div id="viewerMix" class="bar-list"></div>
-            </section>
-            <section class="result-section">
-              <p class="eyebrow">Access</p>
-              <h2>Viewing methods used</h2>
-              <div id="methodMix" class="bar-list"></div>
-            </section>
+            <section class="result-section"><p class="eyebrow">Audience composition</p><h2>Viewer relationship</h2><div id="viewerMix" class="bar-list"></div></section>
+            <section class="result-section"><p class="eyebrow">Access</p><h2>Viewing methods used</h2><div id="methodMix" class="bar-list"></div></section>
           </div>
 
           <section id="channels" class="result-section" aria-labelledby="channelResultsHeading">
             <p class="eyebrow">Four-channel awareness and use</p>
             <h2 id="channelResultsHeading">Which WNMU-TV channels viewers know, receive, and watch</h2>
-            <p>Counts respond to the audience filters above. Percentages use only respondents who answered each new channel question, so older saved responses do not dilute the results.</p>
-            <div class="data-table-wrap">
-              <table class="data-table channel-results-table">
-                <thead><tr><th>Channel</th><th>Knew about it</th><th>Can receive it</th><th>Watches it</th></tr></thead>
-                <tbody id="channelResultsBody"></tbody>
-              </table>
-            </div>
+            <p>Each percentage uses only respondents who answered that question. Older and skipped responses remain missing rather than being treated as no.</p>
+            <div class="data-table-wrap"><table class="data-table channel-results-table"><thead><tr><th>Channel</th><th>Knew about it</th><th>Can receive it</th><th>Watches it</th></tr></thead><tbody id="channelResultsBody"></tbody></table></div>
             <p id="channelResultsNote" class="channel-results-note"></p>
           </section>
 
           <div class="result-grid">
-            <section class="result-section">
-              <p class="eyebrow">Programming</p>
-              <h2>Highest average interests</h2>
-              <p>Average 1–5 interest score among respondents who rated each category.</p>
-              <div id="programInterest" class="bar-list"></div>
-            </section>
-            <section class="result-section">
-              <p class="eyebrow">Forced priorities</p>
-              <h2>Most-selected top-five categories</h2>
-              <p>These selections force respondents to choose what deserves the most attention.</p>
-              <div id="topPriorities" class="bar-list"></div>
-            </section>
+            <section class="result-section"><p class="eyebrow">Programming</p><h2>Highest average interests</h2><p>Average 1–5 interest score among respondents who rated each current viewer-facing category.</p><div id="programInterest" class="bar-list"></div></section>
+            <section class="result-section"><p class="eyebrow">Forced priorities</p><h2>Most-selected top-five categories</h2><p>Current-schema selections only. Older internal-topic answers are not reinterpreted.</p><div id="topPriorities" class="bar-list"></div></section>
           </div>
 
           <section id="gaps" class="gap-overview-section" aria-labelledby="gapOverviewHeading">
-            <div class="gap-overview-heading">
-              <p class="eyebrow">Importance compared with viewer-rated delivery</p>
-              <h2 id="gapOverviewHeading">Where WNMU-TV needs attention—and where it is succeeding</h2>
-              <p>Each role is placed according to its average paired gap. A positive gap means viewers consider the role more important than they believe WNMU-TV delivers it. A negative gap means perceived delivery is higher than stated importance.</p>
-            </div>
-
+            <div class="gap-overview-heading"><p class="eyebrow">Importance compared with viewer-rated delivery</p><h2 id="gapOverviewHeading">Where WNMU-TV needs attention and where it is succeeding</h2><p>Only respondents who rated both importance and delivery for the same role are included.</p></div>
             <div class="gap-summary-grid">
-              <article class="gap-summary-card gap-needs">
-                <div class="gap-summary-head">
-                  <div>
-                    <p class="eyebrow">Priority</p>
-                    <h3>Needs attention</h3>
-                  </div>
-                  <span id="needsAttentionCount" class="gap-role-count">0 roles</span>
-                </div>
-                <p>Importance exceeds viewer-rated delivery by 0.50 points or more.</p>
-                <div id="needsAttentionList" class="gap-role-list"></div>
-              </article>
-
-              <article class="gap-summary-card gap-meeting">
-                <div class="gap-summary-head">
-                  <div>
-                    <p class="eyebrow">Maintain</p>
-                    <h3>Meeting expectations</h3>
-                  </div>
-                  <span id="meetingExpectationsCount" class="gap-role-count">0 roles</span>
-                </div>
-                <p>Viewer-rated delivery is within 0.49 points of stated importance.</p>
-                <div id="meetingExpectationsList" class="gap-role-list"></div>
-              </article>
-
-              <article class="gap-summary-card gap-exceeding">
-                <div class="gap-summary-head">
-                  <div>
-                    <p class="eyebrow">Strength</p>
-                    <h3>Exceeding expectations</h3>
-                  </div>
-                  <span id="exceedingExpectationsCount" class="gap-role-count">0 roles</span>
-                </div>
-                <p>Viewer-rated delivery exceeds stated importance by 0.50 points or more.</p>
-                <div id="exceedingExpectationsList" class="gap-role-list"></div>
-              </article>
+              <article class="gap-summary-card gap-needs"><div class="gap-summary-head"><div><p class="eyebrow">Priority</p><h3>Needs attention</h3></div><span id="needsAttentionCount" class="gap-role-count">0 roles</span></div><p>Importance exceeds viewer-rated delivery by 0.50 points or more.</p><div id="needsAttentionList" class="gap-role-list"></div></article>
+              <article class="gap-summary-card gap-meeting"><div class="gap-summary-head"><div><p class="eyebrow">Maintain</p><h3>Meeting expectations</h3></div><span id="meetingExpectationsCount" class="gap-role-count">0 roles</span></div><p>Viewer-rated delivery is within 0.49 points of stated importance.</p><div id="meetingExpectationsList" class="gap-role-list"></div></article>
+              <article class="gap-summary-card gap-exceeding"><div class="gap-summary-head"><div><p class="eyebrow">Strength</p><h3>Exceeding expectations</h3></div><span id="exceedingExpectationsCount" class="gap-role-count">0 roles</span></div><p>Viewer-rated delivery exceeds stated importance by 0.50 points or more.</p><div id="exceedingExpectationsList" class="gap-role-list"></div></article>
             </div>
           </section>
 
-          <details class="result-section gap-detail-panel">
-            <summary>View the detailed paired-gap table</summary>
-            <p>Only respondents who rated both importance and delivery for the same role are included. Each person's gap is calculated first, then those gaps are averaged.</p>
-            <div class="data-table-wrap">
-              <table class="data-table">
-                <thead><tr><th>Station role</th><th>Paired importance</th><th>Viewer-rated delivery</th><th>Average paired gap</th><th>Paired respondents</th></tr></thead>
-                <tbody id="gapTable"></tbody>
-              </table>
-            </div>
-          </details>
+          <details class="result-section gap-detail-panel"><summary>View the detailed paired-gap table</summary><p>Each person's gap is calculated first, then those paired gaps are averaged.</p><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Station role</th><th>Paired importance</th><th>Viewer-rated delivery</th><th>Average paired gap</th><th>Paired respondents</th></tr></thead><tbody id="gapTable"></tbody></table></div></details>
 
           <div class="result-grid demographics-grid">
-            <section class="result-section">
-              <p class="eyebrow">Demographics</p>
-              <h2>Age groups</h2>
-              <div id="ageMix" class="bar-list"></div>
-            </section>
-            <section class="result-section">
-              <p class="eyebrow">Demographics</p>
-              <h2>Gender</h2>
-              <div id="genderMix" class="bar-list"></div>
-            </section>
-            <section class="result-section">
-              <p class="eyebrow">Demographics</p>
-              <h2>Education</h2>
-              <div id="educationMix" class="bar-list"></div>
-            </section>
-            <section class="result-section">
-              <p class="eyebrow">Geography</p>
-              <h2>Locations</h2>
-              <div id="countyMix" class="bar-list"></div>
-            </section>
+            <section class="result-section"><p class="eyebrow">Demographics</p><h2>Age groups</h2><div id="ageMix" class="bar-list"></div></section>
+            <section class="result-section"><p class="eyebrow">Geography</p><h2>Locations</h2><div id="countyMix" class="bar-list"></div></section>
           </div>
 
-          <section class="result-section">
-            <p class="eyebrow">Open responses</p>
-            <h2>What viewers are saying</h2>
-            <p>Comments shown here are from the currently filtered audience.</p>
-            <div id="commentList" class="comment-list"></div>
-          </section>
+          <section class="result-section"><p class="eyebrow">Open responses</p><h2>What viewers are saying</h2><p>Comments shown here are from the currently filtered audience.</p><div id="commentList" class="comment-list"></div></section>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div><strong>Local prototype</strong><p>No external database is connected.</p></div>
-      <div><strong>Sample data</strong><p>The 25 starting responses are synthetic and clearly labeled.</p></div>
-      <div><strong>Future deployment</strong><p>Add the admin login and replace local storage with the approved data service.</p></div>
-    </div>
-  </footer>
+  <footer class="site-footer"><div class="container footer-grid"><div><strong>Local prototype</strong><p>No external database is connected.</p></div><div><strong>Sample data</strong><p>The 25 starting responses are synthetic and clearly labeled.</p></div><div><strong>Future deployment</strong><p>Add protected access and the approved response database.</p></div></div></footer>
 
-  <script src="js/questions.js"></script>
-  <script src="js/questions-revision.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/results.js"></script>
-  <script src="js/gap-summary.js"></script>
-  <script src="js/channel-results.js"></script>
+  <script src="js/config-v4-temp.js"></script>
+  <script src="js/questions-v4-temp.js"></script>
+  <script src="js/storage-v4-temp.js"></script>
+  <script src="js/results-v4-temp.js"></script>
 </body>
 </html>
