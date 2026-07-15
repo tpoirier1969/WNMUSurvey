@@ -97,6 +97,81 @@
   break-inside: avoid;
 }
 
+/* About You uses visible choices rather than collapsed select menus. */
+.question-card .choice-grid.compact-choice-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Importance and performance are paired by station role without creating a wide matrix. */
+.paired-matrix {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.paired-rating-note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.paired-role-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fbfcfc;
+}
+
+.paired-role-card h3 {
+  margin: 0 0 16px;
+  color: var(--navy);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.paired-rating-groups {
+  display: grid;
+  gap: 18px;
+}
+
+.paired-rating-group + .paired-rating-group {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.paired-rating-group h4 {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.paired-rating-group .paired-scale-row {
+  margin-top: 10px;
+}
+
+.paired-scale-choice {
+  min-width: 0;
+}
+
+@media (max-width: 680px) {
+  .question-card .choice-grid.compact-choice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .paired-role-card {
+    padding: 14px 12px;
+  }
+
+  .paired-rating-groups {
+    gap: 15px;
+  }
+
+  .paired-rating-group + .paired-rating-group {
+    padding-top: 15px;
+  }
+}
+
 @media (max-width: 560px) {
   .matrix-card-table tbody tr {
     grid-template-columns: repeat(2, minmax(0, 1fr));

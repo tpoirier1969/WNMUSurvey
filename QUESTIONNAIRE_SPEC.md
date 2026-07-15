@@ -3,7 +3,7 @@
 ## 1. Current release contract
 
 - **Questionnaire/schema version:** `wnmu-viewer-questionnaire-v4`
-- **Interface/build version:** `4.0.0-test`
+- **Interface/build version:** `4.1.0-test`
 - **Release date:** 2026-07-15
 - **Active mode:** Test
 - **Campaign:** `viewer-questionnaire-2026`
@@ -28,6 +28,14 @@ Only these questions are required in the current core questionnaire:
 - `viewing_methods`
 
 All other questions are optional.
+
+### Current interaction decisions
+
+- The About You stage uses visible radio-choice cards for county/region and age range rather than collapsed dropdown menus.
+- Importance and performance are presented together by station role in How We're Doing.
+- The paired presentation continues to store importance under `importance_roles` and performance under `performance_roles`.
+- Respondents who are not eligible for performance routing see the importance rating only.
+- The paired display is stacked by role on phones and must not require horizontal scrolling.
 
 ## 3. Scales
 
@@ -59,9 +67,9 @@ Labels: Poor; Weak; Adequate; Good; Excellent; Not familiar enough to rate.
 
 | ID | Wording / purpose | Type and stored values | Required | Routing | Results / compatibility |
 |---|---|---|---|---|---|
-| `county_region` | Where do you live? Identifies broad service geography without requiring a precise address. | Select: `alger`, `baraga`, `chippewa`, `delta`, `dickinson`, `gogebic`, `houghton`, `iron`, `keweenaw`, `luce`, `mackinac`, `marquette`, `menominee`, `ontonagon`, `schoolcraft`, `northern_wi`, `other_mi`, `other_state`, `canada`, `prefer_not` | No | All | Geography filter and location distribution. Retained meaning and ID. |
+| `county_region` | Where do you live? Identifies broad service geography without requiring a precise address. | Visible radio-choice cards: `alger`, `baraga`, `chippewa`, `delta`, `dickinson`, `gogebic`, `houghton`, `iron`, `keweenaw`, `luce`, `mackinac`, `marquette`, `menominee`, `ontonagon`, `schoolcraft`, `northern_wi`, `other_mi`, `other_state`, `canada`, `prefer_not` | No | All | Geography filter and location distribution. Retained meaning, ID, and stored values. Display changed from select to visible choices. |
 | `community_type` | Which best describes where you live? Separates urban, town, rural, and remote needs. | Radio: `city`, `small_town`, `village`, `rural`, `remote`, `prefer_not` | No | All | Access and rural comparison. Retained meaning and ID. |
-| `age_range` | Age range. | Select: `under_18`, `18_24`, `25_34`, `35_44`, `45_54`, `55_64`, `65_74`, `75_84`, `85_plus`, `prefer_not` | No | All | Demographic filter and distribution. Retained. |
+| `age_range` | Age range. | Visible radio-choice cards: `under_18`, `18_24`, `25_34`, `35_44`, `45_54`, `55_64`, `65_74`, `75_84`, `85_plus`, `prefer_not` | No | All | Demographic filter and distribution. Retained meaning, ID, and stored values. Display changed from select to visible choices. |
 | `internet_quality` | How would you describe home internet service? Measures practical online access. | Radio: `fast`, `adequate`, `slow`, `unreliable`, `expensive`, `cell_sat`, `none`, `prefer_not` | No | All | Access analysis and online-barrier comparisons. Retained meaning. |
 | `children_role` | Do you select or recommend programming for children? Controls child-content questions. | Profile radio: `household`, `educator`, `both`, `neither` | **Yes** | All | Children-role filter and routing. Retained ID and meaning. |
 
@@ -122,12 +130,11 @@ These categories are viewer-facing research groups, not direct Programming Libra
 
 ### Stage 4 — What You Want
 
-#### Page: Programming and station priorities
+#### Page: Programming priorities
 
 | ID | Wording / purpose | Type and stored values | Required | Routing | Results / compatibility |
 |---|---|---|---|---|---|
 | `top_program_priorities_v2` | Which five viewer-facing programming categories deserve the greatest attention? | Checkbox, maximum 5; values are the `program_interest_v2` row IDs | No | All | Priority counts using respondents who answered. **New ID.** Old `top_program_priorities` is not remapped. |
-| `importance_roles` | How important each station role should be. | Importance matrix; rows listed below | No | All | Paired expectation-gap analysis. Retained ID. Only unchanged row meanings are compared historically. |
 | `local_formats` | Locally produced formats the respondent would be most likely to watch. | Checkbox, maximum 3: `documentaries`, `news_magazine`, `interviews`, `roundtables`, `outdoor`, `arts`, `events`, `short_online` | No | All | Format preference. Retained question meaning with shortened options. |
 
 #### Page: Access and communication
@@ -137,6 +144,22 @@ These categories are viewer-facing research groups, not direct Programming Libra
 | `online_improvements` | Changes that would make online use more likely. | Checkbox, maximum 3: `clear_where`, `local_access`, `search`, `more_full`, `archive`, `notifications`, `tv_compat`, `help`, `passport_clear`, `nothing`; `nothing` exclusive | No | All | Online-improvement priorities. Retained ID with reduced option set; historical option-specific comparisons must use matching values only. |
 | `learn_preferred` | Preferred ways to learn about WNMU-TV programming. | Checkbox, maximum 3: `on_air`, `tv_guide`, `printed`, `wnmu_site`, `pbs_app`, `email`, `facebook`, `instagram`, `youtube`, `newspaper_radio`, `community`, `text_push` | No | All | Communication preferences. Retained. Printed guide is a preference, not a claim of current availability. |
 | `kids_needs` | Children's, family, classroom, or educator resources WNMU-TV should provide more of. | Textarea | No | Child-programming roles only | Open-comment results. Retained. |
+
+### Stage 5 — How We're Doing
+
+#### Page: Priorities and performance
+
+Importance and performance are displayed together inside each station-role card. They remain separate stored questions so older responses, results calculations, exports, and paired denominators retain their established meanings.
+
+| ID | Wording / purpose | Type and stored values | Required | Routing | Results / compatibility |
+|---|---|---|---|---|---|
+| `importance_roles` | How important each station role should be. Displayed first inside each paired role card. | Importance matrix using the ten role rows below | No | All | Paired expectation-gap analysis. Retained ID and meaning. Moved from Stage 4 to Stage 5 without changing stored values. |
+| `performance_roles` | How well WNMU-TV performs in the same station roles. Displayed immediately after importance within the same role card. | Performance matrix using the ten role rows below | No | Hidden for `viewer_status=never` or `former` | Paired expectation-gap analysis. Retained ID, meaning, scale, and routing. |
+| `reflects_me` | How well WNMU-TV reflects the interests and needs of people like the respondent. | Radio: `not_at_all`, `little`, `somewhat`, `well`, `very_well`, `not_familiar` | No | Hidden for never/former viewers | Station relevance analysis. Retained. |
+| `trust_station` | Trust in WNMU-TV as a source of programming and information. | Radio: `none`, `little`, `some`, `quite`, `great`, `not_familiar` | No | Hidden for never/former viewers | Trust analysis. Retained. |
+| `nonviewer_reasons` | Reasons for not watching WNMU-TV more often. | Checkbox: `unaware`, `channel`, `signal`, `provider`, `schedule`, `online`, `content`, `other_services`, `little_tv`, `past_change`, `not_local` | No | `viewer_status` is `former`, `never`, or `unsure` | Non-viewer barrier analysis. Retained. |
+| `nonviewer_return` | Program, service, or change most likely to attract or regain the respondent. | Textarea | No | Former, never, or unsure viewers | Open-comment results. Retained. |
+| `station_feedback_v2` | What WNMU-TV is doing well and where it should improve. | Textarea | No | Hidden for never/former viewers | Open-comment results. **New ID** combining the retired `does_well`, `falls_short`, and `underrepresented` prompts. |
 
 Station-role row IDs used identically by `importance_roles` and `performance_roles`:
 
@@ -150,19 +173,6 @@ Station-role row IDs used identically by `importance_roles` and `performance_rol
 - `arts_culture`
 - `online_access`
 - `access_for_all` — new combined row; older `limited_internet` and `accessibility` answers are not silently combined
-
-### Stage 5 — How We're Doing
-
-#### Page: How well WNMU-TV is serving you
-
-| ID | Wording / purpose | Type and stored values | Required | Routing | Results / compatibility |
-|---|---|---|---|---|---|
-| `performance_roles` | How well WNMU-TV performs in the same station roles rated for importance. | Performance matrix using the ten role rows above | No | Hidden for `viewer_status=never` or `former` | Paired expectation-gap analysis. Retained ID. |
-| `reflects_me` | How well WNMU-TV reflects the interests and needs of people like the respondent. | Radio: `not_at_all`, `little`, `somewhat`, `well`, `very_well`, `not_familiar` | No | Hidden for never/former viewers | Station relevance analysis. Retained. |
-| `trust_station` | Trust in WNMU-TV as a source of programming and information. | Radio: `none`, `little`, `some`, `quite`, `great`, `not_familiar` | No | Hidden for never/former viewers | Trust analysis. Retained. |
-| `nonviewer_reasons` | Reasons for not watching WNMU-TV more often. | Checkbox: `unaware`, `channel`, `signal`, `provider`, `schedule`, `online`, `content`, `other_services`, `little_tv`, `past_change`, `not_local` | No | `viewer_status` is `former`, `never`, or `unsure` | Non-viewer barrier analysis. Retained. |
-| `nonviewer_return` | Program, service, or change most likely to attract or regain the respondent. | Textarea | No | Former, never, or unsure viewers | Open-comment results. Retained. |
-| `station_feedback_v2` | What WNMU-TV is doing well and where it should improve. | Textarea | No | Hidden for never/former viewers | Open-comment results. **New ID** combining the retired `does_well`, `falls_short`, and `underrepresented` prompts. |
 
 ## 5. Retired or deferred questions
 
@@ -201,9 +211,6 @@ The following questions are not part of the v4 core questionnaire. Their histori
 - `does_well`
 - `falls_short`
 - `underrepresented`
-
-Fundraising motivation, detailed household economics, device inventories, and other secondary topics are deferred to later linked questionnaires unless explicitly reapproved.
-
 - `gender`
 - `education_level`
 - `personal_value`
@@ -212,6 +219,8 @@ Fundraising motivation, detailed household economics, device inventories, and ot
 - `one_program_change`
 - `recommend`
 - `final_comment`
+
+Fundraising motivation, detailed household economics, device inventories, and other secondary topics are deferred to later linked questionnaires unless explicitly reapproved.
 
 ## 6. Draft, response, and linkage schema
 
@@ -250,6 +259,7 @@ The browser respondent ID is not a name or email address. Public production requ
 - `prefer_not`, `na`, and `not_familiar` remain distinct stored responses and are excluded from numeric averages where appropriate.
 - Channel awareness, reception, and viewing each use their own answered denominator.
 - Expectation gaps use only respondents who rated both importance and performance for the same row. Each respondent's gap is calculated first, then paired gaps are averaged.
+- Combining the two ratings visually does not combine their stored objects or denominators.
 - `program_interest_v2` and `top_program_priorities_v2` are current-schema results. The retired internal-topic questions are not remapped.
 - Synthetic responses are marked with source `synthetic-up-pbs-sample` and must never be mixed invisibly with real responses.
 

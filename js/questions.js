@@ -83,7 +83,8 @@
             questions: [
               {
                 id: "county_region",
-                type: "select",
+                type: "radio",
+                layout: "compact",
                 label: "Where do you live?",
                 optionalLabel: true,
                 options: [
@@ -125,7 +126,8 @@
               },
               {
                 id: "age_range",
-                type: "select",
+                type: "radio",
+                layout: "compact",
                 label: "Age range",
                 optionalLabel: true,
                 options: [
@@ -372,11 +374,11 @@
         number: 4,
         title: "What You Want",
         shortTitle: "What You Want",
-        intro: "Choose what WNMU-TV should prioritize and what would make its programs easier to use.",
+        intro: "Choose the programming, local formats, access improvements, and communication methods that matter most to you.",
         pages: [
           {
             id: "future_priorities",
-            title: "Programming and station priorities",
+            title: "Programming priorities",
             questions: [
               {
                 id: "top_program_priorities_v2",
@@ -384,14 +386,6 @@
                 max: 5,
                 label: "Which five programming categories should receive the greatest attention from WNMU-TV?",
                 optionsFromMatrix: "program_interest_v2"
-              },
-              {
-                id: "importance_roles",
-                type: "matrix",
-                scale: "importance",
-                label: "How important should each role be for WNMU-TV?",
-                help: "WNMU-TV selects and schedules most of the programming it carries, while regional and national producers create most of the programs themselves.",
-                rows: stationRoleRows
               },
               {
                 id: "local_formats",
@@ -470,17 +464,27 @@
         number: 5,
         title: "How We're Doing",
         shortTitle: "How We're Doing",
-        intro: "Rate only what you know well enough to judge. Non-viewers will receive a shorter set of questions.",
+        intro: "Tell us which station roles matter most. If you know WNMU-TV well enough, rate its performance in the same place.",
         pages: [
           {
             id: "station_performance",
-            title: "How well WNMU-TV is serving you",
+            title: "Priorities and performance",
             questions: [
+              {
+                id: "importance_roles",
+                type: "matrix",
+                scale: "importance",
+                pairWith: "performance_roles",
+                label: "For each role, tell us how important it should be and, when you can, how well WNMU-TV is doing.",
+                help: "WNMU-TV selects and schedules most of the programming it carries, while regional and national producers create most of the programs themselves.",
+                rows: stationRoleRows
+              },
               {
                 id: "performance_roles",
                 type: "matrix",
                 scale: "performance",
                 when: { viewerStatusNotIn: ["never", "former"] },
+                renderedBy: "importance_roles",
                 label: "Based on what you have seen or experienced, how well is WNMU-TV performing in each area?",
                 help: "Rate WNMU-TV's selection, scheduling, access, local production, and community service, not production decisions made by outside producers.",
                 rows: stationRoleRows
@@ -576,7 +580,8 @@
         "most_important_responsibility", "never_lose", "preferred_length", "missing_subject", "child_ages",
         "kids_value", "kids_times", "learn_currently", "station_connection", "connection_activities",
         "financial_support", "support_factors", "zip_code", "household_size", "employment", "household_income",
-        "context_note", "station_relationships", "gender", "education_level", "personal_value", "viewing_frequency", "online_services_used", "one_program_change", "recommend", "final_comment"
+        "context_note", "station_relationships", "gender", "education_level", "personal_value", "viewing_frequency",
+        "online_services_used", "one_program_change", "recommend", "final_comment"
       ]
     }
   };
