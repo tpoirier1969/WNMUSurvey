@@ -24,6 +24,15 @@
     notice.className = "test-mode-notice";
     notice.setAttribute("role", "status");
     notice.innerHTML = "<strong>Test mode:</strong> Every section and conditional question is shown. You may move through the questionnaire without answering anything.";
+    Object.assign(notice.style, {
+      margin: "0 0 18px",
+      padding: "13px 16px",
+      border: "1px solid #d49a31",
+      borderRadius: "12px",
+      background: "#fff7df",
+      color: "#4f3a0d",
+      lineHeight: "1.45"
+    });
     container.prepend(notice);
   }
 
