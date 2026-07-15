@@ -47,6 +47,10 @@
       observer.observe(panel, { attributes: true, attributeFilter: ["hidden"] });
     });
     stageCards.forEach((card) => observer.observe(card, { attributes: true, attributeFilter: ["data-status"] }));
+    const sectionStage = document.getElementById("sectionStage");
+    const sectionPosition = document.getElementById("sectionPosition");
+    if (sectionStage) observer.observe(sectionStage, { childList: true, subtree: true });
+    if (sectionPosition) observer.observe(sectionPosition, { childList: true, characterData: true, subtree: true });
 
     document.addEventListener("input", () => scheduleRefresh(30), true);
     document.addEventListener("change", () => scheduleRefresh(30), true);
