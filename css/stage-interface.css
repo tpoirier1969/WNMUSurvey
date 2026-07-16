@@ -1,8 +1,10 @@
-/* Durable visual system for the WNMU-TV questionnaire stage hub and active questionnaire view. */
+/* Canonical visual system for the WNMU-TV stage hub and compact working view. */
+
 .approved-stage-interface {
   min-height: 100vh;
   color: #071d52;
-  background: radial-gradient(circle at 50% -15%, #fff, rgba(246, 248, 252, 0.94) 58%, #f1f4f8);
+  background:
+    radial-gradient(circle at 50% -15%, #fff 0, rgba(246, 248, 252, 0.95) 58%, #f0f3f7 100%);
 }
 
 .approved-stage-interface .survey-frame {
@@ -10,13 +12,13 @@
   --gold: #f2a500;
   position: relative;
   isolation: isolate;
-  width: min(calc(100% - 48px), 1380px);
-  min-height: calc(100vh - 48px);
-  margin: 24px auto;
+  width: min(calc(100% - 32px), 1380px);
+  min-height: calc(100vh - 24px);
+  margin: 12px auto;
   border: 1px solid #d7dce3;
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.97);
-  box-shadow: 0 9px 28px rgba(33, 48, 68, 0.13), 0 1px 3px rgba(33, 48, 68, 0.09);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 8px 25px rgba(33, 48, 68, 0.12), 0 1px 3px rgba(33, 48, 68, 0.08);
 }
 
 .approved-stage-interface .brand-block {
@@ -27,25 +29,25 @@
 .approved-stage-interface .brand-block .wordmark-main {
   display: inline-block;
   color: var(--blue);
-  font-size: clamp(2.25rem, 3.1vw, 3.55rem);
+  font-size: clamp(2.15rem, 3vw, 3.4rem);
   font-weight: 900;
   letter-spacing: -0.045em;
 }
 
 .approved-stage-interface .brand-block .wordmark-sub {
   display: block;
-  margin-top: 10px;
+  margin-top: 8px;
   color: #071d52;
-  font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+  font-size: clamp(1rem, 1.45vw, 1.35rem);
   font-weight: 760;
   letter-spacing: -0.02em;
   text-transform: none;
 }
 
 .approved-stage-interface .broadcast-mark {
-  width: 38px;
-  height: 38px;
-  margin: -11px 0 0 -3px;
+  width: 36px;
+  height: 36px;
+  margin: -10px 0 0 -4px;
   overflow: visible;
   vertical-align: top;
   fill: none;
@@ -57,37 +59,37 @@
 .approved-stage-interface .sound-toggle {
   appearance: none;
   display: inline-flex;
-  min-height: 62px;
+  min-height: 54px;
   align-items: center;
   justify-content: center;
-  gap: 13px;
-  padding: 13px 24px;
+  gap: 10px;
+  padding: 10px 18px;
   color: #071d52;
   border: 1px solid #dbe0e6;
   border-radius: 22px;
-  background: linear-gradient(#fff, #fbfbfc);
-  box-shadow: 0 7px 14px rgba(34, 49, 72, 0.13), inset 0 1px #fff;
-  font-size: 1.12rem;
+  background: linear-gradient(#fff, #fafbfc);
+  box-shadow: 0 6px 12px rgba(34, 49, 72, 0.12), inset 0 1px #fff;
+  font-size: 1rem;
   font-weight: 760;
   cursor: pointer;
-  transition: 0.15s ease;
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
 }
 
 .approved-stage-interface .sound-toggle::before {
   content: "";
-  width: 31px;
-  height: 31px;
+  width: 27px;
+  height: 27px;
   background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23071d52' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13h5l7-6v18l-7-6H5z'/%3E%3Cpath d='M21 12c2 2 2 6 0 8M24 8c5 5 5 11 0 16'/%3E%3C/svg%3E");
 }
 
 .approved-stage-interface .sound-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 18px rgba(34, 49, 72, 0.15);
+  filter: brightness(1.025);
+  box-shadow: 0 8px 16px rgba(34, 49, 72, 0.14), inset 0 1px #fff;
 }
 
 .approved-stage-interface .sound-toggle:active {
-  transform: translateY(2px);
-  box-shadow: 0 3px 8px rgba(34, 49, 72, 0.12), inset 0 2px 4px rgba(34, 49, 72, 0.08);
+  filter: brightness(0.96);
+  box-shadow: 0 3px 7px rgba(34, 49, 72, 0.12), inset 0 2px 4px rgba(34, 49, 72, 0.08);
 }
 
 .approved-stage-interface .welcome-panel,
@@ -105,9 +107,9 @@
 
 .approved-stage-interface .welcome-panel h1 {
   max-width: none;
-  margin: 0 0 16px;
+  margin: 0 0 14px;
   color: var(--blue);
-  font-size: clamp(3rem, 4.75vw, 4.35rem);
+  font-size: clamp(2.8rem, 4.5vw, 4.1rem);
   font-weight: 900;
   letter-spacing: -0.04em;
 }
@@ -116,7 +118,7 @@
   max-width: none;
   margin: 0;
   color: #30476d;
-  font-size: clamp(1.35rem, 2.15vw, 1.9rem);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
   font-weight: 480;
 }
 
@@ -124,11 +126,12 @@
   z-index: 12;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: clamp(18px, 2.7vw, 38px);
-  transition: top 0.56s cubic-bezier(0.2, 0.82, 0.2, 1),
-    left 0.56s cubic-bezier(0.2, 0.82, 0.2, 1),
-    right 0.56s cubic-bezier(0.2, 0.82, 0.2, 1),
-    gap 0.56s cubic-bezier(0.2, 0.82, 0.2, 1);
+  gap: clamp(16px, 2.4vw, 34px);
+  transition:
+    top 0.5s cubic-bezier(0.2, 0.82, 0.2, 1),
+    left 0.5s cubic-bezier(0.2, 0.82, 0.2, 1),
+    right 0.5s cubic-bezier(0.2, 0.82, 0.2, 1),
+    gap 0.5s cubic-bezier(0.2, 0.82, 0.2, 1);
 }
 
 .approved-stage-interface .stage-card {
@@ -137,46 +140,76 @@
   --soft: #e7f1ff;
   --shadow: #78a6dc;
   --stage-progress: 0%;
-  --card-radius: 36px;
+  --card-radius: 42px;
   appearance: none;
   position: relative;
   isolation: isolate;
   display: flex;
   min-width: 0;
+  height: 338px;
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
-  height: 360px;
-  padding: 28px 20px 24px;
+  padding: 25px 18px 22px;
   overflow: visible;
   color: #071d52;
   border: 3px solid var(--dark);
   border-radius: var(--card-radius);
-  background: radial-gradient(circle at 28% 10%, rgba(255, 255, 255, 0.98) 0 11%, transparent 24%),
-    linear-gradient(145deg, #fff, var(--soft) 72%, #fff);
-  box-shadow: 0 9px 0 var(--shadow), 0 16px 25px rgba(27, 43, 63, 0.19),
-    inset 0 0 0 7px rgba(255, 255, 255, 0.78), inset 0 -7px 15px rgba(32, 57, 92, 0.08);
+  background:
+    radial-gradient(circle at 28% 10%, rgba(255, 255, 255, 0.98) 0 12%, transparent 26%),
+    linear-gradient(145deg, #fff, var(--soft) 70%, #fff);
+  box-shadow:
+    0 9px 0 var(--shadow),
+    0 15px 23px rgba(27, 43, 63, 0.18),
+    inset 0 0 0 7px rgba(255, 255, 255, 0.78),
+    inset 0 -7px 15px rgba(32, 57, 92, 0.08);
   font: inherit;
   text-align: center;
   cursor: pointer;
   transform: translateY(0);
   transform-origin: center bottom;
-  transition: height 0.56s cubic-bezier(0.2, 0.82, 0.2, 1),
-    padding 0.56s cubic-bezier(0.2, 0.82, 0.2, 1),
-    border-radius 0.56s cubic-bezier(0.2, 0.82, 0.2, 1),
-    border-width 0.56s cubic-bezier(0.2, 0.82, 0.2, 1),
-    box-shadow 0.19s ease, transform 0.19s ease, filter 0.19s ease;
+  transition:
+    height 0.5s cubic-bezier(0.2, 0.82, 0.2, 1),
+    padding 0.5s cubic-bezier(0.2, 0.82, 0.2, 1),
+    border-radius 0.5s cubic-bezier(0.2, 0.82, 0.2, 1),
+    border-width 0.5s cubic-bezier(0.2, 0.82, 0.2, 1),
+    box-shadow 0.16s ease,
+    filter 0.16s ease,
+    transform 0.12s ease;
 }
 
 .approved-stage-interface .stage-card::before {
   content: "";
   position: absolute;
   z-index: 0;
-  inset: 9px 9px auto;
-  height: 31%;
-  border-radius: 28px 28px 55% 55%;
-  background: linear-gradient(155deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.18));
+  inset: 8px 8px auto;
+  height: 34%;
+  border-radius: calc(var(--card-radius) - 7px) calc(var(--card-radius) - 7px) 58% 58%;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.16));
   pointer-events: none;
+}
+
+.approved-stage-interface .stage-card::after {
+  content: "✓";
+  position: absolute;
+  z-index: 10;
+  top: 10px;
+  right: 11px;
+  display: none;
+  width: 25px;
+  height: 25px;
+  place-items: center;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: #26333e;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.approved-stage-interface .stage-card[data-status="complete"]::after {
+  display: grid;
 }
 
 .approved-stage-interface .stage-card > *:not(.stage-gray-sweep) {
@@ -185,30 +218,38 @@
 }
 
 .approved-stage-interface .stage-card:hover:not([data-current="true"]) {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 0 var(--shadow), 0 20px 29px rgba(27, 43, 63, 0.2),
-    inset 0 0 0 7px rgba(255, 255, 255, 0.8);
+  transform: translateY(0);
+  filter: brightness(1.035);
+  box-shadow:
+    0 9px 0 var(--shadow),
+    0 17px 25px rgba(27, 43, 63, 0.2),
+    inset 0 0 0 7px rgba(255, 255, 255, 0.82);
 }
 
-/* A click moves briefly. The persistent current state stays aligned with the other cards. */
 .approved-stage-interface .stage-card.is-pressing,
 .approved-stage-interface .stage-card:active {
-  transform: translateY(4px) scale(0.992);
+  transform: translateY(3px) scale(0.992);
   filter: brightness(0.91);
-  box-shadow: 0 2px 0 var(--shadow), 0 5px 9px rgba(27, 43, 63, 0.14),
-    inset 0 5px 12px rgba(18, 38, 69, 0.18), inset 0 0 0 7px rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 2px 0 var(--shadow),
+    0 4px 8px rgba(27, 43, 63, 0.14),
+    inset 0 5px 12px rgba(18, 38, 69, 0.18),
+    inset 0 0 0 7px rgba(255, 255, 255, 0.65);
 }
 
 .approved-stage-interface .stage-card[data-current="true"] {
   transform: translateY(0) scale(0.992);
   filter: brightness(0.93);
-  box-shadow: 0 4px 0 var(--shadow), 0 7px 11px rgba(27, 43, 63, 0.14),
-    inset 0 4px 11px rgba(18, 38, 69, 0.16), inset 0 0 0 7px rgba(255, 255, 255, 0.68);
+  box-shadow:
+    0 4px 0 var(--shadow),
+    0 7px 11px rgba(27, 43, 63, 0.14),
+    inset 0 4px 11px rgba(18, 38, 69, 0.16),
+    inset 0 0 0 7px rgba(255, 255, 255, 0.68);
 }
 
 .approved-stage-interface .stage-card:focus-visible {
   outline: 4px solid #f4ac00;
-  outline-offset: 5px;
+  outline-offset: 4px;
 }
 
 .approved-stage-interface .stage-green {
@@ -241,19 +282,22 @@
 
 .approved-stage-interface .stage-icon {
   display: grid;
-  width: 88px;
-  height: 88px;
+  width: 84px;
+  height: 84px;
   flex: 0 0 auto;
   place-items: center;
-  margin-bottom: 22px;
+  margin-bottom: 19px;
   color: #fff;
   border: 3px solid var(--dark);
   border-radius: 50%;
-  background: radial-gradient(circle at 31% 22%, rgba(255, 255, 255, 0.78), transparent 22%),
+  background:
+    radial-gradient(circle at 31% 22%, rgba(255, 255, 255, 0.78), transparent 22%),
     linear-gradient(145deg, color-mix(in srgb, var(--stage) 72%, #fff), var(--stage) 52%, var(--dark));
-  box-shadow: 0 7px 0 color-mix(in srgb, var(--dark) 75%, #001a40),
-    0 11px 16px rgba(13, 32, 60, 0.28), inset 0 0 0 5px rgba(255, 255, 255, 0.18);
-  transition: 0.56s cubic-bezier(0.2, 0.82, 0.2, 1);
+  box-shadow:
+    0 7px 0 color-mix(in srgb, var(--dark) 75%, #001a40),
+    0 11px 16px rgba(13, 32, 60, 0.28),
+    inset 0 0 0 5px rgba(255, 255, 255, 0.18);
+  transition: 0.5s cubic-bezier(0.2, 0.82, 0.2, 1);
 }
 
 .approved-stage-interface .stage-icon svg {
@@ -269,45 +313,45 @@
 
 .approved-stage-interface .stage-number {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   place-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   color: #fff;
   border-radius: 50%;
   background: var(--stage);
   box-shadow: inset 0 -3px rgba(0, 0, 0, 0.14), 0 2px 5px rgba(28, 43, 66, 0.12);
-  font-size: 1.2rem;
+  font-size: 1.12rem;
   font-weight: 900;
-  transition: 0.56s cubic-bezier(0.2, 0.82, 0.2, 1);
+  transition: 0.5s cubic-bezier(0.2, 0.82, 0.2, 1);
 }
 
 .approved-stage-interface .stage-card strong {
   display: flex;
-  min-height: 54px;
+  min-height: 50px;
   align-items: center;
   justify-content: center;
-  font-size: clamp(1rem, 1.65vw, 1.36rem);
+  font-size: clamp(0.96rem, 1.55vw, 1.3rem);
   font-weight: 900;
   line-height: 1.1;
   letter-spacing: -0.025em;
-  transition: 0.56s cubic-bezier(0.2, 0.82, 0.2, 1);
+  transition: 0.5s cubic-bezier(0.2, 0.82, 0.2, 1);
 }
 
 .approved-stage-interface .stage-divider {
   width: 83%;
-  margin: auto 0 16px;
+  margin: auto 0 14px;
   border-top: 3px dotted color-mix(in srgb, var(--stage) 35%, transparent);
-  transition: 0.56s cubic-bezier(0.2, 0.82, 0.2, 1);
+  transition: 0.5s cubic-bezier(0.2, 0.82, 0.2, 1);
 }
 
 .approved-stage-interface .stage-status {
   color: #414b5d;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 500;
   line-height: 1;
-  transition: 0.56s cubic-bezier(0.2, 0.82, 0.2, 1);
+  transition: 0.5s cubic-bezier(0.2, 0.82, 0.2, 1);
 }
 
 .approved-stage-interface .stage-gray-sweep {
@@ -323,7 +367,7 @@
   -webkit-backdrop-filter: grayscale(1) saturate(0);
   backdrop-filter: grayscale(1) saturate(0);
   pointer-events: none;
-  transition: width 0.52s cubic-bezier(0.2, 0.82, 0.2, 1);
+  transition: width 0.48s cubic-bezier(0.2, 0.82, 0.2, 1);
 }
 
 .approved-stage-interface .stage-card[data-status="complete"] {
@@ -348,28 +392,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 34px;
+  gap: 30px;
   margin: 0;
-  padding: 23px 44px;
+  padding: 19px 36px;
   color: #071d52;
   border: 1px solid #dce1e7;
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 8px 15px rgba(31, 47, 69, 0.12);
+  box-shadow: 0 7px 14px rgba(31, 47, 69, 0.11);
 }
 
 .approved-stage-interface .survey-fact {
   display: inline-flex;
   align-items: center;
-  gap: 16px;
+  gap: 13px;
   color: #071d52;
-  font-size: 1.12rem;
+  font-size: 1.02rem;
   font-weight: 500;
 }
 
 .approved-stage-interface .survey-fact svg {
-  width: 31px;
-  height: 31px;
+  width: 28px;
+  height: 28px;
   flex: 0 0 auto;
   fill: none;
   stroke: var(--blue);
@@ -381,68 +425,189 @@
 .approved-stage-interface .fact-divider,
 .approved-stage-interface .footer-divider {
   width: 1px;
-  height: 30px;
+  height: 27px;
   background: #aeb6c2;
 }
 
 .approved-stage-interface .resume-block {
   max-width: 880px;
-  margin: 28px auto 0;
+  margin: 24px auto 0;
   text-align: left;
 }
+
+/* Compact working questionnaire */
 
 .approved-stage-interface .questionnaire-panel {
   position: relative;
   z-index: 4;
   max-width: 1160px;
   margin-inline: auto;
-  padding: clamp(22px, 2.7vw, 36px);
+  padding: 18px 22px 15px;
   border: 1px solid #dce1e7;
-  border-radius: 25px;
+  border-radius: 22px;
   background: #fff;
-  box-shadow: 0 10px 30px rgba(27, 43, 63, 0.1);
+  box-shadow: 0 8px 24px rgba(27, 43, 63, 0.09);
+}
+
+.approved-stage-interface .questionnaire-toolbar {
+  min-height: 34px;
+}
+
+.approved-stage-interface .questionnaire-toolbar,
+.approved-stage-interface .progress-wrap {
+  gap: 14px;
+}
+
+.approved-stage-interface .questionnaire-toolbar span {
+  font-size: 0.7rem;
+}
+
+.approved-stage-interface .questionnaire-toolbar strong {
+  font-size: 0.76rem;
+}
+
+.approved-stage-interface .questionnaire-toolbar .text-button {
+  min-height: 38px;
+  padding: 5px 8px;
+}
+
+.approved-stage-interface .progress-wrap {
+  margin: 7px 0 12px;
 }
 
 .approved-stage-interface .progress-track {
-  height: 11px;
+  height: 7px;
 }
 
 .approved-stage-interface .progress-track span {
   background: linear-gradient(90deg, #063a91, #168aa3);
 }
 
-/* Compact question and answer treatment. Choices remain full-width labels with 44px targets. */
+.approved-stage-interface .progress-wrap > span {
+  font-size: 0.75rem;
+}
+
+.approved-stage-interface .questionnaire-layout {
+  grid-template-columns: 174px minmax(0, 1fr);
+  gap: 18px;
+}
+
+.approved-stage-interface .section-nav {
+  top: 118px;
+}
+
+.approved-stage-interface .section-nav > div {
+  gap: 5px;
+}
+
+.approved-stage-interface .section-tab {
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 7px;
+  min-height: 38px;
+  padding: 7px 8px;
+  border-radius: 11px;
+  font-size: 0.74rem;
+  line-height: 1.2;
+}
+
+.approved-stage-interface .section-tab span {
+  width: 22px;
+  height: 22px;
+  font-size: 0.67rem;
+}
+
 .approved-stage-interface .section-page-head {
-  margin-bottom: 18px;
+  margin-bottom: 11px;
+}
+
+.approved-stage-interface .section-page-head .eyebrow {
+  margin-bottom: 4px;
+  font-size: 0.68rem;
+}
+
+.approved-stage-interface .section-page-head h2 {
+  margin-bottom: 5px;
+  font-size: clamp(1.75rem, 3vw, 2.55rem);
+  line-height: 1.04;
+}
+
+.approved-stage-interface .section-page-head p:not(.eyebrow) {
+  font-size: 0.88rem;
+  line-height: 1.35;
 }
 
 .approved-stage-interface .question-stack {
-  gap: 14px;
+  gap: 9px;
 }
 
 .approved-stage-interface .question-card {
-  padding: 18px 20px;
-  border-radius: 14px;
-  background: #fff;
+  margin: 0;
+  padding: 0 0 10px;
+  border: 0;
+  border-bottom: 1px solid #d7e0e4;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.approved-stage-interface .question-card:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.approved-stage-interface .question-card legend,
+.approved-stage-interface .inline-question-heading {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+  padding: 0;
+  font-weight: 850;
+}
+
+.approved-stage-interface .question-number {
+  width: 24px;
+  height: 24px;
+  font-size: 0.7rem;
+}
+
+.approved-stage-interface .question-label {
+  padding-top: 1px;
+  font-size: 0.92rem;
+  line-height: 1.28;
+}
+
+.approved-stage-interface .optional-badge,
+.approved-stage-interface .required-badge {
+  margin-top: 1px;
+  padding: 3px 7px;
+  font-size: 0.59rem;
 }
 
 .approved-stage-interface .question-help {
-  margin: 7px 0 10px 43px;
+  margin: 5px 0 6px 34px;
+  font-size: 0.78rem;
+  line-height: 1.3;
 }
 
 .approved-stage-interface .choice-grid {
-  gap: 0 22px;
-  margin-top: 10px;
+  gap: 0 16px;
+  margin-top: 5px;
 }
 
 .approved-stage-interface .choice {
-  min-height: 44px;
-  padding: 8px 10px;
+  min-height: 40px;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 8px;
   border: 0;
   border-bottom: 1px solid var(--line);
   border-radius: 0;
   background: transparent;
-  transition: background 0.16s ease, box-shadow 0.16s ease;
+  font-size: 0.86rem;
+  line-height: 1.22;
+  transition: background 0.14s ease, box-shadow 0.14s ease;
 }
 
 .approved-stage-interface .choice:hover {
@@ -459,9 +624,16 @@
   box-shadow: inset 3px 0 0 var(--lake);
 }
 
+.approved-stage-interface .choice input,
+.approved-stage-interface .matrix-choice input {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+}
+
 .approved-stage-interface .scale-row {
   gap: 1px;
-  margin-top: 10px;
+  margin-top: 6px;
   padding: 1px;
   overflow: hidden;
   border-radius: 10px;
@@ -469,11 +641,12 @@
 }
 
 .approved-stage-interface .scale-row .choice {
-  min-height: 50px;
-  padding: 8px;
+  min-height: 44px;
+  padding: 6px;
   border: 0;
   border-radius: 0;
   background: #fff;
+  font-size: 0.75rem;
 }
 
 .approved-stage-interface .scale-row .choice:hover {
@@ -488,11 +661,41 @@
 
 .approved-stage-interface .text-control,
 .approved-stage-interface .select-control {
-  margin-top: 10px;
+  margin-top: 6px;
+  padding: 9px 10px;
 }
 
 .approved-stage-interface .textarea-control {
-  min-height: 92px;
+  min-height: 78px;
+}
+
+.approved-stage-interface .inline-select-question {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 34%);
+  gap: 8px 16px;
+  align-items: center;
+}
+
+.approved-stage-interface .inline-select-question .inline-question-heading {
+  grid-column: 1;
+}
+
+.approved-stage-interface .inline-select-question .inline-select-control {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  margin: 0;
+}
+
+.approved-stage-interface .inline-select-question .question-help,
+.approved-stage-interface .inline-select-question .question-message {
+  grid-column: 1 / -1;
+}
+
+.approved-stage-interface .question-message,
+.approved-stage-interface .form-error {
+  margin-top: 5px;
+  font-size: 0.76rem;
 }
 
 .approved-stage-interface .question-message:empty,
@@ -500,23 +703,34 @@
   display: none;
 }
 
+.approved-stage-interface .form-actions {
+  margin-top: 12px;
+  padding-top: 10px;
+}
+
+.approved-stage-interface .questionnaire-actions .button {
+  min-height: 42px;
+  padding: 8px 15px;
+}
+
 .approved-stage-interface .matrix-card-table {
-  border-spacing: 0 8px;
+  border-spacing: 0 6px;
 }
 
 .approved-stage-interface .matrix-card-table tbody tr {
-  gap: 4px;
-  padding: 12px;
-  border-radius: 12px;
+  gap: 3px;
+  padding: 9px;
+  border-radius: 10px;
 }
 
 .approved-stage-interface .matrix-card-table tbody th {
-  padding-bottom: 9px;
+  padding-bottom: 7px;
+  font-size: 0.82rem;
 }
 
 .approved-stage-interface .matrix-card-table .matrix-choice {
-  min-height: 48px;
-  padding: 6px 4px;
+  min-height: 44px;
+  padding: 5px 3px;
   border: 0;
   border-radius: 7px;
   background: transparent;
@@ -529,43 +743,44 @@
 }
 
 .approved-stage-interface .paired-matrix {
-  gap: 10px;
-  margin-top: 12px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .approved-stage-interface .paired-rating-note {
-  font-size: 0.84rem;
+  font-size: 0.78rem;
 }
 
 .approved-stage-interface .paired-role-card {
-  padding: 13px 15px;
-  border-radius: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
 }
 
 .approved-stage-interface .paired-role-card h3 {
-  margin-bottom: 10px;
+  margin-bottom: 7px;
+  font-size: 0.9rem;
 }
 
 .approved-stage-interface .paired-rating-groups {
-  gap: 12px;
+  gap: 9px;
 }
 
 .approved-stage-interface .paired-rating-group + .paired-rating-group {
-  padding-top: 12px;
+  padding-top: 9px;
 }
 
 .approved-stage-interface .paired-rating-group .paired-scale-row {
-  margin-top: 7px;
+  margin-top: 5px;
 }
 
 .approved-stage-interface .survey-frame-footer {
   z-index: 5;
   display: flex;
-  min-height: 96px;
+  min-height: 68px;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  padding: 24px 38px;
+  gap: 20px;
+  padding: 14px 30px;
   color: var(--blue);
   border-top: 1px solid #dce1e7;
   background: rgba(255, 255, 255, 0.94);
@@ -575,11 +790,11 @@
 .approved-stage-interface .footer-links {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 15px;
 }
 
 .approved-stage-interface .build-status {
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
@@ -591,13 +806,13 @@
   appearance: none;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 2px;
+  gap: 8px;
+  padding: 6px 2px;
   color: var(--blue);
   border: 0;
   background: transparent;
   font: inherit;
-  font-size: 1.02rem;
+  font-size: 0.9rem;
   font-weight: 650;
   text-decoration: none;
   cursor: pointer;
@@ -609,8 +824,8 @@
 }
 
 .approved-stage-interface .footer-link svg {
-  width: 27px;
-  height: 27px;
+  width: 23px;
+  height: 23px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -620,7 +835,7 @@
 
 .approved-stage-interface .test-results-link {
   display: none;
-  font-size: 0.88rem;
+  font-size: 0.8rem;
 }
 
 .survey-test-mode .approved-stage-interface .test-results-link {
@@ -642,51 +857,51 @@
 }
 
 @media (min-width: 901px) {
-  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .welcome-panel {
-    min-height: 1100px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block {
-    position: absolute;
-    z-index: 13;
-    top: 735px;
-    left: 50%;
-    width: min(880px, calc(100% - 90px));
-    margin: 0;
-    transform: translateX(-50%);
-  }
-
   .approved-stage-interface .brand-block {
     position: absolute;
     z-index: 15;
-    top: 34px;
-    left: 42px;
+    top: 24px;
+    left: 32px;
   }
 
   .approved-stage-interface .sound-toggle {
     position: absolute;
     z-index: 15;
-    top: 42px;
-    right: 42px;
+    top: 27px;
+    right: 30px;
   }
 
   .approved-stage-interface .welcome-panel {
-    min-height: 880px;
-    padding: 168px 30px 150px;
+    min-height: 850px;
+    padding: 145px 28px 135px;
   }
 
   .approved-stage-interface .stage-hub {
     position: absolute;
-    top: 330px;
-    right: 45px;
-    left: 45px;
+    top: 292px;
+    right: 42px;
+    left: 42px;
   }
 
   .approved-stage-interface .survey-facts {
     position: absolute;
     right: 50%;
-    bottom: 130px;
+    bottom: 105px;
     transform: translateX(50%);
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .welcome-panel {
+    min-height: 1020px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block {
+    position: absolute;
+    z-index: 13;
+    top: 668px;
+    left: 50%;
+    width: min(880px, calc(100% - 80px));
+    margin: 0;
+    transform: translateX(-50%);
   }
 
   .approved-stage-interface .survey-frame-footer {
@@ -699,90 +914,142 @@
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"],
   .approved-stage-interface .survey-frame[data-view="complete"] {
-    padding: 0 38px;
+    padding: 0 26px;
   }
 
-  /* Clear the wordmark and its orange broadcast mark in the compact header. */
-  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-hub,
-  .approved-stage-interface .survey-frame[data-view="complete"] .stage-hub {
-    top: 28px;
-    right: 230px;
-    left: clamp(365px, 29vw, 400px);
-    gap: 14px;
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .brand-block,
+  .approved-stage-interface .survey-frame[data-view="complete"] .brand-block {
+    top: 19px;
+    left: 27px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .brand-block .wordmark-main,
+  .approved-stage-interface .survey-frame[data-view="complete"] .brand-block .wordmark-main {
+    font-size: clamp(2rem, 2.8vw, 2.85rem);
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .brand-block .wordmark-sub,
+  .approved-stage-interface .survey-frame[data-view="complete"] .brand-block .wordmark-sub {
+    margin-top: 6px;
+    font-size: clamp(0.85rem, 1.2vw, 1.05rem);
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .broadcast-mark,
   .approved-stage-interface .survey-frame[data-view="complete"] .broadcast-mark {
-    width: 30px;
-    height: 30px;
-    margin: -9px 0 0 -8px;
+    width: 27px;
+    height: 27px;
+    margin: -8px 0 0 -6px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .sound-toggle,
+  .approved-stage-interface .survey-frame[data-view="complete"] .sound-toggle {
+    top: 23px;
+    right: 25px;
+    min-height: 44px;
+    gap: 7px;
+    padding: 8px 12px;
+    border-radius: 18px;
+    font-size: 0.8rem;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .sound-toggle::before,
+  .approved-stage-interface .survey-frame[data-view="complete"] .sound-toggle::before {
+    width: 22px;
+    height: 22px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-hub,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-hub {
+    top: 16px;
+    right: 158px;
+    left: clamp(276px, 28vw, 350px);
+    gap: 8px;
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card,
   .approved-stage-interface .survey-frame[data-view="complete"] .stage-card {
-    height: 164px;
-    padding: 10px 9px 14px;
+    --card-radius: 32px;
+    height: 100px;
+    padding: 8px 7px 9px;
     border-width: 2px;
-    --card-radius: 18px;
-    box-shadow: 0 6px 0 var(--shadow), 0 10px 15px rgba(27, 43, 63, 0.17),
+    box-shadow:
+      0 5px 0 var(--shadow),
+      0 8px 12px rgba(27, 43, 63, 0.16),
       inset 0 0 0 4px rgba(255, 255, 255, 0.76);
   }
 
-  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card[data-current="true"] {
-    box-shadow: 0 3px 0 var(--shadow), 0 5px 8px rgba(27, 43, 63, 0.14),
-      inset 0 4px 10px rgba(18, 38, 69, 0.16), inset 0 0 0 4px rgba(255, 255, 255, 0.68);
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card::before,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-card::before {
+    inset: 5px 6px auto;
+    height: 43%;
+    border-radius: 27px 27px 55% 55%;
   }
 
-  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card.is-pressing,
-  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card:active {
-    box-shadow: 0 1px 0 var(--shadow), 0 3px 6px rgba(27, 43, 63, 0.14),
-      inset 0 5px 11px rgba(18, 38, 69, 0.18), inset 0 0 0 4px rgba(255, 255, 255, 0.64);
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card::after,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-card::after {
+    top: 4px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    border-width: 1px;
+    font-size: 0.62rem;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card:hover:not([data-current="true"]),
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-card:hover:not([data-current="true"]) {
+    transform: translateY(0);
+    box-shadow:
+      0 5px 0 var(--shadow),
+      0 10px 14px rgba(27, 43, 63, 0.18),
+      inset 0 0 0 4px rgba(255, 255, 255, 0.8);
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card[data-current="true"] {
+    box-shadow:
+      0 2px 0 var(--shadow),
+      0 4px 7px rgba(27, 43, 63, 0.13),
+      inset 0 4px 9px rgba(18, 38, 69, 0.16),
+      inset 0 0 0 4px rgba(255, 255, 255, 0.68);
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-icon,
   .approved-stage-interface .survey-frame[data-view="complete"] .stage-icon {
-    width: 52px;
-    height: 52px;
-    margin-bottom: 7px;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
     border-width: 2px;
-    box-shadow: 0 4px 0 color-mix(in srgb, var(--dark) 75%, #001a40),
-      0 7px 10px rgba(13, 32, 60, 0.24), inset 0 0 0 3px rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 3px 0 color-mix(in srgb, var(--dark) 75%, #001a40),
+      0 5px 7px rgba(13, 32, 60, 0.22),
+      inset 0 0 0 3px rgba(255, 255, 255, 0.18);
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-number,
-  .approved-stage-interface .survey-frame[data-view="complete"] .stage-number {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 5px;
-    font-size: 0.75rem;
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-divider,
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-status,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-number,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-divider,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-status {
+    display: none;
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card strong,
   .approved-stage-interface .survey-frame[data-view="complete"] .stage-card strong {
-    min-height: 26px;
-    font-size: clamp(0.6rem, 0.78vw, 0.78rem);
-  }
-
-  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-divider,
-  .approved-stage-interface .survey-frame[data-view="complete"] .stage-divider {
-    margin: auto 0 7px;
-    border-top-width: 2px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-status,
-  .approved-stage-interface .survey-frame[data-view="complete"] .stage-status {
-    font-size: 0.66rem;
+    min-height: 27px;
+    margin-top: auto;
+    font-size: clamp(0.58rem, 0.72vw, 0.72rem);
+    line-height: 1.05;
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .questionnaire-panel {
-    margin-top: 220px;
-    margin-bottom: 34px;
+    margin-top: 126px;
+    margin-bottom: 14px;
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .survey-frame-footer,
   .approved-stage-interface .survey-frame[data-view="complete"] .survey-frame-footer {
     position: relative;
-    margin: 0 -38px;
+    margin: 0 -26px;
   }
 
   .approved-stage-interface .survey-frame[data-view="complete"] .stage-hub {
@@ -792,31 +1059,58 @@
 
   .approved-stage-interface .survey-frame[data-view="complete"] .completion-panel {
     max-width: 940px;
-    margin: 240px auto 60px;
-    padding: 60px;
+    margin: 145px auto 40px;
+    padding: 45px;
     border: 1px solid #dce1e7;
-    border-radius: 25px;
+    border-radius: 23px;
     background: #fff;
   }
 }
 
 @media (max-width: 1120px) and (min-width: 901px) {
+  .approved-stage-interface .survey-frame {
+    width: min(calc(100% - 20px), 1380px);
+    margin: 10px auto;
+  }
+
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-hub,
   .approved-stage-interface .survey-frame[data-view="complete"] .stage-hub {
-    right: 190px;
-    left: clamp(285px, 29vw, 330px);
-    gap: 10px;
+    right: 150px;
+    left: 270px;
+    gap: 6px;
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card,
   .approved-stage-interface .survey-frame[data-view="complete"] .stage-card {
-    height: 150px;
+    height: 94px;
+    padding: 7px 5px 8px;
+    --card-radius: 30px;
   }
 
   .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-icon,
   .approved-stage-interface .survey-frame[data-view="complete"] .stage-icon {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 5px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card strong,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-card strong {
+    font-size: clamp(0.54rem, 0.68vw, 0.67rem);
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .questionnaire-panel {
+    margin-top: 117px;
+    padding: 15px 18px 13px;
+  }
+
+  .approved-stage-interface .questionnaire-layout {
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  .approved-stage-interface .section-page-head h2 {
+    font-size: clamp(1.65rem, 2.8vw, 2.2rem);
   }
 }
 
@@ -836,7 +1130,7 @@
     width: min(calc(100% - 16px), 760px);
     min-height: calc(100vh - 16px);
     margin: 8px auto;
-    padding: 16px 13px 0;
+    padding: 15px 12px 0;
     border-radius: 18px;
   }
 
@@ -850,29 +1144,29 @@
   }
 
   .approved-stage-interface .brand-block .wordmark-sub {
-    margin-top: 6px;
+    margin-top: 5px;
     font-size: clamp(0.78rem, 3.2vw, 1rem);
   }
 
   .approved-stage-interface .broadcast-mark {
-    width: 28px;
-    height: 28px;
+    width: 27px;
+    height: 27px;
     margin-top: -8px;
   }
 
   .approved-stage-interface .sound-toggle {
     grid-area: sound;
-    min-height: 48px;
+    min-height: 46px;
     align-self: start;
     gap: 7px;
-    padding: 9px 12px;
-    border-radius: 15px;
-    font-size: 0.88rem;
+    padding: 8px 11px;
+    border-radius: 17px;
+    font-size: 0.84rem;
   }
 
   .approved-stage-interface .sound-toggle::before {
-    width: 24px;
-    height: 24px;
+    width: 23px;
+    height: 23px;
   }
 
   .approved-stage-interface .welcome-panel {
@@ -881,77 +1175,111 @@
 
   .approved-stage-interface .welcome-copy {
     grid-area: welcome;
-    padding: 42px 4px 24px;
+    padding: 38px 4px 22px;
   }
 
   .approved-stage-interface .welcome-panel h1 {
-    font-size: clamp(2.25rem, 11vw, 3.25rem);
+    font-size: clamp(2.2rem, 11vw, 3.15rem);
   }
 
   .approved-stage-interface .welcome-panel .lead {
-    font-size: clamp(1rem, 5vw, 1.35rem);
+    font-size: clamp(1rem, 5vw, 1.3rem);
   }
 
   .approved-stage-interface .stage-hub {
     grid-area: stages;
     display: flex;
-    gap: 12px;
-    padding: 6px 3px 18px;
+    gap: 11px;
+    padding: 6px 3px 16px;
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scroll-snap-type: x proximity;
   }
 
   .approved-stage-interface .stage-card,
-  .approved-stage-interface .survey-frame[data-view] .stage-card {
-    width: 126px;
-    height: 174px;
-    flex: 0 0 126px;
-    padding: 12px 9px 14px;
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
+    width: 122px;
+    height: 166px;
+    flex: 0 0 122px;
+    padding: 11px 8px 13px;
     border-width: 2px;
-    --card-radius: 19px;
+    --card-radius: 29px;
     scroll-snap-align: center;
-    box-shadow: 0 6px 0 var(--shadow), 0 10px 15px rgba(27, 43, 63, 0.17),
+    box-shadow:
+      0 6px 0 var(--shadow),
+      0 10px 15px rgba(27, 43, 63, 0.17),
       inset 0 0 0 4px rgba(255, 255, 255, 0.76);
   }
 
   .approved-stage-interface .stage-icon,
-  .approved-stage-interface .survey-frame[data-view] .stage-icon {
-    width: 54px;
-    height: 54px;
-    margin-bottom: 8px;
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-icon {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 7px;
     border-width: 2px;
   }
 
   .approved-stage-interface .stage-number,
-  .approved-stage-interface .survey-frame[data-view] .stage-number {
-    width: 25px;
-    height: 25px;
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-number {
+    width: 24px;
+    height: 24px;
     margin-bottom: 5px;
-    font-size: 0.76rem;
+    font-size: 0.74rem;
   }
 
   .approved-stage-interface .stage-card strong,
-  .approved-stage-interface .survey-frame[data-view] .stage-card strong {
-    min-height: 30px;
-    font-size: 0.7rem;
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card strong {
+    min-height: 29px;
+    font-size: 0.68rem;
   }
 
   .approved-stage-interface .stage-divider,
-  .approved-stage-interface .survey-frame[data-view] .stage-divider {
-    margin: auto 0 8px;
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-divider {
+    margin: auto 0 7px;
     border-top-width: 2px;
   }
 
   .approved-stage-interface .stage-status,
-  .approved-stage-interface .survey-frame[data-view] .stage-status {
-    font-size: 0.68rem;
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-status {
+    font-size: 0.66rem;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-card {
+    width: 96px;
+    height: 104px;
+    flex: 0 0 96px;
+    padding: 8px 6px 9px;
+    --card-radius: 31px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-icon,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-icon {
+    width: 39px;
+    height: 39px;
+    margin-bottom: 6px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-number,
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-divider,
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-status,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-number,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-divider,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-status {
+    display: none;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="questionnaire"] .stage-card strong,
+  .approved-stage-interface .survey-frame[data-view="complete"] .stage-card strong {
+    min-height: 27px;
+    margin-top: auto;
+    font-size: 0.61rem;
   }
 
   .approved-stage-interface .resume-block {
     grid-area: resume;
     width: 100%;
-    margin: 8px 0 18px;
+    margin: 8px 0 16px;
   }
 
   .approved-stage-interface .survey-facts {
@@ -959,10 +1287,10 @@
     position: static;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 13px;
+    gap: 12px;
     width: min(100%, 480px);
-    margin: 10px auto 0;
-    padding: 18px 20px;
+    margin: 9px auto 0;
+    padding: 16px 18px;
     border-radius: 17px;
   }
 
@@ -972,21 +1300,21 @@
   }
 
   .approved-stage-interface .survey-fact {
-    font-size: 0.94rem;
+    font-size: 0.9rem;
   }
 
   .approved-stage-interface .questionnaire-panel {
     grid-area: questionnaire;
     width: 100%;
-    margin: 18px 0 24px;
-    padding: 20px 14px 0;
+    margin: 10px 0 20px;
+    padding: 16px 13px 0;
     border-radius: 18px;
   }
 
   .approved-stage-interface .completion-panel {
     grid-area: complete;
-    margin: 30px 0;
-    padding: 38px 18px;
+    margin: 24px 0;
+    padding: 34px 17px;
     border: 1px solid #dce1e7;
     border-radius: 18px;
     background: #fff;
@@ -994,45 +1322,68 @@
 
   .approved-stage-interface .survey-frame-footer {
     grid-area: footer;
-    margin: 8px -13px 0;
-    padding: 20px 16px;
+    margin: 7px -12px 0;
+    padding: 16px 14px;
     border-radius: 0 0 18px 18px;
   }
 
   .approved-stage-interface .footer-link {
-    font-size: 0.88rem;
+    font-size: 0.84rem;
   }
 }
 
 @media (max-width: 680px) {
+  .approved-stage-interface .questionnaire-toolbar {
+    gap: 9px;
+  }
+
+  .approved-stage-interface .progress-wrap {
+    margin: 6px 0 9px;
+  }
+
+  .approved-stage-interface .questionnaire-layout {
+    display: block;
+  }
+
+  .approved-stage-interface .section-nav {
+    margin-bottom: 11px;
+  }
+
+  .approved-stage-interface .section-page-head {
+    margin-bottom: 10px;
+  }
+
+  .approved-stage-interface .section-page-head h2 {
+    font-size: clamp(1.55rem, 8vw, 2rem);
+  }
+
   .approved-stage-interface .question-stack {
-    gap: 12px;
+    gap: 9px;
   }
 
   .approved-stage-interface .question-card {
-    padding: 15px 12px;
-    border-radius: 13px;
+    padding: 0 0 10px;
   }
 
   .approved-stage-interface .question-help {
-    margin: 7px 0 9px;
+    margin: 5px 0 6px;
   }
 
   .approved-stage-interface .choice-grid {
+    grid-template-columns: 1fr;
     gap: 0;
-    margin-top: 8px;
+    margin-top: 5px;
   }
 
   .approved-stage-interface .question-card .choice-grid.compact-choice-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 12px;
+    column-gap: 10px;
   }
 
   .approved-stage-interface .choice {
     min-height: 44px;
-    align-items: center;
-    padding: 8px 7px;
-    line-height: 1.25;
+    padding: 7px;
+    font-size: 0.86rem;
   }
 
   .approved-stage-interface .choice input,
@@ -1042,8 +1393,7 @@
   }
 
   .approved-stage-interface .scale-row {
-    gap: 1px;
-    margin-top: 8px;
+    margin-top: 6px;
   }
 
   .approved-stage-interface .scale-row .choice {
@@ -1051,26 +1401,35 @@
     padding: 7px;
   }
 
+  .approved-stage-interface .inline-select-question {
+    display: block;
+  }
+
+  .approved-stage-interface .inline-select-question .inline-select-control {
+    width: 100%;
+    margin-top: 7px;
+  }
+
   .approved-stage-interface .matrix-card-table tbody tr {
     gap: 3px;
-    padding: 9px;
+    padding: 8px;
   }
 
   .approved-stage-interface .matrix-card-table .matrix-choice {
-    min-height: 52px;
-    padding: 6px 3px;
+    min-height: 50px;
+    padding: 5px 3px;
   }
 
   .approved-stage-interface .paired-role-card {
-    padding: 11px 10px;
+    padding: 10px 9px;
   }
 
   .approved-stage-interface .paired-rating-groups {
-    gap: 10px;
+    gap: 8px;
   }
 
   .approved-stage-interface .paired-rating-group + .paired-rating-group {
-    padding-top: 10px;
+    padding-top: 8px;
   }
 }
 
@@ -1078,7 +1437,7 @@
   .approved-stage-interface .survey-frame-footer {
     align-items: flex-start;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .approved-stage-interface .footer-links {
@@ -1093,8 +1452,8 @@
 
 @media (max-width: 430px) {
   .approved-stage-interface .sound-toggle {
-    width: 48px;
-    padding-inline: 8px;
+    width: 46px;
+    padding-inline: 7px;
     font-size: 0;
   }
 
