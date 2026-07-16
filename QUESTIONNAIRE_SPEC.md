@@ -3,7 +3,7 @@
 ## 1. Release contract
 
 - Schema: `wnmu-viewer-questionnaire-v5`
-- Build: `5.0.0-test`
+- Build: `5.1.0-test`
 - Release date: 2026-07-16
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -27,13 +27,15 @@ Required questions:
 
 Hidden answers may remain in a draft so they can reappear if routing changes, but hidden answers are excluded from submission and analytics.
 
-## 3. Rating scales
+## 3. Rating scales and presentation
 
 - Interest: `1` Not interested, `2` Slightly, `3` Moderately, `4` Very, `5` Extremely, `na` Not sure
 - Importance: `1` Not important, `2` Slightly, `3` Moderately, `4` Very, `5` Essential, `na` Not sure
 - Performance: `1` Poor, `2` Weak, `3` Adequate, `4` Good, `5` Excellent, `na` Not familiar enough to rate
 
 `na` and missing answers are excluded from numeric averages.
+
+Rating pages use one scale key before the first rated item. Each item then appears as a compact flat row with 1–5 and the applicable not-sure or not-familiar option. Rating items are separated by simple dividers rather than individual rounded cards. Importance and performance share the same role row when both apply. This presentation rule applies on desktop and phone without horizontal scrolling.
 
 ## 4. Active core questionnaire
 
@@ -68,7 +70,7 @@ Viewer-facing channels are WNMU-TV 13.1, PBS KIDS 24/7 13.2, WNMU-TV Plus 13.3, 
 |---|---|---:|---|
 | `channels_watched` | Which WNMU-TV channels do you watch, even occasionally? | No | Hidden for never-viewers |
 | `watch_preference` | Scheduled, recorded, on demand, livestream, short clips, depends, no preference | No | Viewing preference |
-| `program_category_interest` | Interest matrix using the 17 shared categories | No | Average interest by category |
+| `program_category_interest` | Interest in the 17 shared categories, presented as one compact flat 1–5 list with a single scale key | No | Average interest by category |
 | `valued_programs` | Current or past WNMU-TV/PBS programs that were valuable or memorable | No | Open response |
 | `kids_use` | Broadcast, PBS KIDS app, PBS App/PBS.org, YouTube, classroom/library/childcare, not used | No | Child-programming roles only |
 
@@ -108,12 +110,12 @@ The online list excludes more full episodes, larger local archive, and device co
 
 ### Stage 5 — How We're Doing
 
-Importance and performance appear in a compact flat list. Each role shows the role statement, **How important is this?** with 1–5 and Not sure, and, when applicable, **How is WNMU-TV doing?** with 1–5 and Not familiar. No separate rounded window is required for each role and no horizontal scrolling is permitted.
+Importance and performance appear together in a compact flat list. One importance key and one performance key appear before the first role. Each role then shows the role statement, an **Importance** 1–5 row with Not sure, and, when applicable, a **Performance** 1–5 row with Not familiar. Performance is hidden after a respondent explicitly identifies as a former or never viewer. When Stage 5 is opened before viewer status has been answered, performance remains visible provisionally so it is not mistaken for missing content. No separate rounded window is used for each role and no horizontal scrolling is permitted.
 
 | ID | Wording / values | Required | Routing / analytics |
 |---|---|---:|---|
 | `station_role_importance` | Importance of nine station roles | No | All; paired gap analysis |
-| `station_role_performance` | Performance on the same roles | No | Hidden for never/former viewers; paired gap analysis |
+| `station_role_performance` | Performance on the same roles | No | Hidden for explicitly never/former viewers; paired gap analysis |
 | `reflects_me` | How well WNMU-TV reflects people like the respondent | No | Hidden for never/former |
 | `trust_station` | Trust in WNMU-TV programming and information | No | Hidden for never/former |
 | `nonviewer_reasons` | Reasons for not watching more often | No | Former, never, unsure |
@@ -160,6 +162,8 @@ Analytics rules:
 - Calculate each respondent's importance-performance gap first, then average paired gaps.
 - Keep synthetic responses visibly marked and separate from real responses.
 - Load only v5 records into the v5 local results dashboard.
+
+The 5.1 interface revision changes only presentation and provisional display while routing is unresolved. Question IDs, stored values, categories, scales, analytics calculations, exports, and schema remain unchanged.
 
 ## 7. Production checklist
 
