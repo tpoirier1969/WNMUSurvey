@@ -3,7 +3,7 @@
 ## 1. Current release contract
 
 - **Questionnaire/schema version:** `wnmu-viewer-questionnaire-v4`
-- **Interface/build version:** `4.2.0-test`
+- **Interface/build version:** `4.3.0-test`
 - **Release date:** 2026-07-16
 - **Active mode:** Test
 - **Campaign:** `viewer-questionnaire-2026`
@@ -42,6 +42,10 @@ All other questions are optional.
 - Age range remains a visible radio-choice group.
 - Routine stage-page navigation, Previous/Next controls, routing rerenders, and page tabs preserve the overall working-page position instead of forcing the questionnaire panel to the top of the viewport.
 - Automatic scrolling remains appropriate for validation errors that must bring a missing required answer into view.
+- In the working view, stage cards are compact rounded controls showing only the icon and stage title. Stage numbers and visible status text remain on the landing page; status remains available through grayscale progress, a completion checkmark, pressed/current styling, and accessible labels.
+- Stage controls do not translate or jump on pointer hover. Hover may change brightness or shadow; physical movement is reserved for the brief pressed state.
+- Optional stage sound begins on pointer or keyboard activation, before the page transition. It uses a short layered sound rather than the retired single oscillator tone. Sound failure never blocks navigation, and the visible sound control remains available.
+- Ordinary short questionnaire pages should fit comfortably in a 1024×768 browser window when practical. Question groups use dividers and compact answer rows rather than separate rounded outer windows.
 - Importance and performance are presented together by station role in How We're Doing.
 - The paired presentation continues to store importance under `importance_roles` and performance under `performance_roles`.
 - Respondents who are not eligible for performance routing see the importance rating only.
@@ -77,7 +81,7 @@ Labels: Poor; Weak; Adequate; Good; Excellent; Not familiar enough to rate.
 
 | ID | Wording / purpose | Type and stored values | Required | Routing | Results / compatibility |
 |---|---|---|---|---|---|
-| `county_region` | What county or area do you live in? Identifies broad service geography without requiring a precise address. | Select dropdown: `alger`, `baraga`, `chippewa`, `delta`, `dickinson`, `gogebic`, `houghton`, `iron`, `keweenaw`, `luce`, `mackinac`, `marquette`, `menominee`, `ontonagon`, `schoolcraft`, `northern_wi`, `other_mi`, `other_state`, `canada`, `prefer_not` | No | All | Geography filter and location distribution. Retained meaning, ID, and stored values. Display changed back to a dropdown. |
+| `county_region` | What county or area do you live in? Identifies broad service geography without requiring a precise address. | Select dropdown: `alger`, `baraga`, `chippewa`, `delta`, `dickinson`, `gogic`, `houghton`, `iron`, `keweenaw`, `luce`, `mackinac`, `marquette`, `menominee`, `ontonagon`, `schoolcraft`, `northern_wi`, `other_mi`, `other_state`, `canada`, `prefer_not` | No | All | Geography filter and location distribution. Retained meaning, ID, and stored values. Display changed back to a dropdown. |
 | `community_type` | Which best describes where you live? Separates urban, town, rural, and remote needs. | Radio: `city`, `small_town`, `village`, `rural`, `remote`, `prefer_not` | No | All | Access and rural comparison. Retained meaning and ID. |
 | `age_range` | Age range. | Visible radio-choice cards: `under_18`, `18_24`, `25_34`, `35_44`, `45_54`, `55_64`, `65_74`, `75_84`, `85_plus`, `prefer_not` | No | All | Demographic filter and distribution. Retained meaning, ID, and stored values. |
 | `internet_quality` | How would you describe home internet service? Measures practical online access. | Radio: `fast`, `adequate`, `slow`, `unreliable`, `expensive`, `cell_sat`, `none`, `prefer_not` | No | All | Access analysis and online-barrier comparisons. Retained meaning. |
