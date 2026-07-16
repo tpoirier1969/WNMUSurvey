@@ -1,0 +1,148 @@
+/* Canonical WNMU-TV branding shared with the WNMU Home visual system. */
+
+:root {
+  --ink: #1c2530;
+  --ink-soft: #64748b;
+  --navy: #17345f;
+  --navy-deep: #102846;
+  --lake: #315f8c;
+  --lake-light: #e4eef8;
+  --gold: #d9a229;
+  --gold-soft: #fff3d6;
+  --paper: #edf2f7;
+  --line: #d9e2ec;
+  --line-dark: #aebdca;
+  --success: #376d5c;
+}
+
+.approved-stage-interface {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(49, 95, 140, 0.16), transparent 30rem),
+    radial-gradient(circle at bottom right, rgba(55, 109, 92, 0.14), transparent 30rem),
+    var(--paper);
+}
+
+.approved-stage-interface .survey-frame {
+  --blue: #17345f;
+  --gold: #d9a229;
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.approved-stage-interface .brand-block {
+  display: grid;
+  width: max-content;
+  max-width: min(210px, 42vw);
+  gap: 5px;
+  color: var(--navy);
+}
+
+.approved-stage-interface .brand-logo {
+  display: block;
+  width: min(178px, 40vw);
+  height: auto;
+}
+
+.approved-stage-interface .brand-block .wordmark-sub {
+  margin-top: 0;
+  color: var(--navy);
+  font-size: clamp(0.92rem, 1.2vw, 1.15rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.approved-stage-interface .welcome-panel h1 {
+  color: var(--navy);
+}
+
+.approved-stage-interface .welcome-panel .lead {
+  max-width: 900px;
+  margin: 0 auto;
+  color: #46566d;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  font-weight: 520;
+  line-height: 1.5;
+}
+
+.approved-stage-interface .welcome-instruction {
+  margin: 10px 0 0;
+  color: var(--navy);
+  font-size: 0.95rem;
+  font-weight: 760;
+}
+
+.approved-stage-interface .stage-blue {
+  --stage: #315f8c;
+  --dark: #17345f;
+  --soft: #e4eef8;
+  --shadow: #8ea9c2;
+}
+
+.approved-stage-interface .stage-green {
+  --stage: #4f806f;
+  --dark: #376050;
+  --soft: #e8f1ee;
+  --shadow: #96b4aa;
+}
+
+.approved-stage-interface .stage-orange {
+  --stage: #c9952a;
+  --dark: #8b6516;
+  --soft: #fff3d9;
+  --shadow: #cfb478;
+}
+
+.approved-stage-interface .stage-purple {
+  --stage: #60758d;
+  --dark: #3d526a;
+  --soft: #edf1f5;
+  --shadow: #9aa9b9;
+}
+
+.approved-stage-interface .stage-teal {
+  --stage: #4f8589;
+  --dark: #326166;
+  --soft: #e6f1f1;
+  --shadow: #91b4b6;
+}
+
+.approved-stage-interface .stage-card:focus-visible {
+  outline-color: var(--gold);
+}
+
+.approved-stage-interface .progress-track span {
+  background: linear-gradient(90deg, var(--navy), var(--success));
+}
+
+.approved-stage-interface .survey-fact,
+.approved-stage-interface .survey-facts,
+.approved-stage-interface .sound-toggle,
+.approved-stage-interface .survey-frame-footer,
+.approved-stage-interface .footer-link {
+  color: var(--navy);
+}
+
+.approved-stage-interface .paired-role-row h3 {
+  font-size: 0.98rem;
+  line-height: 1.22;
+}
+
+@media (max-width: 680px) {
+  .approved-stage-interface .brand-logo {
+    width: min(150px, 48vw);
+  }
+
+  .approved-stage-interface .welcome-panel .lead {
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+
+  .approved-stage-interface .welcome-instruction {
+    font-size: 0.9rem;
+  }
+
+  .approved-stage-interface .paired-role-row h3 {
+    font-size: 1rem;
+  }
+}
