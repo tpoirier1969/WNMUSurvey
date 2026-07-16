@@ -149,11 +149,7 @@
   }
 
   function returnToHub() {
-    if (state.currentStageId) {
-      const stage = findStage(state.currentStageId);
-      if (stage && stageIsComplete(stage, state)) addUnique(state.completedStageIds, stage.id);
-      else removeValue(state.completedStageIds, stage?.id);
-    }
+    refreshCompletedStages(state);
     saveDraftNow();
     updateHubStatuses();
     showPanel("hub");
@@ -207,10 +203,6 @@
 
     window.setTimeout(() => {
       els.sectionStage.querySelector("h2")?.focus({ preventScroll: true });
-      els.questionnairePanel?.scrollIntoView({
-        behavior: reducedMotion() ? "auto" : "smooth",
-        block: "start"
-      });
     }, direction === 0 || reducedMotion() ? 0 : 210);
   }
 
@@ -261,7 +253,8 @@
   function completeCurrentStage() {
     const stage = findStage(state.currentStageId);
     if (!stage || !validateStage(stage)) return;
-    addUnique(state.completedStageIds, stage.id);
+    markStageExplicitlyComplete(stage);
+    refreshCompletedStages(state);
     saveDraftNow();
     playSound("complete");
     updateHubStatuses();
@@ -279,7 +272,6 @@
   }
 
   function validateStage(stage) {
-    if (allowsBlankNavigation()) return true;
     for (let pageIndex = 0; pageIndex < stage.pages.length; pageIndex += 1) {
       const missing = stage.pages[pageIndex].questions.find((question) =>
         question.required && isQuestionVisible(question) && !hasValue(getQuestionValue(question))
@@ -329,7 +321,7 @@
       showPanel("questionnaire");
       renderPage(missing.pageIndex, 0);
       window.setTimeout(() => {
-        if (missing.question) showValidationError(missing.question, "Please answer this required question before submitting.");
+        if (missing.question) showValidationError(missing.question, "Please answer the required question before submitting.");
         else if (els.pageError) els.pageError.textContent = "Please review each questionnaire stage before submitting.";
       }, 20);
       return;
@@ -348,6 +340,8 @@
       else answers[question.id] = clone(value);
     });
 
+    const finalStage = findStage(state.currentStageId);
+    if (finalStage) markStageExplicitlyComplete(finalStage);
     refreshCompletedStages(state);
     storage.saveResponse({
       respondentId: state.respondentId,
@@ -455,6 +449,7 @@
       : '<span class="required-badge">Required</span>';
     const help = question.help ? `<p class="question-help">${escapeHtml(question.help)}</p>` : "";
     const choiceGridClass = question.layout === "compact" ? "choice-grid compact-choice-grid" : "choice-grid";
+    const controlId = `question-control-${question.id}`;
     let control = "";
 
     if (question.type === "radio") {
@@ -466,7 +461,8 @@
         choiceMarkup(question, option, Array.isArray(value) ? value : [], "checkbox")
       ).join("")}</div>`;
     } else if (question.type === "select") {
-      control = `<select class="select-control" data-question-id="${escapeAttr(question.id)}"><option value="">Choose an option</option>${options.map((option) =>
+      const selectClass = question.inlineControl ? "select-control inline-select-control" : "select-control";
+      control = `<select id="${escapeAttr(controlId)}" class="${selectClass}" data-question-id="${escapeAttr(question.id)}"><option value="">Choose an option</option>${options.map((option) =>
         `<option value="${escapeAttr(option.value)}" ${String(value) === String(option.value) ? "selected" : ""}>${escapeHtml(option.label)}</option>`
       ).join("")}</select>`;
     } else if (question.type === "text") {
@@ -483,7 +479,12 @@
       control = renderMatrix(question, value || {});
     }
 
-    return `<fieldset class="question-card" data-question-block="${escapeAttr(question.id)}" data-max="${question.max || ""}" data-exclusive="${escapeAttr((question.exclusiveValues || []).join(","))}"><legend><span class="question-number">${number}</span><span class="question-label">${escapeHtml(question.label)}</span>${badge}</legend>${help}${control}<p class="question-message" aria-live="polite"></p></fieldset>`;
+    const blockAttributes = `data-question-block="${escapeAttr(question.id)}" data-max="${question.max || ""}" data-exclusive="${escapeAttr((question.exclusiveValues || []).join(","))}"`;
+    if (question.type === "select" && question.inlineControl) {
+      return `<div class="question-card inline-select-question" ${blockAttributes}><div class="inline-question-heading"><span class="question-number">${number}</span><label class="question-label" for="${escapeAttr(controlId)}">${escapeHtml(question.label)}</label>${badge}</div>${help}${control}<p class="question-message" aria-live="polite"></p></div>`;
+    }
+
+    return `<fieldset class="question-card" ${blockAttributes}><legend><span class="question-number">${number}</span><span class="question-label">${escapeHtml(question.label)}</span>${badge}</legend>${help}${control}<p class="question-message" aria-live="polite"></p></fieldset>`;
   }
 
   function choiceMarkup(question, option, selectedValue, type, compact) {
@@ -596,24 +597,40 @@
     return true;
   }
 
-  function stageIsComplete(stage, candidateState) {
-    const progress = candidateState.stageProgress?.[stage.id];
-    if (!progress || stage.pages.some((page) => !(progress.visitedPageIds || []).includes(page.id))) return false;
-    if (allowsBlankNavigation()) return true;
+  function stageRequirementsMet(stage, candidateState) {
     return !stage.pages.some((page) => page.questions.some((question) =>
       question.required && isQuestionVisible(question, candidateState) && !hasValue(getQuestionValue(question, candidateState))
     ));
   }
 
+  function stageIsComplete(stage, candidateState) {
+    return Boolean(
+      candidateState.stageProgress?.[stage.id]?.explicitlyCompleted
+      && stageRequirementsMet(stage, candidateState)
+    );
+  }
+
+  function markStageExplicitlyComplete(stage) {
+    const progress = state.stageProgress[stage.id] || { visitedPageIds: [], lastPageIndex: 0 };
+    progress.explicitlyCompleted = true;
+    state.stageProgress[stage.id] = progress;
+  }
+
   function refreshCompletedStages(candidateState) {
+    survey.stages.forEach((stage) => {
+      const progress = candidateState.stageProgress?.[stage.id];
+      if (progress?.explicitlyCompleted && !stageRequirementsMet(stage, candidateState)) {
+        progress.explicitlyCompleted = false;
+      }
+    });
     candidateState.completedStageIds = survey.stages
       .filter((stage) => stageIsComplete(stage, candidateState))
       .map((stage) => stage.id);
   }
 
   function getStageStatus(stage) {
-    if (state.completedStageIds.includes(stage.id) || stageIsComplete(stage, state)) return "complete";
-    if (state.visitedStageIds.includes(stage.id) || stageHasAnswers(stage)) return "in_progress";
+    if (stageIsComplete(stage, state)) return "complete";
+    if (stageHasAnswers(stage)) return "in_progress";
     return "not_started";
   }
 
@@ -741,11 +758,6 @@
 
   function addUnique(array, value) {
     if (value && !array.includes(value)) array.push(value);
-  }
-
-  function removeValue(array, value) {
-    const index = array.indexOf(value);
-    if (index >= 0) array.splice(index, 1);
   }
 
   function parseScaleValue(value) {
