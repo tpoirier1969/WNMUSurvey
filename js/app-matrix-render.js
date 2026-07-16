@@ -57,7 +57,10 @@
     })[scaleName] || "Scale";
     return `<div class="rating-scale-key" aria-label="${escapeAttr(title)} scale">
       <strong>${escapeHtml(title)}:</strong>
-      ${scale.map((option) => `<span><b>${escapeHtml(option.value === "na" ? option.shortLabel || "Not sure" : option.value)}</b> ${escapeHtml(option.label)}</span>`).join("")}
+      ${scale.map((option) => option.value === "na"
+        ? `<span><b>${escapeHtml(option.shortLabel || option.label)}</b></span>`
+        : `<span><b>${escapeHtml(option.value)}</b> ${escapeHtml(option.label)}</span>`
+      ).join("")}
     </div>`;
   }
 
