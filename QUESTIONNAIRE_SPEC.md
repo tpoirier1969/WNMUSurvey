@@ -2,8 +2,8 @@
 
 ## 1. Release contract
 
-- Schema: `wnmu-viewer-questionnaire-v5`
-- Build: `5.2.0-test`
+- Schema: `wnmu-viewer-questionnaire-v6`
+- Build: `6.0.0-test`
 - Release date: 2026-07-16
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -11,9 +11,23 @@
 - Primary stages: About You; WNMU & You; What You Watch; What You Want; How We're Doing
 - Target core time: approximately 6–8 minutes
 
-This is a clean pre-production revision. No Supabase database or production responses exist. Prototype v4 drafts and responses are intentionally cleared rather than migrated and do not count as research data.
+This is a clean pre-production revision. No Supabase database or production responses exist. Prototype v5 drafts and responses are intentionally cleared rather than migrated and do not count as research data.
 
-## 2. Stage completion and submission
+## 2. Landing page and branding
+
+The landing page uses the official WNMU-TV logo already used by the WNMU Home project. The current source is `WNMU-TV-logo-head2019.png` in `tpoirier1969/WNMU-Programming-library`.
+
+The canonical questionnaire brand layer is `css/brand.css`. Its primary palette follows the WNMU Home visual system:
+
+- navy: `#17345f`
+- blue: `#315f8c`
+- green: `#376d5c`
+- page background: `#edf2f7`
+- border: `#d9e2ec`
+
+The landing introduction explains that WNMU-TV is beginning an ongoing process to understand viewers, earn their support, and change with their needs and viewing habits. It also tells respondents that the five stages may be completed in any order.
+
+## 3. Stage completion and submission
 
 A stage is **Not started** with no saved answers and no explicit completion, **In progress** after at least one stored answer, and **Complete** only after the respondent selects **Complete stage** and all applicable required questions are answered.
 
@@ -27,16 +41,16 @@ Required questions:
 
 Hidden answers may remain in a draft so they can reappear if routing changes, but hidden answers are excluded from submission and analytics.
 
-## 3. Rating scales and presentation
+## 4. Rating scales and presentation
 
 - Interest: `1` Not interested, `2` Slightly, `3` Moderately, `4` Very, `5` Extremely, `na` Not sure
 - Shared importance/performance scale: `1` Very low, `2` Low, `3` Moderate, `4` High, `5` Very high, `na` Unable to rate
 
 `na` and missing answers are excluded from numeric averages.
 
-Rating pages use one scale key before the first rated item. Each item then appears as a compact flat row with 1–5 and the unable-to-rate option. Rating items are separated by simple dividers rather than individual rounded cards. Importance and performance use the same user-facing scale and share one role row when both apply. This presentation rule applies on desktop and phone without horizontal page scrolling.
+Rating pages use one scale key before the first rated item. Each item appears as a compact flat row with 1–5 and the unable-to-rate option. Importance and performance use the same user-facing scale and share one role row when both apply. The role statements in Priorities and Performance use slightly larger type than other compact labels so they remain visually prominent without increasing the section footprint. The layout must not create horizontal page scrolling.
 
-## 4. Active core questionnaire
+## 5. Active core questionnaire
 
 ### Stage 1 — About You
 
@@ -56,10 +70,12 @@ Rating pages use one scale key before the first rated item. Each item then appea
 |---|---|---:|---|
 | `station_awareness` | Before today, what did you know about WNMU-TV? `local_pbs`, `station_not_pbs`, `name_only`, `not_heard` | No | Awareness |
 | `viewer_status` | Past-12-month WNMU viewing: `regular`, `occasional`, `once_twice`, `former`, `never`, `unsure` | Yes | Viewer filter and performance routing |
-| `viewing_methods` | Antenna, cable/satellite, WNMU livestream, PBS App/PBS.org, PBS Passport through WNMU-TV, YouTube TV, YouTube, not watched | Yes | Method filter; not watched is exclusive |
+| `viewing_methods` | Antenna, cable/satellite, WNMU livestream, `pbs_app`, `pbs_org`, PBS Passport through WNMU-TV, YouTube TV, YouTube, not watched | Yes | Method filter; not watched is exclusive |
 | `channel_awareness` | “WNMU-TV broadcasts four channels. Before this questionnaire, which were you aware of?” | No | Channel awareness |
 | `channels_received` | Which four WNMU-TV channels can you receive? | No | Antenna, cable/satellite, or YouTube TV users only |
-| `online_awareness` | Awareness of WNMU website/livestream, PBS App/PBS.org, Passport, PBS KIDS app, YouTube, social media | No | Online awareness |
+| `online_awareness` | Awareness of WNMU website/livestream, `pbs_org`, `pbs_app`, Passport, PBS KIDS app, YouTube, and social media | No | Online awareness |
+
+`pbs_org` and `pbs_app` are separate stored values. The PBS.org website and PBS App must never be combined into one response choice in the Access, Channels, and Online Services section.
 
 Viewer-facing channels are WNMU-TV 13.1, PBS KIDS 24/7 13.2, WNMU-TV Plus 13.3, and Michigan Learning Channel 13.4. The over-the-air reception-quality question is retired from the core.
 
@@ -109,7 +125,7 @@ The online list excludes more full episodes, larger local archive, and device co
 
 ### Stage 5 — How We're Doing
 
-Importance and performance appear together in a compact flat list. One shared key appears before the first role: `1` Very low through `5` Very high, plus Unable to rate. Each role then uses one compact role row containing the role statement, an **Importance** 1–5 control, and, when applicable, a **Performance** 1–5 control. The two controls appear side by side on wider screens and wrap only when necessary to protect phone readability and prevent horizontal scrolling. Performance is hidden after a respondent explicitly identifies as a former or never viewer. When Stage 5 is opened before viewer status has been answered, performance remains visible provisionally so it is not mistaken for missing content. No separate rounded window is used for each role.
+Importance and performance appear together in a compact flat list. One shared key appears before the first role: `1` Very low through `5` Very high, plus Unable to rate. Each role contains the role statement, an **Importance** control, and, when applicable, a **Performance** control. The controls appear side by side on wider screens and wrap when necessary to protect phone readability. Performance is hidden after a respondent explicitly identifies as a former or never viewer. When Stage 5 is opened before viewer status has been answered, performance remains visible provisionally.
 
 | ID | Wording / values | Required | Routing / analytics |
 |---|---|---:|---|
@@ -135,7 +151,7 @@ Station roles:
 
 The former separate history role is removed. A future optional module will separately measure demand for original WNMU-TV Upper Peninsula production.
 
-## 5. Optional follow-up questionnaires
+## 6. Optional follow-up questionnaires
 
 After successful core submission, the thank-you screen offers placeholder buttons for:
 
@@ -149,7 +165,7 @@ Each button currently opens `follow-up.html` with a module query parameter. The 
 
 Future production follow-ups will use the same pseudonymous respondent ID plus a long opaque continuation token. Optional email delivery will be separate from answer records and will not be required. Follow-up respondents are self-selected and must be reported with their own denominators.
 
-## 6. Storage and analytics
+## 7. Storage and analytics
 
 Drafts and responses record schema/build/mode, respondent ID, campaign, survey part, timestamps, route profile, answers, visible question IDs, and completed stages. Core answer records contain no name or email address.
 
@@ -160,10 +176,10 @@ Analytics rules:
 - Keep `na`, unable-to-rate, not sure, and prefer not distinct from numeric or negative responses.
 - Calculate each respondent's importance-performance gap first, then average paired gaps.
 - Keep synthetic responses visibly marked and separate from real responses.
-- Load only v5 records into the v5 local results dashboard.
+- Load only v6 records into the v6 local results dashboard.
 
-The 5.2 interface revision gives importance and performance the same respondent-facing 1–5 anchors and combines both controls into one role row. Stored numeric values, question IDs, categories, routing, paired-gap calculations, exports, and schema remain unchanged. Existing pre-production test values remain numerically compatible.
+The v6 schema replaces the combined `pbs_app_web` test value in Stage 2 with separate `pbs_app` and `pbs_org` values. Prototype v5 drafts and responses are cleared rather than reinterpreted.
 
-## 7. Production checklist
+## 8. Production checklist
 
-Before public release: switch the authoritative mode to production; disable blank navigation; confirm required/optional policy; verify station, channel, PBS App, and Passport facts; connect the approved database; protect results; publish privacy, retention, and withdrawal information; implement secure continuation tokens and optional email delivery; prevent synthetic data from becoming live; and complete phone/desktop, keyboard, focus, reduced-motion, routing, draft, submission, follow-up, results, import, and export QA.
+Before public release: switch the authoritative mode to production; disable blank navigation; confirm required/optional policy; verify station, channel, PBS.org, PBS App, and Passport facts; connect the approved database; protect results; publish privacy, retention, and withdrawal information; implement secure continuation tokens and optional email delivery; prevent synthetic data from becoming live; copy the official logo into the production asset set rather than relying on an external raw-file URL; and complete phone/desktop, keyboard, focus, reduced-motion, routing, draft, submission, follow-up, results, import, and export QA.
