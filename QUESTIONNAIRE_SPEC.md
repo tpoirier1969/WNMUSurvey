@@ -3,7 +3,7 @@
 ## 1. Release contract
 
 - Schema: `wnmu-viewer-questionnaire-v5`
-- Build: `5.1.0-test`
+- Build: `5.2.0-test`
 - Release date: 2026-07-16
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -30,12 +30,11 @@ Hidden answers may remain in a draft so they can reappear if routing changes, bu
 ## 3. Rating scales and presentation
 
 - Interest: `1` Not interested, `2` Slightly, `3` Moderately, `4` Very, `5` Extremely, `na` Not sure
-- Importance: `1` Not important, `2` Slightly, `3` Moderately, `4` Very, `5` Essential, `na` Not sure
-- Performance: `1` Poor, `2` Weak, `3` Adequate, `4` Good, `5` Excellent, `na` Not familiar enough to rate
+- Shared importance/performance scale: `1` Very low, `2` Low, `3` Moderate, `4` High, `5` Very high, `na` Unable to rate
 
 `na` and missing answers are excluded from numeric averages.
 
-Rating pages use one scale key before the first rated item. Each item then appears as a compact flat row with 1–5 and the applicable not-sure or not-familiar option. Rating items are separated by simple dividers rather than individual rounded cards. Importance and performance share the same role row when both apply. This presentation rule applies on desktop and phone without horizontal scrolling.
+Rating pages use one scale key before the first rated item. Each item then appears as a compact flat row with 1–5 and the unable-to-rate option. Rating items are separated by simple dividers rather than individual rounded cards. Importance and performance use the same user-facing scale and share one role row when both apply. This presentation rule applies on desktop and phone without horizontal page scrolling.
 
 ## 4. Active core questionnaire
 
@@ -110,7 +109,7 @@ The online list excludes more full episodes, larger local archive, and device co
 
 ### Stage 5 — How We're Doing
 
-Importance and performance appear together in a compact flat list. One importance key and one performance key appear before the first role. Each role then shows the role statement, an **Importance** 1–5 row with Not sure, and, when applicable, a **Performance** 1–5 row with Not familiar. Performance is hidden after a respondent explicitly identifies as a former or never viewer. When Stage 5 is opened before viewer status has been answered, performance remains visible provisionally so it is not mistaken for missing content. No separate rounded window is used for each role and no horizontal scrolling is permitted.
+Importance and performance appear together in a compact flat list. One shared key appears before the first role: `1` Very low through `5` Very high, plus Unable to rate. Each role then uses one compact role row containing the role statement, an **Importance** 1–5 control, and, when applicable, a **Performance** 1–5 control. The two controls appear side by side on wider screens and wrap only when necessary to protect phone readability and prevent horizontal scrolling. Performance is hidden after a respondent explicitly identifies as a former or never viewer. When Stage 5 is opened before viewer status has been answered, performance remains visible provisionally so it is not mistaken for missing content. No separate rounded window is used for each role.
 
 | ID | Wording / values | Required | Routing / analytics |
 |---|---|---:|---|
@@ -158,12 +157,12 @@ Analytics rules:
 
 - Use only respondents who answered each question as its denominator.
 - Exclude skipped and hidden answers.
-- Keep `na`, not familiar, not sure, and prefer not distinct from numeric or negative responses.
+- Keep `na`, unable-to-rate, not sure, and prefer not distinct from numeric or negative responses.
 - Calculate each respondent's importance-performance gap first, then average paired gaps.
 - Keep synthetic responses visibly marked and separate from real responses.
 - Load only v5 records into the v5 local results dashboard.
 
-The 5.1 interface revision changes only presentation and provisional display while routing is unresolved. Question IDs, stored values, categories, scales, analytics calculations, exports, and schema remain unchanged.
+The 5.2 interface revision gives importance and performance the same respondent-facing 1–5 anchors and combines both controls into one role row. Stored numeric values, question IDs, categories, routing, paired-gap calculations, exports, and schema remain unchanged. Existing pre-production test values remain numerically compatible.
 
 ## 7. Production checklist
 
