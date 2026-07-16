@@ -3,8 +3,8 @@
 ## 1. Current release contract
 
 - **Questionnaire/schema version:** `wnmu-viewer-questionnaire-v4`
-- **Interface/build version:** `4.1.0-test`
-- **Release date:** 2026-07-15
+- **Interface/build version:** `4.2.0-test`
+- **Release date:** 2026-07-16
 - **Active mode:** Test
 - **Campaign:** `viewer-questionnaire-2026`
 - **Survey part:** `core`
@@ -13,11 +13,17 @@
 - **Canonical runtime definition:** `js/questions.js`
 - **Canonical mode/version configuration:** `js/config.js`
 
-Test mode allows blank page navigation and blank submission, but it does not delete or mutate routing conditions. Production mode must disable those allowances before public release.
+Test mode allows blank page navigation and blank submission, but it does not delete or mutate routing conditions. Test-mode navigation does not itself mark a stage in progress or complete. Production mode must disable blank navigation and blank submission before public release.
 
 ## 2. Stage and completion behavior
 
-A stage is **Not started** when it has not been visited and contains no saved answers. It is **In progress** after it is visited or receives an answer. It is **Complete** after every page in that stage has been visited and all currently applicable required questions are answered. In test mode, visiting every page is sufficient because blank navigation is explicitly allowed.
+A stage is **Not started** when it contains no saved answers and has not been explicitly completed. Merely opening a stage or visiting its pages does not change that status.
+
+A stage is **In progress** after at least one currently stored answer exists in that stage.
+
+A stage is **Complete** only after the respondent explicitly uses the stage-completion control and all currently applicable required questions in that stage are answered. Test mode may permit blank navigation, but it does not waive required answers for explicit stage completion. The final stage is explicitly completed by submitting the questionnaire.
+
+Drafts store explicit stage completion separately from page visits. Older test drafts that were automatically marked complete by page visits do not retain that false completion state.
 
 Changing an earlier routing answer may hide later questions. Hidden answers may remain in a draft so they can reappear if the respondent changes back, but hidden answers are excluded from the submitted response and from analytics.
 
@@ -31,7 +37,11 @@ All other questions are optional.
 
 ### Current interaction decisions
 
-- The About You stage uses visible radio-choice cards for county/region and age range rather than collapsed dropdown menus.
+- `county_region` uses a compact dropdown labeled “What county or area do you live in?” The dropdown remains on the question line when space permits and stacks below on narrow screens.
+- Dropdowns are reserved for long single-choice lists. Short single-choice questions remain visible radio choices; multiple-choice questions remain checkboxes; rating scales remain visible.
+- Age range remains a visible radio-choice group.
+- Routine stage-page navigation, Previous/Next controls, routing rerenders, and page tabs preserve the overall working-page position instead of forcing the questionnaire panel to the top of the viewport.
+- Automatic scrolling remains appropriate for validation errors that must bring a missing required answer into view.
 - Importance and performance are presented together by station role in How We're Doing.
 - The paired presentation continues to store importance under `importance_roles` and performance under `performance_roles`.
 - Respondents who are not eligible for performance routing see the importance rating only.
@@ -67,9 +77,9 @@ Labels: Poor; Weak; Adequate; Good; Excellent; Not familiar enough to rate.
 
 | ID | Wording / purpose | Type and stored values | Required | Routing | Results / compatibility |
 |---|---|---|---|---|---|
-| `county_region` | Where do you live? Identifies broad service geography without requiring a precise address. | Visible radio-choice cards: `alger`, `baraga`, `chippewa`, `delta`, `dickinson`, `gogebic`, `houghton`, `iron`, `keweenaw`, `luce`, `mackinac`, `marquette`, `menominee`, `ontonagon`, `schoolcraft`, `northern_wi`, `other_mi`, `other_state`, `canada`, `prefer_not` | No | All | Geography filter and location distribution. Retained meaning, ID, and stored values. Display changed from select to visible choices. |
+| `county_region` | What county or area do you live in? Identifies broad service geography without requiring a precise address. | Select dropdown: `alger`, `baraga`, `chippewa`, `delta`, `dickinson`, `gogebic`, `houghton`, `iron`, `keweenaw`, `luce`, `mackinac`, `marquette`, `menominee`, `ontonagon`, `schoolcraft`, `northern_wi`, `other_mi`, `other_state`, `canada`, `prefer_not` | No | All | Geography filter and location distribution. Retained meaning, ID, and stored values. Display changed back to a dropdown. |
 | `community_type` | Which best describes where you live? Separates urban, town, rural, and remote needs. | Radio: `city`, `small_town`, `village`, `rural`, `remote`, `prefer_not` | No | All | Access and rural comparison. Retained meaning and ID. |
-| `age_range` | Age range. | Visible radio-choice cards: `under_18`, `18_24`, `25_34`, `35_44`, `45_54`, `55_64`, `65_74`, `75_84`, `85_plus`, `prefer_not` | No | All | Demographic filter and distribution. Retained meaning, ID, and stored values. Display changed from select to visible choices. |
+| `age_range` | Age range. | Visible radio-choice cards: `under_18`, `18_24`, `25_34`, `35_44`, `45_54`, `55_64`, `65_74`, `75_84`, `85_plus`, `prefer_not` | No | All | Demographic filter and distribution. Retained meaning, ID, and stored values. |
 | `internet_quality` | How would you describe home internet service? Measures practical online access. | Radio: `fast`, `adequate`, `slow`, `unreliable`, `expensive`, `cell_sat`, `none`, `prefer_not` | No | All | Access analysis and online-barrier comparisons. Retained meaning. |
 | `children_role` | Do you select or recommend programming for children? Controls child-content questions. | Profile radio: `household`, `educator`, `both`, `neither` | **Yes** | All | Children-role filter and routing. Retained ID and meaning. |
 
@@ -230,8 +240,9 @@ Drafts record:
 - mode, campaign, and survey part
 - random pseudonymous respondent ID
 - current stage and page
-- visited and completed stages
-- per-stage progress
+- visited stages
+- explicitly completed stages
+- per-stage progress, including page visits, last page, and explicit-completion state
 - route profile
 - answers
 - started and updated timestamps
