@@ -8,4 +8,5 @@
     "js/results-copy.js",
     "js/results-data.js"
   ].forEach((src) => document.write(`<script src="${src}"><\/script>`));
+  document.addEventListener("DOMContentLoaded", () => init());
 })();
