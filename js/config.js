@@ -2,17 +2,17 @@
   "use strict";
 
   window.WNMU_CONFIG = Object.freeze({
-    schemaVersion: "wnmu-viewer-questionnaire-v5",
-    buildVersion: "5.2.0-test",
+    schemaVersion: "wnmu-viewer-questionnaire-v6",
+    buildVersion: "6.0.0-test",
     releaseDate: "2026-07-16",
     mode: "test",
     modeLabel: "Test Mode",
     campaign: "viewer-questionnaire-2026",
     surveyPart: "core",
     storageKeys: Object.freeze({
-      draft: "wnmuViewerSurveyDraft:v5",
+      draft: "wnmuViewerSurveyDraft:v6",
       legacyDrafts: Object.freeze([]),
-      responses: "wnmuViewerSurveyResponses:v2",
+      responses: "wnmuViewerSurveyResponses:v3",
       respondentId: "wnmuViewerRespondentId:v1",
       sound: "wnmuViewerSound:v1"
     }),
