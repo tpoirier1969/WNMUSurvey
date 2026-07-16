@@ -83,9 +83,9 @@
             questions: [
               {
                 id: "county_region",
-                type: "radio",
-                layout: "compact",
-                label: "Where do you live?",
+                type: "select",
+                inlineControl: true,
+                label: "What county or area do you live in?",
                 optionalLabel: true,
                 options: [
                   { value: "alger", label: "Alger County" },
