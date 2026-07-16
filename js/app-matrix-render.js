@@ -33,6 +33,7 @@
       && (isQuestionVisible(performanceQuestion) || !viewerStatusKnown)
     );
     const performanceValues = performanceQuestion ? getQuestionValue(performanceQuestion) || {} : {};
+    const compactScaleStyle = "grid-template-columns:repeat(5,minmax(30px,1fr)) minmax(58px,1.35fr);gap:2px";
 
     return `<div class="paired-matrix-flat">
       <div class="paired-scale-key">
@@ -47,11 +48,11 @@
           <div class="paired-rating-combined" style="display:flex;flex-wrap:wrap;gap:6px 12px;min-width:0">
             <div class="paired-rating-line" role="group" aria-labelledby="${escapeAttr(importanceLabelId)}" style="flex:1 1 300px;grid-template-columns:74px minmax(0,1fr);gap:6px">
               <span id="${escapeAttr(importanceLabelId)}" class="paired-rating-prompt">Importance</span>
-              <div class="paired-number-scale">${pairedScaleChoices(importanceQuestion, row, importanceValues[row.id], "importance")}</div>
+              <div class="paired-number-scale" style="${compactScaleStyle}">${pairedScaleChoices(importanceQuestion, row, importanceValues[row.id], "importance")}</div>
             </div>
             ${showPerformance ? `<div class="paired-rating-line" role="group" aria-labelledby="${escapeAttr(performanceLabelId)}" style="flex:1 1 300px;grid-template-columns:74px minmax(0,1fr);gap:6px">
               <span id="${escapeAttr(performanceLabelId)}" class="paired-rating-prompt">Performance</span>
-              <div class="paired-number-scale">${pairedScaleChoices(performanceQuestion, row, performanceValues[row.id], "performance")}</div>
+              <div class="paired-number-scale" style="${compactScaleStyle}">${pairedScaleChoices(performanceQuestion, row, performanceValues[row.id], "performance")}</div>
             </div>` : ""}
           </div>
         </section>`;
