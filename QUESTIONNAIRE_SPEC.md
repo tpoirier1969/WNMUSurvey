@@ -3,7 +3,7 @@
 ## 1. Release contract
 
 - Schema: `wnmu-viewer-questionnaire-v6`
-- Build: `6.0.0-test`
+- Build: `6.0.1-test`
 - Release date: 2026-07-16
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -26,6 +26,8 @@ The canonical questionnaire brand layer is `css/brand.css`. Its primary palette 
 - border: `#d9e2ec`
 
 The landing introduction explains that WNMU-TV is beginning an ongoing process to understand viewers, earn their support, and change with their needs and viewing habits. It also tells respondents that the five stages may be completed in any order.
+
+On screens wider than 900 pixels, the stage cards must begin below the complete landing introduction with visible separation. The cards, saved-draft panel, ready-to-submit panel, questionnaire facts, and footer must not overlap. At 900 pixels and below, those elements remain in document flow and the ready-to-submit panel occupies its own grid row.
 
 ## 3. Stage completion and submission
 
