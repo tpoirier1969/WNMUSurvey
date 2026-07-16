@@ -16,6 +16,12 @@ The core questionnaire targets approximately 6–8 minutes. Drafts save automati
 
 Every stage uses **Complete stage**. Finishing the numerically final stage does not submit the questionnaire. After all five stages are complete, the stage hub displays **Submit questionnaire**. The thank-you screen appears only after the response has been stored successfully.
 
+## Landing page and brand
+
+The landing page uses the official WNMU-TV logo referenced by WNMU Home from the WNMU Programming Library. `css/brand.css` is the canonical questionnaire branding layer and aligns the app with the WNMU Home navy, blue, green, background, and border palette.
+
+The current test page references the logo through the Programming Library raw-file URL. Before public production, copy that logo into the production asset set so the questionnaire does not depend on another repository at runtime.
+
 ## Optional follow-up questionnaires
 
 After core submission, respondents may choose optional topic modules about:
@@ -44,14 +50,14 @@ Run `OPEN-RESULTS.bat`, then open:
 http://localhost:8765/results.html
 ```
 
-The results page begins with 25 clearly marked synthetic responses aligned with the v5 schema. **Use submitted browser responses** loads v5 questionnaires submitted in that browser.
+The results page begins with 25 clearly marked synthetic responses aligned with the v6 schema. **Use submitted browser responses** loads v6 questionnaires submitted in that browser.
 
 ## Active mode and versions
 
 The authoritative configuration is `js/config.js`.
 
-- schema: `wnmu-viewer-questionnaire-v5`
-- build: `5.0.0-test`
+- schema: `wnmu-viewer-questionnaire-v6`
+- build: `6.0.0-test`
 - mode: Test
 - release date: 2026-07-16
 
@@ -59,19 +65,19 @@ Test mode allows blank page navigation. It does not allow submission until all s
 
 ## Clean pre-production reset
 
-No Supabase database or production response collection is active. Prototype v4 drafts and responses do not count as research data and are intentionally cleared rather than migrated into v5.
+No Supabase database or production response collection is active. Prototype v5 drafts and responses do not count as research data and are intentionally cleared rather than migrated into v6.
 
 Current browser-storage keys:
 
-- draft: `wnmuViewerSurveyDraft:v5`
-- responses: `wnmuViewerSurveyResponses:v2`
+- draft: `wnmuViewerSurveyDraft:v6`
+- responses: `wnmuViewerSurveyResponses:v3`
 - respondent ID: `wnmuViewerRespondentId:v1`
 
 ## Canonical files
 
 - `js/config.js`: mode, versions, campaign, follow-up configuration, and storage keys
 - `js/questions-foundation.js`: shared scales and About You definitions
-- `js/questions-wnmu.js`: WNMU & You definitions
+- `js/questions-wnmu.js`: WNMU & You definitions, including separate PBS.org and PBS App values
 - `js/questions-programming.js`: What You Watch and What You Want definitions
 - `js/questions-final.js`: How We're Doing, shared roles, follow-up modules, and final survey assembly
 - `js/app-core.js`: shared application state, routing helpers, status, save, and sound
@@ -85,7 +91,8 @@ Current browser-storage keys:
 - `js/results-summary-render.js`: audience, channel, programming, and comment summaries
 - `js/results-gap-render.js`: paired importance/performance analysis
 - `js/results-export.js`: JSON and CSV export
-- `js/results-data.js`: synthetic v5 responses and results initialization
+- `js/results-data.js`: synthetic v6 responses and results initialization
+- `css/brand.css`: official logo treatment and WNMU Home-aligned visual palette
 - `QUESTIONNAIRE_SPEC.md`: living questionnaire blueprint and analytics contract
 - `follow-up.html`: temporary landing page for future optional modules
 
@@ -97,6 +104,7 @@ The placeholder follow-up page does not collect additional information. No email
 
 Before public launch:
 
+- copy the official logo into the production asset set
 - connect the approved production database
 - protect the results dashboard
 - publish the approved privacy disclosure
@@ -104,4 +112,4 @@ Before public launch:
 - implement optional email delivery separately from answer records
 - disable blank test navigation
 - prevent synthetic data from becoming the live source
-- verify official station, channel, PBS App, and Passport wording
+- verify official station, channel, PBS.org, PBS App, and Passport wording
