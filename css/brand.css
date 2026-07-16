@@ -72,6 +72,27 @@
   font-weight: 760;
 }
 
+/* The fuller landing introduction needs its own measured vertical space. */
+@media (min-width: 901px) {
+  .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
+    min-height: 980px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
+    top: 400px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .welcome-panel,
+  .approved-stage-interface .survey-frame[data-view="hub"]:has(.submit-ready-panel:not([hidden])) .welcome-panel {
+    min-height: 1180px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
+  .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
+    top: 780px;
+  }
+}
+
 .approved-stage-interface .stage-blue {
   --stage: #315f8c;
   --dark: #17345f;
@@ -126,6 +147,27 @@
 .approved-stage-interface .paired-role-row h3 {
   font-size: 0.98rem;
   line-height: 1.22;
+}
+
+@media (max-width: 900px) {
+  .approved-stage-interface .survey-frame {
+    grid-template-areas:
+      "brand sound"
+      "welcome welcome"
+      "stages stages"
+      "resume resume"
+      "submit submit"
+      "facts facts"
+      "questionnaire questionnaire"
+      "complete complete"
+      "footer footer";
+  }
+
+  .approved-stage-interface .submit-ready-panel {
+    grid-area: submit;
+    width: 100%;
+    margin: 8px 0 16px;
+  }
 }
 
 @media (max-width: 680px) {
