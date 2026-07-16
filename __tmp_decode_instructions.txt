@@ -1,1 +1,0 @@
-Finalization will replace canonical files from validated blobs and remove all __tmp files.

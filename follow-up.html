@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Placeholder for optional WNMU-TV follow-up questionnaires." />
+  <meta name="theme-color" content="#ffffff" />
+  <title>WNMU-TV Follow-up Questionnaires</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/questionnaire-revision.css" />
+  <link rel="stylesheet" href="css/phone-layout.css" />
+</head>
+<body class="public-survey-page">
+  <a class="skip-link" href="#followUpMain">Skip to follow-up information</a>
+  <main id="followUpMain" class="followup-placeholder-shell">
+    <section class="app-panel" aria-labelledby="followUpTitle">
+      <p class="eyebrow">Optional WNMU-TV follow-up</p>
+      <h1 id="followUpTitle">This questionnaire is being prepared.</h1>
+      <p class="lead" id="moduleDescription">The optional follow-up questionnaires will let viewers share more detail without making the main questionnaire longer.</p>
+
+      <ul class="followup-placeholder-list">
+        <li><strong>Your main questionnaire is already complete.</strong> Opening this page does not change or replace that response.</li>
+        <li><strong>No additional answers are collected here yet.</strong> This is a temporary landing page while the topic questionnaires are developed.</li>
+        <li><strong>Future follow-ups will be optional.</strong> They will be linked through a random pseudonymous respondent ID rather than requiring an email address.</li>
+      </ul>
+
+      <div class="button-row">
+        <a class="button primary" href="index.html">Return to the main questionnaire</a>
+        <a class="button secondary" href="follow-up.html">View the follow-up landing page</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+      const modules = {
+        "local-programming": ["Local and Upper Peninsula programming", "This future module will ask about regional subjects, outside producers, and demand for more original WNMU-TV production."],
+        "programming-ideas": ["Programming interests and ideas", "This future module will collect more detailed program subjects, examples, and priorities."],
+        "online-viewing": ["Online viewing, PBS App, and Passport", "This future module will explore online viewing habits, barriers, the PBS App, and PBS Passport."],
+        "children-education": ["Children's programming and education", "This future module will ask households, educators, librarians, and childcare providers about children's content and educational resources."],
+        "communication": ["Communication and finding programs", "This future module will explore how viewers discover programs and how WNMU-TV should communicate with them."]
+      };
+      const requested = new URLSearchParams(window.location.search).get("module");
+      const module = modules[requested];
+      if (!module) return;
+      document.title = `${module[0]} | WNMU-TV Follow-up`;
+      document.getElementById("followUpTitle").textContent = module[0];
+      document.getElementById("moduleDescription").textContent = module[1];
+    })();
+  </script>
+</body>
+</html>

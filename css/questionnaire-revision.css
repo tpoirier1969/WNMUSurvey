@@ -1,4 +1,4 @@
-/* Questionnaire revision: readable matrices, channel descriptions, and stable responsive controls. */
+/* Questionnaire revision: readable matrices, compact paired ratings, and stable responsive controls. */
 .matrix-wrap {
   overflow: visible;
   border: 0;
@@ -93,65 +93,13 @@
   line-height: 1.4;
 }
 
-[data-question-block="program_interest"] .matrix-card-table tbody tr {
+[data-question-block="program_category_interest"] .matrix-card-table tbody tr {
   break-inside: avoid;
 }
 
-/* Age range remains a visible compact choice group. */
+/* Short and medium single-choice lists can use a denser grid. */
 .question-card .choice-grid.compact-choice-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-/* Importance and performance are paired by station role without creating a wide matrix. */
-.paired-matrix {
-  display: grid;
-  gap: 16px;
-  margin-top: 18px;
-}
-
-.paired-rating-note {
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 0.88rem;
-}
-
-.paired-role-card {
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: #fbfcfc;
-}
-
-.paired-role-card h3 {
-  margin: 0 0 16px;
-  color: var(--navy);
-  font-size: 1rem;
-  line-height: 1.4;
-}
-
-.paired-rating-groups {
-  display: grid;
-  gap: 18px;
-}
-
-.paired-rating-group + .paired-rating-group {
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-}
-
-.paired-rating-group h4 {
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 0.84rem;
-  line-height: 1.35;
-}
-
-.paired-rating-group .paired-scale-row {
-  margin-top: 10px;
-}
-
-.paired-scale-choice {
-  min-width: 0;
 }
 
 /* Long single-choice lists can use a compact inline select on wider screens. */
@@ -179,21 +127,241 @@
   grid-column: 1 / -1;
 }
 
+/* Importance and performance are paired in one flat list, without a box around every role. */
+.paired-question-block {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.paired-question-heading {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: start;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.paired-question-heading .question-label {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
+.paired-question-block > .question-help {
+  margin: 10px 0 0 43px;
+}
+
+.paired-matrix-flat {
+  margin-top: 12px;
+}
+
+.paired-scale-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 10px 0 13px;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.paired-role-row {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.paired-role-row:first-of-type {
+  border-top: 0;
+}
+
+.paired-role-row h4 {
+  margin: 0 0 12px;
+  color: var(--navy);
+  font-size: 0.98rem;
+  line-height: 1.4;
+}
+
+.paired-rating-line {
+  display: grid;
+  grid-template-columns: minmax(150px, 190px) minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.paired-rating-line + .paired-rating-line {
+  margin-top: 10px;
+}
+
+.paired-rating-prompt {
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.paired-number-scale {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(42px, 1fr)) minmax(92px, 1.5fr);
+  gap: 6px;
+}
+
+.approved-stage-interface .paired-number-scale .paired-scale-choice,
+.paired-number-scale .paired-scale-choice {
+  min-width: 0;
+  min-height: 38px;
+  justify-content: center;
+  padding: 5px 4px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  box-shadow: none;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.approved-stage-interface .paired-number-scale .paired-scale-choice:hover,
+.paired-number-scale .paired-scale-choice:hover {
+  border: 0;
+  background: #f5f8f9;
+  box-shadow: none;
+}
+
+.approved-stage-interface .paired-number-scale .paired-scale-choice:has(input:checked),
+.paired-number-scale .paired-scale-choice:has(input:checked) {
+  border: 0;
+  border-radius: 7px;
+  background: var(--lake-light);
+  box-shadow: inset 0 0 0 2px var(--lake);
+}
+
+.paired-scale-choice input {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+}
+
+/* Hub submission is separate from completing the numerically final stage. */
+.submit-ready-panel {
+  max-width: 880px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px auto 0;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 8px 20px rgba(14, 44, 61, 0.09);
+  text-align: left;
+}
+
+.submit-ready-panel > div:first-child {
+  min-width: 0;
+}
+
+.submit-ready-panel strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.submit-ready-panel p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* Completion screen and placeholder follow-up choices. */
+.completion-followups {
+  max-width: 900px;
+  margin: 28px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+
+.completion-followups h3 {
+  margin-bottom: 6px;
+}
+
+.completion-followups > p {
+  color: var(--ink-soft);
+}
+
+.followup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.followup-module-button {
+  width: 100%;
+  justify-content: space-between;
+  border-radius: 14px;
+  text-align: left;
+}
+
+.followup-module-button small {
+  flex: 0 0 auto;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.followup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.followup-copy-status {
+  min-height: 1.3em;
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.followup-placeholder-shell {
+  width: min(calc(100% - 28px), 900px);
+  margin: 42px auto;
+}
+
+.followup-placeholder-list {
+  display: grid;
+  gap: 12px;
+  margin: 22px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.followup-placeholder-list li {
+  padding: 14px 16px;
+  border-left: 4px solid var(--lake);
+  background: var(--lake-light);
+}
+
+
+@media (min-width: 901px) {
+  .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
+    position: absolute;
+    z-index: 14;
+    top: 668px;
+    left: 50%;
+    width: min(calc(100% - 84px), 880px);
+    margin: 0;
+    transform: translateX(-50%);
+  }
+}
+
 @media (max-width: 680px) {
   .question-card .choice-grid.compact-choice-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .paired-role-card {
-    padding: 14px 12px;
-  }
-
-  .paired-rating-groups {
-    gap: 15px;
-  }
-
-  .paired-rating-group + .paired-rating-group {
-    padding-top: 15px;
   }
 
   .inline-select-question {
@@ -202,6 +370,58 @@
 
   .inline-select-question .inline-select-control {
     margin-top: 4px;
+  }
+
+  .paired-question-heading {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+
+  .paired-question-heading .optional-badge,
+  .paired-question-heading .required-badge {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .paired-question-block > .question-help {
+    margin-left: 0;
+  }
+
+  .paired-role-row {
+    padding: 16px 0;
+  }
+
+  .paired-rating-line {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .paired-number-scale {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .paired-scale-choice {
+    min-height: 48px;
+  }
+
+  .submit-ready-panel {
+    align-items: stretch;
+  }
+
+  .submit-ready-panel .button-row,
+  .submit-ready-panel .button {
+    width: 100%;
+  }
+
+  .followup-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .followup-module-button {
+    min-height: 56px;
+  }
+
+  .followup-actions .button {
+    width: 100%;
   }
 }
 
