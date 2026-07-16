@@ -1,5 +1,14 @@
 "use strict";
 
+  const SHARED_EVALUATION_SCALE = [
+    { value: 1, label: "Very low", shortLabel: "1" },
+    { value: 2, label: "Low", shortLabel: "2" },
+    { value: 3, label: "Moderate", shortLabel: "3" },
+    { value: 4, label: "High", shortLabel: "4" },
+    { value: 5, label: "Very high", shortLabel: "5" },
+    { value: "na", label: "Unable to rate", shortLabel: "N/A" }
+  ];
+
   function renderMatrix(question, values) {
     const scale = survey.scales[question.scale];
     return `<div class="matrix-flat">
@@ -27,23 +36,24 @@
 
     return `<div class="paired-matrix-flat">
       <div class="paired-scale-key">
-        ${renderScaleKey(survey.scales[importanceQuestion.scale], "importance")}
-        ${showPerformance ? renderScaleKey(survey.scales[performanceQuestion.scale], "performance") : ""}
+        ${renderSharedEvaluationKey(showPerformance)}
       </div>
       ${importanceQuestion.rows.map((row, index) => {
         const rowLabelId = `paired-role-${index}-${row.id}`;
         const importanceLabelId = `${rowLabelId}-importance`;
         const performanceLabelId = `${rowLabelId}-performance`;
         return `<section class="paired-role-row" aria-labelledby="${escapeAttr(rowLabelId)}">
-          <h3 id="${escapeAttr(rowLabelId)}">${escapeHtml(row.label)}</h3>
-          <div class="paired-rating-line" role="group" aria-labelledby="${escapeAttr(importanceLabelId)}">
-            <span id="${escapeAttr(importanceLabelId)}" class="paired-rating-prompt">Importance</span>
-            <div class="paired-number-scale">${pairedScaleChoices(importanceQuestion, row, importanceValues[row.id], "importance")}</div>
+          <h3 id="${escapeAttr(rowLabelId)}" style="grid-row:auto">${escapeHtml(row.label)}</h3>
+          <div class="paired-rating-combined" style="display:flex;flex-wrap:wrap;gap:6px 12px;min-width:0">
+            <div class="paired-rating-line" role="group" aria-labelledby="${escapeAttr(importanceLabelId)}" style="flex:1 1 300px;grid-template-columns:74px minmax(0,1fr);gap:6px">
+              <span id="${escapeAttr(importanceLabelId)}" class="paired-rating-prompt">Importance</span>
+              <div class="paired-number-scale">${pairedScaleChoices(importanceQuestion, row, importanceValues[row.id], "importance")}</div>
+            </div>
+            ${showPerformance ? `<div class="paired-rating-line" role="group" aria-labelledby="${escapeAttr(performanceLabelId)}" style="flex:1 1 300px;grid-template-columns:74px minmax(0,1fr);gap:6px">
+              <span id="${escapeAttr(performanceLabelId)}" class="paired-rating-prompt">Performance</span>
+              <div class="paired-number-scale">${pairedScaleChoices(performanceQuestion, row, performanceValues[row.id], "performance")}</div>
+            </div>` : ""}
           </div>
-          ${showPerformance ? `<div class="paired-rating-line" role="group" aria-labelledby="${escapeAttr(performanceLabelId)}">
-            <span id="${escapeAttr(performanceLabelId)}" class="paired-rating-prompt">Performance</span>
-            <div class="paired-number-scale">${pairedScaleChoices(performanceQuestion, row, performanceValues[row.id], "performance")}</div>
-          </div>` : ""}
         </section>`;
       }).join("")}
     </div>`;
@@ -64,6 +74,16 @@
     </div>`;
   }
 
+  function renderSharedEvaluationKey(showPerformance) {
+    const appliesTo = showPerformance ? "Importance and performance" : "Importance";
+    return `<div class="rating-scale-key" aria-label="Shared ${escapeAttr(appliesTo.toLowerCase())} scale">
+      <strong>${escapeHtml(appliesTo)}:</strong>
+      ${SHARED_EVALUATION_SCALE.map((option) =>
+        `<span><b>${escapeHtml(option.shortLabel)}</b> ${escapeHtml(option.label)}</span>`
+      ).join("")}
+    </div>`;
+  }
+
   function matrixScaleChoices(question, row, selectedValue) {
     return survey.scales[question.scale].map((option) => {
       const checked = String(selectedValue) === String(option.value);
@@ -73,11 +93,10 @@
   }
 
   function pairedScaleChoices(question, row, selectedValue, ratingKind) {
-    return survey.scales[question.scale].map((option) => {
+    return SHARED_EVALUATION_SCALE.map((option) => {
       const checked = String(selectedValue) === String(option.value);
       const progressRowId = `${question.id}__${row.id}`;
-      const visible = option.shortLabel || option.value;
       const prompt = ratingKind === "importance" ? "importance" : "WNMU-TV performance";
-      return `<label class="rating-choice"><input type="radio" name="${escapeAttr(question.id)}__${escapeAttr(row.id)}" value="${escapeAttr(option.value)}" data-question-id="${escapeAttr(question.id)}" data-row-id="${escapeAttr(progressRowId)}" data-answer-row-id="${escapeAttr(row.id)}" ${checked ? "checked" : ""} /><span aria-hidden="true">${escapeHtml(visible)}</span><span class="sr-only">${escapeHtml(row.label)}, ${prompt}: ${escapeHtml(option.label)}</span></label>`;
+      return `<label class="rating-choice"><input type="radio" name="${escapeAttr(question.id)}__${escapeAttr(row.id)}" value="${escapeAttr(option.value)}" data-question-id="${escapeAttr(question.id)}" data-row-id="${escapeAttr(progressRowId)}" data-answer-row-id="${escapeAttr(row.id)}" ${checked ? "checked" : ""} /><span aria-hidden="true">${escapeHtml(option.shortLabel)}</span><span class="sr-only">${escapeHtml(row.label)}, ${prompt}: ${escapeHtml(option.label)}</span></label>`;
     }).join("");
   }
