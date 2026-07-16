@@ -97,7 +97,7 @@
   break-inside: avoid;
 }
 
-/* About You uses visible choices rather than collapsed select menus. */
+/* Age range remains a visible compact choice group. */
 .question-card .choice-grid.compact-choice-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -154,6 +154,31 @@
   min-width: 0;
 }
 
+/* Long single-choice lists can use a compact inline select on wider screens. */
+.inline-select-question {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(220px, 340px);
+  gap: 10px 18px;
+  align-items: center;
+}
+
+.inline-question-heading {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: center;
+}
+
+.inline-select-question .inline-select-control {
+  width: 100%;
+  margin-top: 0;
+}
+
+.inline-select-question .question-help,
+.inline-select-question .question-message {
+  grid-column: 1 / -1;
+}
+
 @media (max-width: 680px) {
   .question-card .choice-grid.compact-choice-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -169,6 +194,14 @@
 
   .paired-rating-group + .paired-rating-group {
     padding-top: 15px;
+  }
+
+  .inline-select-question {
+    grid-template-columns: 1fr;
+  }
+
+  .inline-select-question .inline-select-control {
+    margin-top: 4px;
   }
 }
 
