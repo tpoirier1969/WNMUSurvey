@@ -22,6 +22,8 @@ The landing page uses the official WNMU-TV logo referenced by WNMU Home from the
 
 The current test page references the logo through the Programming Library raw-file URL. Before public production, copy that logo into the production asset set so the questionnaire does not depend on another repository at runtime.
 
+The desktop landing layout reserves measured vertical space for the full introduction before the stage cards. Saved-draft and ready-to-submit panels sit below the cards, and the questionnaire facts and footer remain below those panels. At 900 pixels and below, those elements use document flow and named grid rows rather than fixed vertical positions.
+
 ## Optional follow-up questionnaires
 
 After core submission, respondents may choose optional topic modules about:
@@ -57,7 +59,7 @@ The results page begins with 25 clearly marked synthetic responses aligned with 
 The authoritative configuration is `js/config.js`.
 
 - schema: `wnmu-viewer-questionnaire-v6`
-- build: `6.0.0-test`
+- build: `6.0.1-test`
 - mode: Test
 - release date: 2026-07-16
 
@@ -92,7 +94,7 @@ Current browser-storage keys:
 - `js/results-gap-render.js`: paired importance/performance analysis
 - `js/results-export.js`: JSON and CSV export
 - `js/results-data.js`: synthetic v6 responses and results initialization
-- `css/brand.css`: official logo treatment and WNMU Home-aligned visual palette
+- `css/brand.css`: official logo treatment, WNMU Home-aligned palette, and landing-page spacing required by the fuller introduction
 - `QUESTIONNAIRE_SPEC.md`: living questionnaire blueprint and analytics contract
 - `follow-up.html`: temporary landing page for future optional modules
 
