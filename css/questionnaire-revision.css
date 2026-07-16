@@ -1,89 +1,129 @@
-/* Questionnaire revision: readable matrices, compact paired ratings, and stable responsive controls. */
-.matrix-wrap {
-  overflow: visible;
+/* Questionnaire revision: flat rating rows, compact paired ratings, and stable responsive controls. */
+
+/* Keep ordinary questions as one continuous page rather than separate cards. */
+.approved-stage-interface .question-stack {
+  gap: 0;
+}
+
+.approved-stage-interface .question-card,
+.approved-stage-interface .paired-question-block {
+  margin: 0;
+  padding: 14px 0;
   border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
   background: transparent;
+  box-shadow: none;
 }
 
-.matrix-table.matrix-card-table {
-  min-width: 0;
-  border-collapse: separate;
-  border-spacing: 0 12px;
+.approved-stage-interface .question-card:last-child,
+.approved-stage-interface .paired-question-block:last-child {
+  border-bottom: 0;
 }
 
-.matrix-card-table thead {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+/* A single scale key appears before a compact, flat set of rating rows. */
+.matrix-flat,
+.paired-matrix-flat {
+  margin-top: 10px;
 }
 
-.matrix-card-table tbody {
-  display: block;
-  width: 100%;
-}
-
-.matrix-card-table tbody tr {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
-  gap: 6px;
-  width: 100%;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--white);
-}
-
-.matrix-card-table tbody th {
-  grid-column: 1 / -1;
-  display: block;
-  width: 100%;
-  padding: 0 0 13px;
-  border: 0;
-  background: transparent;
-  font-size: 0.94rem;
-  line-height: 1.4;
-}
-
-.matrix-card-table tbody td {
-  display: block;
-  width: auto;
-  min-width: 0;
-  padding: 0;
-  border: 0;
-  vertical-align: top;
-}
-
-.matrix-card-table .matrix-choice {
-  width: 100%;
-  min-height: 62px;
-  height: auto;
+.rating-scale-key {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 8px 4px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: #fbfcfc;
-  text-align: center;
-}
-
-.matrix-card-table .matrix-choice:has(input:checked) {
-  border-color: var(--lake);
-  background: var(--lake-light);
-  box-shadow: inset 0 0 0 1px var(--lake);
-}
-
-.matrix-visible-label {
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  align-items: baseline;
+  padding: 8px 0 10px;
   color: var(--ink-soft);
-  font-size: 0.7rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.rating-scale-key > strong {
+  color: var(--ink);
+  font-size: 0.76rem;
+}
+
+.rating-scale-key span {
+  white-space: nowrap;
+}
+
+.rating-scale-key b {
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.matrix-flat-rows {
+  width: 100%;
+}
+
+.matrix-flat-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(390px, 1.35fr);
+  gap: 12px 20px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.matrix-flat-row:last-child {
+  border-bottom: 0;
+}
+
+.matrix-flat-label {
+  color: var(--navy);
+  font-size: 0.86rem;
   font-weight: 750;
-  line-height: 1.15;
+  line-height: 1.25;
+}
+
+.matrix-number-scale,
+.paired-number-scale {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(36px, 1fr)) minmax(78px, 1.55fr);
+  gap: 3px;
+  min-width: 0;
+}
+
+.rating-choice {
+  display: flex;
+  min-width: 0;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 3px 4px;
+  color: var(--ink);
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  box-shadow: none;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.05;
+  text-align: center;
+  cursor: pointer;
+}
+
+.rating-choice:hover {
+  background: #f3f6f7;
+}
+
+.rating-choice:has(input:checked) {
+  background: var(--lake-light);
+  box-shadow: inset 0 0 0 2px var(--lake);
+}
+
+.rating-choice input {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.rating-choice:focus-within {
+  outline: 3px solid color-mix(in srgb, var(--lake) 42%, transparent);
+  outline-offset: 1px;
 }
 
 [data-question-block="channel_awareness"] .choice,
@@ -91,10 +131,6 @@
 [data-question-block="channels_watched"] .choice {
   align-items: flex-start;
   line-height: 1.4;
-}
-
-[data-question-block="program_category_interest"] .matrix-card-table tbody tr {
-  break-inside: avoid;
 }
 
 /* Short and medium single-choice lists can use a denser grid. */
@@ -127,11 +163,9 @@
   grid-column: 1 / -1;
 }
 
-/* Importance and performance are paired in one flat list, without a box around every role. */
+/* Importance and performance share each role row and use the same flat scale treatment. */
 .paired-question-block {
-  padding: 0;
-  border: 0;
-  background: transparent;
+  padding-top: 0;
 }
 
 .paired-question-heading {
@@ -139,7 +173,7 @@
   grid-template-columns: 32px minmax(0, 1fr) auto;
   gap: 11px;
   align-items: start;
-  padding-bottom: 14px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -147,100 +181,58 @@
   margin: 0;
   color: var(--ink);
   font-size: 1.05rem;
-  line-height: 1.4;
-}
-
-.paired-question-block > .question-help {
-  margin: 10px 0 0 43px;
-}
-
-.paired-matrix-flat {
-  margin-top: 12px;
-}
-
-.paired-scale-key {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  padding: 10px 0 13px;
-  color: var(--ink-soft);
-  font-size: 0.78rem;
   line-height: 1.35;
 }
 
+.paired-question-block > .question-help {
+  margin: 8px 0 0 43px;
+}
+
+.paired-scale-key {
+  display: grid;
+  gap: 2px;
+  padding-bottom: 2px;
+}
+
+.paired-scale-key .rating-scale-key {
+  padding-block: 7px;
+}
+
 .paired-role-row {
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: minmax(230px, 1fr) minmax(500px, 1.7fr);
+  gap: 5px 20px;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.paired-role-row:first-of-type {
-  border-top: 0;
+.paired-role-row:last-child {
+  border-bottom: 0;
 }
 
-.paired-role-row h4 {
-  margin: 0 0 12px;
+.paired-role-row h3 {
+  grid-row: 1 / span 2;
+  margin: 0;
   color: var(--navy);
-  font-size: 0.98rem;
-  line-height: 1.4;
+  font-size: 0.86rem;
+  font-weight: 780;
+  line-height: 1.25;
 }
 
 .paired-rating-line {
   display: grid;
-  grid-template-columns: minmax(150px, 190px) minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: 94px minmax(0, 1fr);
+  gap: 9px;
   align-items: center;
-}
-
-.paired-rating-line + .paired-rating-line {
-  margin-top: 10px;
 }
 
 .paired-rating-prompt {
   color: var(--ink-soft);
-  font-size: 0.84rem;
-  font-weight: 800;
-  line-height: 1.3;
-}
-
-.paired-number-scale {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(42px, 1fr)) minmax(92px, 1.5fr);
-  gap: 6px;
-}
-
-.approved-stage-interface .paired-number-scale .paired-scale-choice,
-.paired-number-scale .paired-scale-choice {
-  min-width: 0;
-  min-height: 38px;
-  justify-content: center;
-  padding: 5px 4px;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  box-shadow: none;
-  font-size: 0.78rem;
-  text-align: center;
-}
-
-.approved-stage-interface .paired-number-scale .paired-scale-choice:hover,
-.paired-number-scale .paired-scale-choice:hover {
-  border: 0;
-  background: #f5f8f9;
-  box-shadow: none;
-}
-
-.approved-stage-interface .paired-number-scale .paired-scale-choice:has(input:checked),
-.paired-number-scale .paired-scale-choice:has(input:checked) {
-  border: 0;
-  border-radius: 7px;
-  background: var(--lake-light);
-  box-shadow: inset 0 0 0 2px var(--lake);
-}
-
-.paired-scale-choice input {
-  width: 17px;
-  height: 17px;
-  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.2;
+  text-align: right;
 }
 
 /* Hub submission is separate from completing the numerically final stage. */
@@ -346,7 +338,6 @@
   background: var(--lake-light);
 }
 
-
 @media (min-width: 901px) {
   .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
     position: absolute;
@@ -356,6 +347,23 @@
     width: min(calc(100% - 84px), 880px);
     margin: 0;
     transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 1040px) {
+  .matrix-flat-row,
+  .paired-role-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .paired-role-row h3 {
+    grid-row: auto;
+    margin-bottom: 2px;
+  }
+
+  .paired-rating-line {
+    grid-template-columns: 90px minmax(0, 1fr);
   }
 }
 
@@ -386,21 +394,40 @@
     margin-left: 0;
   }
 
+  .rating-scale-key {
+    gap: 3px 10px;
+    font-size: 0.68rem;
+  }
+
+  .matrix-flat-row,
   .paired-role-row {
-    padding: 16px 0;
+    padding: 8px 0;
+  }
+
+  .matrix-number-scale,
+  .paired-number-scale {
+    grid-template-columns: repeat(5, minmax(31px, 1fr)) minmax(70px, 1.45fr);
+    gap: 2px;
+  }
+
+  .rating-choice {
+    min-height: 44px;
+    padding-inline: 2px;
+    font-size: 0.7rem;
+  }
+
+  .rating-choice input {
+    width: 18px;
+    height: 18px;
   }
 
   .paired-rating-line {
     grid-template-columns: 1fr;
-    gap: 7px;
+    gap: 3px;
   }
 
-  .paired-number-scale {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .paired-scale-choice {
-    min-height: 48px;
+  .paired-rating-prompt {
+    text-align: left;
   }
 
   .submit-ready-panel {
@@ -425,13 +452,18 @@
   }
 }
 
-@media (max-width: 560px) {
-  .matrix-card-table tbody tr {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: 13px;
+@media (max-width: 430px) {
+  .rating-scale-key span {
+    white-space: normal;
   }
 
-  .matrix-card-table .matrix-choice {
-    min-height: 68px;
+  .matrix-number-scale,
+  .paired-number-scale {
+    grid-template-columns: repeat(5, minmax(28px, 1fr)) minmax(66px, 1.5fr);
+  }
+
+  .rating-choice {
+    gap: 2px;
+    font-size: 0.64rem;
   }
 }
