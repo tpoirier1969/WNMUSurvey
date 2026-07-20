@@ -27,7 +27,8 @@
       discardDraft: document.getElementById("discardDraft"),
       soundToggle: document.getElementById("soundToggle"),
       versionLabel: document.getElementById("versionLabel"),
-      modeLabel: document.getElementById("modeLabel")
+      modeLabel: document.getElementById("modeLabel"),
+      testThankYouShortcut: document.getElementById("testThankYouShortcut")
     });
 
     const draft = storage.loadDraft();
@@ -47,6 +48,7 @@
     els.submitFromHub?.addEventListener("click", submitSurvey);
     els.submitSurvey?.addEventListener("click", submitSurvey);
     els.soundToggle?.addEventListener("click", toggleSound);
+    els.testThankYouShortcut?.addEventListener("click", showLatestTestThankYou);
 
     els.sectionStage?.addEventListener("change", handleInput);
     els.sectionStage?.addEventListener("input", handleInput);
@@ -57,7 +59,7 @@
     updateSoundToggle();
     updateResumeBlock();
     updateHubStatuses();
-    if (!showTestThankYouPreview()) showPanel("hub");
+    showPanel("hub");
   }
 
   function ensureHubSubmitPanel() {
@@ -104,22 +106,24 @@
     document.documentElement.classList.toggle("survey-test-mode", config.mode === "test");
   }
 
-  function showTestThankYouPreview() {
-    const params = new URLSearchParams(window.location.search);
-    if (config.mode !== "test" || params.get("testView") !== "thank-you") return false;
+  function showLatestTestThankYou() {
+    if (config.mode !== "test") return;
 
-    clearTestViewParameter(params);
     const response = storage.getResponses()
       .filter((item) => item.status === "submitted" && item.schemaVersion === config.schemaVersion)
       .sort((a, b) => String(b.submittedAt || b.createdAt || "").localeCompare(String(a.submittedAt || a.createdAt || "")))[0];
 
     if (!response) {
+      showPanel("hub");
       const instruction = document.querySelector(".welcome-instruction");
       if (instruction) {
         instruction.textContent = "Submit at least one test response before using the Thank You page shortcut.";
         instruction.setAttribute("role", "status");
+        instruction.setAttribute("tabindex", "-1");
+        instruction.focus({ preventScroll: true });
+        instruction.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "center" });
       }
-      return false;
+      return;
     }
 
     state = {
@@ -140,14 +144,6 @@
     updateHubStatuses();
     renderCompletionPanel(response);
     showPanel("complete");
-    return true;
-  }
-
-  function clearTestViewParameter(params) {
-    params.delete("testView");
-    const query = params.toString();
-    const cleanUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
-    history.replaceState(null, "", cleanUrl);
   }
 
   function showPanel(name) {
