@@ -57,7 +57,7 @@
     updateSoundToggle();
     updateResumeBlock();
     updateHubStatuses();
-    showPanel("hub");
+    if (!showTestThankYouPreview()) showPanel("hub");
   }
 
   function ensureHubSubmitPanel() {
@@ -102,6 +102,52 @@
     if (els.modeLabel) els.modeLabel.textContent = config.modeLabel;
     document.documentElement.dataset.surveyMode = config.mode;
     document.documentElement.classList.toggle("survey-test-mode", config.mode === "test");
+  }
+
+  function showTestThankYouPreview() {
+    const params = new URLSearchParams(window.location.search);
+    if (config.mode !== "test" || params.get("testView") !== "thank-you") return false;
+
+    clearTestViewParameter(params);
+    const response = storage.getResponses()
+      .filter((item) => item.status === "submitted" && item.schemaVersion === config.schemaVersion)
+      .sort((a, b) => String(b.submittedAt || b.createdAt || "").localeCompare(String(a.submittedAt || a.createdAt || "")))[0];
+
+    if (!response) {
+      const instruction = document.querySelector(".welcome-instruction");
+      if (instruction) {
+        instruction.textContent = "Submit at least one test response before using the Thank You page shortcut.";
+        instruction.setAttribute("role", "status");
+      }
+      return false;
+    }
+
+    state = {
+      ...blankState(),
+      respondentId: response.respondentId || storage.getRespondentId(),
+      routeProfile: clone(response.routeProfile || {}),
+      answers: clone(response.answers || {}),
+      startedAt: response.startedAt || null,
+      completedStageIds: survey.stages.map((stage) => stage.id),
+      visitedStageIds: survey.stages.map((stage) => stage.id),
+      stageProgress: Object.fromEntries(survey.stages.map((stage) => [stage.id, {
+        explicitlyCompleted: true,
+        visitedPageIds: stage.pages.map((page) => page.id),
+        lastPageIndex: Math.max(0, stage.pages.length - 1)
+      }]))
+    };
+    refreshCompletedStages(state);
+    updateHubStatuses();
+    renderCompletionPanel(response);
+    showPanel("complete");
+    return true;
+  }
+
+  function clearTestViewParameter(params) {
+    params.delete("testView");
+    const query = params.toString();
+    const cleanUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+    history.replaceState(null, "", cleanUrl);
   }
 
   function showPanel(name) {
