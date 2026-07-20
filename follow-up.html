@@ -3,51 +3,127 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Placeholder for optional WNMU-TV follow-up questionnaires." />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Optional WNMU-TV follow-up questionnaires linked to a completed viewer questionnaire." />
+  <meta name="theme-color" content="#17345f" />
   <title>WNMU-TV Follow-up Questionnaires</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/questionnaire-revision.css" />
   <link rel="stylesheet" href="css/phone-layout.css" />
+  <link rel="stylesheet" href="css/brand.css" />
+  <link rel="stylesheet" href="css/follow-up.css" />
 </head>
-<body class="public-survey-page">
-  <a class="skip-link" href="#followUpMain">Skip to follow-up information</a>
-  <main id="followUpMain" class="followup-placeholder-shell">
-    <section class="app-panel" aria-labelledby="followUpTitle">
-      <p class="eyebrow">Optional WNMU-TV follow-up</p>
-      <h1 id="followUpTitle">This questionnaire is being prepared.</h1>
-      <p class="lead" id="moduleDescription">The optional follow-up questionnaires will let viewers share more detail without making the main questionnaire longer.</p>
+<body class="public-survey-page approved-stage-interface followup-page">
+  <a class="skip-link" href="#followUpMain">Skip to follow-up questionnaires</a>
 
-      <ul class="followup-placeholder-list">
-        <li><strong>Your main questionnaire is already complete.</strong> Opening this page does not change or replace that response.</li>
-        <li><strong>No additional answers are collected here yet.</strong> This is a temporary landing page while the topic questionnaires are developed.</li>
-        <li><strong>Future follow-ups will be optional.</strong> They will be linked through a random pseudonymous respondent ID rather than requiring an email address.</li>
-      </ul>
+  <main id="followUpMain" class="followup-shell">
+    <header class="followup-header">
+      <a class="followup-brand" href="index.html" aria-label="WNMU-TV Viewer Questionnaire home">
+        <img class="brand-logo" src="https://raw.githubusercontent.com/tpoirier1969/WNMU-Programming-library/main/WNMU-TV-logo-head2019.png" alt="WNMU-TV official logo" />
+        <span>Viewer Follow-up Questionnaires</span>
+      </a>
+      <a class="button quiet" href="index.html">Main questionnaire</a>
+    </header>
 
+    <section id="followUpAccessError" class="app-panel followup-access-error" hidden>
+      <p class="eyebrow">Private follow-up link</p>
+      <h1>We could not connect this page to your main questionnaire.</h1>
+      <p id="followUpAccessErrorText"></p>
       <div class="button-row">
         <a class="button primary" href="index.html">Return to the main questionnaire</a>
-        <a class="button secondary" href="follow-up.html">View the follow-up landing page</a>
+      </div>
+    </section>
+
+    <section id="followUpHub" class="followup-hub" hidden>
+      <div class="followup-hero app-panel">
+        <p class="eyebrow">Optional WNMU-TV follow-ups</p>
+        <h1>Tell us more about the topics that matter to you.</h1>
+        <p class="lead">Choose one topic, several topics, or none. Each questionnaire is separate, and your completed main questionnaire stays complete.</p>
+
+        <div id="linkedCoreSummary" class="linked-core-summary" aria-live="polite"></div>
+
+        <div class="continuation-panel">
+          <div>
+            <h2>Save your private return link</h2>
+            <p>Use this link to return later without repeating the main questionnaire.</p>
+            <p class="test-limitation"><strong>Test-mode limitation:</strong> until the database is connected, this link works only in the browser where the main questionnaire was submitted.</p>
+          </div>
+          <div class="continuation-controls">
+            <input id="continuationLink" class="text-control" type="text" readonly />
+            <div class="button-row">
+              <button class="button secondary" id="copyContinuationLink" type="button">Copy private link</button>
+              <a class="button quiet" id="emailContinuationLink" href="#">Email link using my email app</a>
+            </div>
+            <p id="continuationStatus" class="question-message" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+
+      <section aria-labelledby="followUpTopicsTitle">
+        <div class="followup-section-heading">
+          <div>
+            <p class="eyebrow">Choose a topic</p>
+            <h2 id="followUpTopicsTitle">Optional questionnaires</h2>
+          </div>
+          <p>All questions are optional. Saved drafts may be continued later with your private link.</p>
+        </div>
+        <div id="followUpModuleGrid" class="followup-module-grid"></div>
+      </section>
+
+      <details class="followup-test-tools">
+        <summary>Test tools</summary>
+        <p id="followUpTestResponseCount"></p>
+        <button class="button quiet" id="downloadFollowUpResponses" type="button">Download linked follow-up test responses</button>
+      </details>
+    </section>
+
+    <section id="followUpQuestionnaire" class="followup-questionnaire app-panel" hidden>
+      <div class="followup-toolbar">
+        <button class="text-button" type="button" data-followup-hub>← All follow-up topics</button>
+        <span id="followUpPagePosition"></span>
+      </div>
+
+      <div class="progress-wrap" aria-label="Follow-up questionnaire progress">
+        <div class="progress-track"><span id="followUpProgressBar"></span></div>
+      </div>
+
+      <header class="followup-module-heading">
+        <p class="eyebrow">Optional follow-up</p>
+        <h1 id="followUpModuleTitle"></h1>
+        <p id="followUpModuleIntro"></p>
+        <h2 id="followUpPageTitle"></h2>
+      </header>
+
+      <form novalidate>
+        <div id="followUpQuestions" class="question-stack"></div>
+        <p id="followUpModuleError" class="form-error" aria-live="assertive"></p>
+
+        <div class="form-actions followup-actions">
+          <button class="button quiet" id="followUpSaveExit" type="button">Save and return to topics</button>
+          <div class="button-row">
+            <button class="button secondary" id="followUpPrevious" type="button">Previous</button>
+            <button class="button primary" id="followUpNext" type="button">Next</button>
+            <button class="button primary" id="followUpSubmit" type="button" hidden>Submit this follow-up</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section id="followUpComplete" class="followup-complete app-panel" hidden>
+      <div class="completion-mark" aria-hidden="true">✓</div>
+      <p class="eyebrow">Follow-up submitted</p>
+      <h1 id="followUpCompleteTitle">Thank you.</h1>
+      <p id="followUpCompleteMessage"></p>
+      <div class="button-row centered">
+        <button class="button primary" id="followUpCompleteHub" type="button">Choose another topic</button>
+        <a class="button quiet" href="index.html">Return to the main questionnaire</a>
       </div>
     </section>
   </main>
 
-  <script>
-    (function () {
-      "use strict";
-      const modules = {
-        "local-programming": ["Local and Upper Peninsula programming", "This future module will ask about regional subjects, outside producers, and demand for more original WNMU-TV production."],
-        "programming-ideas": ["Programming interests and ideas", "This future module will collect more detailed program subjects, examples, and priorities."],
-        "online-viewing": ["Online viewing, PBS App, and Passport", "This future module will explore online viewing habits, barriers, the PBS App, and PBS Passport."],
-        "children-education": ["Children's programming and education", "This future module will ask households, educators, librarians, and childcare providers about children's content and educational resources."],
-        "communication": ["Communication and finding programs", "This future module will explore how viewers discover programs and how WNMU-TV should communicate with them."]
-      };
-      const requested = new URLSearchParams(window.location.search).get("module");
-      const module = modules[requested];
-      if (!module) return;
-      document.title = `${module[0]} | WNMU-TV Follow-up`;
-      document.getElementById("followUpTitle").textContent = module[0];
-      document.getElementById("moduleDescription").textContent = module[1];
-    })();
-  </script>
+  <script src="js/config.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/follow-up-definitions.js"></script>
+  <script src="js/follow-up-app.js"></script>
 </body>
 </html>
