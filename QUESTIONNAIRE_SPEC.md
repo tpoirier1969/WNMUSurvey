@@ -3,15 +3,16 @@
 ## 1. Release contract
 
 - Schema: `wnmu-viewer-questionnaire-v6`
-- Build: `6.0.1-test`
-- Release date: 2026-07-16
+- Build: `6.1.0-test`
+- Release date: 2026-07-20
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
 - Survey part: `core`
 - Primary stages: About You; WNMU & You; What You Watch; What You Want; How We're Doing
 - Target core time: approximately 6–8 minutes
+- Follow-up schema: `wnmu-viewer-follow-ups-v1`
 
-This is a clean pre-production revision. No Supabase database or production responses exist. Prototype v5 drafts and responses are intentionally cleared rather than migrated and do not count as research data.
+This remains a clean pre-production revision. No Supabase database or production responses exist. Prototype responses do not count as research data.
 
 ## 2. Landing page and branding
 
@@ -58,13 +59,13 @@ Rating pages use one scale key before the first rated item. Each item appears as
 
 | ID | Wording / values | Required | Routing / analytics |
 |---|---|---:|---|
-| `county_region` | What county or area do you live in? UP counties, northern Wisconsin, other Michigan, other state, Canada, prefer not | No | Geography filter |
+| `county_region` | What county or area do you live in? U.P. counties, northern Wisconsin, other Michigan, other state, Canada, prefer not | No | Geography filter |
 | `community_type` | Which best describes where you live? `city`, `town`, `rural`, `prefer_not` | No | Community comparison |
 | `age_range` | Under 18 through 85+, prefer not | No | Age filter |
 | `internet_streaming_quality` | How well does home internet support streaming WNMU-TV, PBS, or other video? `works_well`, `adequate`, `slow`, `unreliable`, `none`, `not_tried`, `prefer_not` | No | Streaming access |
-| `children_role` | Do you select or recommend programming for children? `household`, `educator`, `both`, `neither` | Yes | Child-detail routing |
+| `children_role` | Do you select or recommend programming for children? `household`, `educator`, `both`, `neither` | Yes | Child-detail and follow-up routing |
 
-“Slow” means video is often too slow for comfortable streaming. “Unreliable” means service is frequently unavailable or unpredictable. Respondents choosing `neither` do not see detailed children-use or children-needs questions, but the broad children's-programming category remains available.
+“Slow” means video is often too slow for comfortable streaming. “Unreliable” means service is frequently unavailable or unpredictable. Respondents choosing `neither` do not see detailed children-use, children-needs, or the optional children's follow-up questionnaire, but the broad children's-programming category remains available.
 
 ### Stage 2 — WNMU & You
 
@@ -117,7 +118,7 @@ Both `program_category_interest` and `program_category_priorities` use:
 
 | ID | Wording / values | Required | Routing / analytics |
 |---|---|---:|---|
-| `program_category_priorities` | Choose five categories for greatest WNMU-TV attention | No | Top-five counts |
+| `program_category_priorities` | Choose five categories for greatest WNMU-TV attention | No | Top-five counts and linked follow-up context |
 | `local_formats` | Choose up to three local/regional formats | No | Format preference |
 | `online_improvements` | Clear how/where to watch, local access, search, notifications, app help, Passport clarity, nothing | No | Choose up to three; nothing exclusive |
 | `learn_preferred` | On-air, TV guide, printed guide, WNMU/PBS website, PBS App, email, Facebook, Instagram, YouTube, radio, text/app notification | No | Choose up to three |
@@ -151,25 +152,50 @@ Station roles:
 8. `online_access` — Make programs easy to find online and on demand
 9. `access_for_all` — Serve people with disabilities or limited and unreliable internet access
 
-The former separate history role is removed. A future optional module will separately measure demand for original WNMU-TV Upper Peninsula production.
+The former separate history role is removed. The Local and Upper Peninsula follow-up separately measures demand for original WNMU-TV production.
 
 ## 6. Optional follow-up questionnaires
 
-After successful core submission, the thank-you screen offers placeholder buttons for:
+After successful core submission, the thank-you screen offers five working test-mode modules:
 
 - Local and Upper Peninsula programming, 5–7 minutes
 - Programming interests and ideas, 5–7 minutes
 - Online viewing, PBS App, and Passport, 4–6 minutes
 - Children's programming and education, 4–6 minutes, only when applicable
-- Communication and finding programs, 3–4 minutes
+- Communication and finding programs, 3–5 minutes
 
-Each button currently opens `follow-up.html` with a module query parameter. The page collects no answers. The completion screen also offers a copyable general follow-up link and **I'm done now**.
+Each module has two pages and eight optional questions. The detailed question IDs, values, purposes, and analytics are maintained in `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`.
 
-Future production follow-ups will use the same pseudonymous respondent ID plus a long opaque continuation token. Optional email delivery will be separate from answer records and will not be required. Follow-up respondents are self-selected and must be reported with their own denominators.
+The core thank-you page creates a random private continuation token and offers:
+
+- direct private links to each eligible module
+- a copyable private link to the follow-up hub
+- an option to open the respondent's own email application with the link
+- **I'm done now**
+
+The follow-up hub states that the core questionnaire is complete and does not ask the respondent to repeat it. It displays a limited summary of linked core information and shows each module as Not started, Saved for later, or Completed.
+
+Follow-up drafts and responses use the same pseudonymous `respondentId` and the submitted `coreResponseId`. The continuation token is stored in a separate access record and appears in the URL fragment rather than in the ordinary query string or answer record.
+
+Current test limitation: without Supabase or another approved database, the private link works later only in the browser where the core questionnaire was submitted. Production must store the token mapping server-side so the same link can work across devices.
+
+Follow-up respondents are self-selected and must be reported with their own denominators.
 
 ## 7. Storage and analytics
 
-Drafts and responses record schema/build/mode, respondent ID, campaign, survey part, timestamps, route profile, answers, visible question IDs, and completed stages. Core answer records contain no name or email address.
+Core drafts and responses record schema/build/mode, respondent ID, campaign, survey part, timestamps, route profile, answers, visible question IDs, and completed stages. Core answer records contain no name or email address.
+
+Core storage keys:
+
+- draft: `wnmuViewerSurveyDraft:v6`
+- responses: `wnmuViewerSurveyResponses:v3`
+- respondent ID: `wnmuViewerRespondentId:v1`
+
+Follow-up storage keys:
+
+- access records: `wnmuViewerFollowUpAccess:v1`
+- module drafts: `wnmuViewerFollowUpDrafts:v1`
+- module responses: `wnmuViewerFollowUpResponses:v1`
 
 Analytics rules:
 
@@ -178,10 +204,28 @@ Analytics rules:
 - Keep `na`, unable-to-rate, not sure, and prefer not distinct from numeric or negative responses.
 - Calculate each respondent's importance-performance gap first, then average paired gaps.
 - Keep synthetic responses visibly marked and separate from real responses.
-- Load only v6 records into the v6 local results dashboard.
+- Load only v6 records into the v6 core results dashboard.
+- Never combine voluntary follow-up denominators with all core respondents without explicit labeling.
+- Join future follow-up results to the core through `respondentId` and `coreResponseId`.
+- Do not use the continuation token as an analytics field.
 
-The v6 schema replaces the combined `pbs_app_web` test value in Stage 2 with separate `pbs_app` and `pbs_org` values. Prototype v5 drafts and responses are cleared rather than reinterpreted.
+The current follow-up hub provides linked JSON export for test review. Protected aggregate and qualitative follow-up results remain production work.
 
 ## 8. Production checklist
 
-Before public release: switch the authoritative mode to production; disable blank navigation; confirm required/optional policy; verify station, channel, PBS.org, PBS App, and Passport facts; connect the approved database; protect results; publish privacy, retention, and withdrawal information; implement secure continuation tokens and optional email delivery; prevent synthetic data from becoming live; copy the official logo into the production asset set rather than relying on an external raw-file URL; and complete phone/desktop, keyboard, focus, reduced-motion, routing, draft, submission, follow-up, results, import, and export QA.
+Before public release:
+
+- switch the authoritative mode to production
+- disable blank navigation
+- confirm required/optional policy
+- verify station, channel, PBS.org, PBS App, and Passport facts
+- connect the approved database
+- make continuation links work across devices
+- define token expiration, revocation, and withdrawal handling
+- protect core and follow-up results
+- build aggregate and qualitative follow-up results and CSV exports
+- publish privacy, linkage, retention, and withdrawal information
+- implement optional server-side email delivery separately from answer records
+- prevent synthetic data from becoming the live source
+- copy the official logo into the production asset set rather than relying on an external raw-file URL
+- complete phone/desktop, portrait/landscape, keyboard, screen-reader, focus, reduced-motion, routing, draft, submission, continuation-link, follow-up, results, import, and export QA
