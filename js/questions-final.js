@@ -139,7 +139,7 @@
         time: "4–6 minutes",
         when: { childrenRoleIn: ["household", "educator", "both"] }
       },
-      { id: "communication", label: "Communication and finding programs", time: "3–4 minutes" }
+      { id: "communication", label: "Communication and finding programs", time: "3–5 minutes" }
     ],
     preproductionReset: {
       previousSchema: "wnmu-viewer-questionnaire-v5",
