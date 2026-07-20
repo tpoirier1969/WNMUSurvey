@@ -79,6 +79,8 @@ http://localhost:8765/index.html
 
 After submitting a test core response, use the private links on the thank-you screen to open the follow-up hub.
 
+While the authoritative mode is Test, the landing-page footer also shows **Test Thank You page**. It opens the actual post-submission Thank You screen using the latest completed v6 core response stored in that browser. When no completed test response exists, the landing page explains that one must be submitted first. The shortcut is hidden outside Test Mode and must be removed before public release.
+
 Run `OPEN-RESULTS.bat`, then open:
 
 ```text
@@ -154,6 +156,7 @@ Results and documentation:
 
 Before public launch:
 
+- remove the test-only **Test Thank You page** shortcut from the landing page
 - copy the official logo into the production asset set
 - connect the approved production database
 - make private continuation links work across devices
