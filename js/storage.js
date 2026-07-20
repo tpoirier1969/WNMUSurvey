@@ -19,6 +19,12 @@
     return `${prefix || "wnmu"}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
   }
 
+  function makeContinuationToken() {
+    const first = makeId("continue").replace(/[^a-zA-Z0-9]/g, "");
+    const second = makeId("private").replace(/[^a-zA-Z0-9]/g, "");
+    return `${first}${second}`;
+  }
+
   function clearRetiredPrototypeData() {
     const retired = survey.preproductionReset?.retiredKeys || [];
     retired.forEach((key) => {
@@ -35,6 +41,26 @@
       localStorage.setItem(config.storageKeys.respondentId, id);
     }
     return id;
+  }
+
+  function getFollowUpAccessRecords() {
+    const records = safeParse(localStorage.getItem(config.storageKeys.followUpAccess), []);
+    return Array.isArray(records) ? records : [];
+  }
+
+  function saveFollowUpAccessRecords(records) {
+    localStorage.setItem(config.storageKeys.followUpAccess, JSON.stringify(records));
+    return records;
+  }
+
+  function getFollowUpDraftMap() {
+    const drafts = safeParse(localStorage.getItem(config.storageKeys.followUpDrafts), {});
+    return drafts && typeof drafts === "object" && !Array.isArray(drafts) ? drafts : {};
+  }
+
+  function getFollowUpResponses() {
+    const responses = safeParse(localStorage.getItem(config.storageKeys.followUpResponses), []);
+    return Array.isArray(responses) ? responses : [];
   }
 
   const storage = {
@@ -69,6 +95,12 @@
     getResponses() {
       const responses = safeParse(localStorage.getItem(config.storageKeys.responses), []);
       return Array.isArray(responses) ? responses : [];
+    },
+
+    getResponse(responseId) {
+      return this.getResponses().find((response) =>
+        response.responseId === responseId || response.id === responseId
+      ) || null;
     },
 
     saveResponse(payload) {
@@ -109,6 +141,121 @@
 
     clearResponses() {
       localStorage.removeItem(config.storageKeys.responses);
+    },
+
+    getOrCreateFollowUpAccess(coreResponse) {
+      if (!coreResponse?.respondentId || !coreResponse?.responseId) {
+        throw new Error("A submitted core response is required before creating a follow-up link.");
+      }
+      const records = getFollowUpAccessRecords();
+      let record = records.find((item) =>
+        item.respondentId === coreResponse.respondentId
+        && item.coreResponseId === coreResponse.responseId
+      );
+      if (record) return record;
+
+      const now = new Date().toISOString();
+      record = {
+        accessId: makeId("followup-access"),
+        token: makeContinuationToken(),
+        respondentId: coreResponse.respondentId,
+        coreResponseId: coreResponse.responseId,
+        coreSchemaVersion: coreResponse.schemaVersion || coreResponse.surveyVersion || config.schemaVersion,
+        createdAt: now,
+        updatedAt: now
+      };
+      records.push(record);
+      saveFollowUpAccessRecords(records);
+      return record;
+    },
+
+    resolveFollowUpAccess(token) {
+      if (!token) return null;
+      return getFollowUpAccessRecords().find((record) => record.token === token) || null;
+    },
+
+    getLatestFollowUpAccess() {
+      const respondentId = getRespondentId();
+      return getFollowUpAccessRecords()
+        .filter((record) => record.respondentId === respondentId)
+        .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))[0] || null;
+    },
+
+    getFollowUpAccessRecords,
+
+    loadFollowUpDraft(accessId, moduleId) {
+      return getFollowUpDraftMap()[`${accessId}:${moduleId}`] || null;
+    },
+
+    saveFollowUpDraft(access, moduleId, payload) {
+      const drafts = getFollowUpDraftMap();
+      const key = `${access.accessId}:${moduleId}`;
+      drafts[key] = {
+        ...payload,
+        accessId: access.accessId,
+        respondentId: access.respondentId,
+        coreResponseId: access.coreResponseId,
+        coreSchemaVersion: access.coreSchemaVersion,
+        followUpSchemaVersion: config.followUp?.schemaVersion,
+        moduleId,
+        status: "draft",
+        updatedAt: new Date().toISOString()
+      };
+      localStorage.setItem(config.storageKeys.followUpDrafts, JSON.stringify(drafts));
+      return drafts[key];
+    },
+
+    clearFollowUpDraft(accessId, moduleId) {
+      const drafts = getFollowUpDraftMap();
+      delete drafts[`${accessId}:${moduleId}`];
+      localStorage.setItem(config.storageKeys.followUpDrafts, JSON.stringify(drafts));
+    },
+
+    getFollowUpResponses,
+
+    getFollowUpResponse(accessId, moduleId) {
+      return getFollowUpResponses().find((response) =>
+        response.accessId === accessId && response.moduleId === moduleId
+      ) || null;
+    },
+
+    saveFollowUpResponse(access, moduleId, payload) {
+      const responses = getFollowUpResponses();
+      const now = new Date().toISOString();
+      const existingIndex = responses.findIndex((response) =>
+        response.accessId === access.accessId && response.moduleId === moduleId
+      );
+      const existing = existingIndex >= 0 ? responses[existingIndex] : null;
+      const response = {
+        responseId: existing?.responseId || makeId("followup-response"),
+        id: existing?.id || makeId("followup-response"),
+        accessId: access.accessId,
+        respondentId: access.respondentId,
+        coreResponseId: access.coreResponseId,
+        coreSchemaVersion: access.coreSchemaVersion,
+        followUpSchemaVersion: config.followUp?.schemaVersion,
+        buildVersion: config.buildVersion,
+        releaseDate: config.releaseDate,
+        mode: config.mode,
+        campaign: config.campaign,
+        surveyPart: moduleId,
+        moduleId,
+        source: config.mode === "test" ? "local-browser-followup-test" : "local-browser-followup",
+        status: "submitted",
+        startedAt: payload.startedAt || existing?.startedAt || now,
+        submittedAt: now,
+        createdAt: existing?.createdAt || now,
+        answers: payload.answers || {}
+      };
+      if (existingIndex >= 0) responses[existingIndex] = response;
+      else responses.push(response);
+      localStorage.setItem(config.storageKeys.followUpResponses, JSON.stringify(responses));
+      this.clearFollowUpDraft(access.accessId, moduleId);
+      return response;
+    },
+
+    clearFollowUpResponses() {
+      localStorage.removeItem(config.storageKeys.followUpResponses);
     },
 
     getSoundEnabled() {
