@@ -170,6 +170,19 @@
   }
 }
 
+@media (max-width: 760px) {
+  .approved-stage-interface .survey-frame-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .approved-stage-interface .footer-links {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
 @media (max-width: 680px) {
   .approved-stage-interface .brand-logo {
     width: min(150px, 48vw);
