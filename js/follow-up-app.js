@@ -130,10 +130,12 @@
   }
 
   function showHub() {
+    if (currentModule && els.questionnaire && !els.questionnaire.hidden) saveDraftNow();
     currentModule = null;
     currentPageIndex = 0;
     answers = {};
     startedAt = null;
+    document.title = "WNMU-TV Follow-up Questionnaires";
     updateUrl(null);
     renderLinkedSummary();
     renderContinuationActions();
@@ -239,6 +241,9 @@
   }
 
   function openModule(moduleId) {
+    if (currentModule && currentModule.id !== moduleId && els.questionnaire && !els.questionnaire.hidden) {
+      saveDraftNow();
+    }
     const module = eligibleModules().find((item) => item.id === moduleId);
     if (!module) return showHub();
     currentModule = module;
@@ -412,6 +417,8 @@
   }
 
   function saveDraftNow() {
+    clearTimeout(saveTimer);
+    saveTimer = 0;
     if (!currentModule) return;
     storage.saveFollowUpDraft(access, currentModule.id, {
       answers: clone(answers),
@@ -427,6 +434,8 @@
 
   function submitModule() {
     if (!currentModule) return;
+    clearTimeout(saveTimer);
+    saveTimer = 0;
     const response = storage.saveFollowUpResponse(access, currentModule.id, {
       answers: clone(answers),
       startedAt
