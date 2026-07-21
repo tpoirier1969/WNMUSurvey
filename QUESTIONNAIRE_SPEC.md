@@ -4,7 +4,7 @@
 
 - Core schema: `wnmu-viewer-questionnaire-v6`
 - Follow-up schema: `wnmu-viewer-follow-ups-v2`
-- Build: `6.3.0-test`
+- Build: `6.3.1-test`
 - Release date: 2026-07-21
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -284,6 +284,8 @@ Exports:
 ## 10. Production checklist
 
 Build 6.3.0 Test QA completed: JavaScript syntax, loaded-asset references, duplicate HTML IDs, Test Thank You preview migration, valid and invalid browser-record handling, combined 25-core/60-follow-up synthetic loading, browser-core inclusion, contact-record separation and aggregate counting, denominator-bearing core and follow-up findings, audience-filter recalculation, small-sample suppression, and original-comment preservation in the theme renderer. The available remote browser could not open the local test origin, so a hands-on desktop and phone visual/interaction pass remains required before production.
+
+Build 6.3.1 Test makes the results dashboard summary-first: the hero distinguishes core responses, linked follow-up respondents, and completed optional modules; filters and test/export utilities are collapsed; ordinary categorical charts show percentages without repeated selection counts; denominators remain available in disclosures, the Decision Brief, All Data, and exports; and Audience, Programming, Performance, and Viewer Voices begin with rules-based section snapshots. “Meeting expectations” and “Exceeding expectations” are reserved for paired importance-versus-delivery evidence. Other sections use descriptive audience-signal and opportunity language.
 
 Before public release:
 

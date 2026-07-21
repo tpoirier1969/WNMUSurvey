@@ -28,6 +28,15 @@
       dataStatus: document.getElementById("dataStatus"),
       followUpDataStatus: document.getElementById("followUpDataStatus"),
       excludedRecordDiagnostics: document.getElementById("excludedRecordDiagnostics"),
+      resetFilters: document.getElementById("resetFilters"),
+      filterSummary: document.getElementById("filterSummary"),
+      heroCoreResponses: document.getElementById("heroCoreResponses"),
+      heroFollowUpRespondents: document.getElementById("heroFollowUpRespondents"),
+      heroFollowUpModules: document.getElementById("heroFollowUpModules"),
+      audienceSnapshot: document.getElementById("audienceSnapshot"),
+      programmingSnapshot: document.getElementById("programmingSnapshot"),
+      performanceSnapshot: document.getElementById("performanceSnapshot"),
+      voicesSnapshot: document.getElementById("voicesSnapshot"),
       filterViewer: document.getElementById("filterViewer"),
       filterMethod: document.getElementById("filterMethod"),
       filterAge: document.getElementById("filterAge"),
@@ -85,6 +94,10 @@
     els.exportSummary?.addEventListener("click", exportSummary);
     els.exportFollowUpSummary?.addEventListener("click", exportFollowUpSummary);
     els.clearLocal?.addEventListener("click", clearLocalResponses);
+    els.resetFilters?.addEventListener("click", () => {
+      resetFilters();
+      renderAnalysis();
+    });
 
     [
       [els.filterViewer, "viewer"], [els.filterMethod, "method"], [els.filterAge, "age"],
@@ -327,6 +340,10 @@
   function filteredContactRequests(coreResponses = filteredResponses()) {
     const coreIds = new Set(coreResponses.flatMap((response) => [response.responseId, response.id].filter(Boolean)));
     return loadedContactRequests.filter((request) => coreIds.has(request.coreResponseId));
+  }
+
+  function linkedFollowUpRespondentCount(responses = loadedFollowUpResponses) {
+    return new Set(responses.map((response) => response.respondentId || response.coreResponseId).filter(Boolean)).size;
   }
 
   function responseSourceCategory(response) {

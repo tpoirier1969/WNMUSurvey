@@ -519,6 +519,8 @@ Do not repeat these mistakes:
 
 The Decision Brief is a rules-based interpretation layer over the canonical results calculations. It must not create a second, conflicting analytics system.
 
+The readable results sections are summary-first. Ordinary categorical charts emphasize percentages and keep repeated selection counts out of the main scan path. Denominators and counts must remain available in calculation disclosures, the Decision Brief, All Data, and exports. Only paired importance-versus-delivery evidence may be labeled as meeting or exceeding expectations; other sections must use descriptive signal, strength, attention, or opportunity language.
+
 Every generated finding must:
 
 - state the answered, paired, routed, or module denominator used

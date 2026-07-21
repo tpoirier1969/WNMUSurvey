@@ -92,7 +92,7 @@
       `Skipped n=${coverage.skipped}`
     ];
     if (coverage.notApplicable) parts.push(`Not applicable n=${coverage.notApplicable}`);
-    return `<p class="result-coverage">${parts.map(escapeHtml).join(" · ")}</p>`;
+    return `<details class="denominator-note"><summary>How percentages are calculated</summary><p>${parts.map(escapeHtml).join(" · ")}. Missing answers are not counted as negative answers.</p></details>`;
   }
 
   function categoricalQuestionMarkup(question, answeredResponses) {
@@ -110,7 +110,7 @@
     const max = Math.max(...entries.map(([, count]) => count), 1);
     return `<div class="bar-list">${entries
       .sort((a, b) => b[1] - a[1])
-      .map(([value, count]) => barMarkup(labels[value] || humanize(value), count, max, `${count} · ${percent(count, answeredResponses.length)} · n=${answeredResponses.length}`))
+      .map(([value, count]) => barMarkup(labels[value] || humanize(value), count, max, percent(count, answeredResponses.length)))
       .join("")}</div>`;
   }
 
@@ -124,7 +124,7 @@
     }).filter((item) => item.values.length).sort((a, b) => b.average - a.average);
     if (!stats.length) return '<div class="empty-state">No numeric ratings in this view.</div>';
     return `<div class="bar-list">${stats.map((item) =>
-      barMarkup(item.row.label, item.average, 5, `${item.average.toFixed(2)} · n=${item.values.length}`)
+      barMarkup(item.row.label, item.average, 5, item.average.toFixed(2))
     ).join("")}</div>`;
   }
 

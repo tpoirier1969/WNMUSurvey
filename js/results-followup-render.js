@@ -34,7 +34,7 @@
       <section class="result-section followup-module-results" data-followup-module="${escapeAttr(module.id)}">
         <p class="eyebrow">Optional follow-up · ${escapeHtml(module.title)}</p>
         <h2>${escapeHtml(module.title)}</h2>
-        <p class="result-coverage">Module respondents n=${moduleResponses.length}${sourceText ? ` · ${escapeHtml(sourceText)}` : ""} · self-selected denominator</p>
+        <details class="denominator-note"><summary>How percentages are calculated</summary><p>Voluntary, self-selected module population: ${moduleResponses.length} respondents${sourceText ? ` · ${escapeHtml(sourceText)}` : ""}. Each question uses only those who answered it.</p></details>
         <div class="all-data-grid">${questions.map((question) =>
           `<article class="all-data-card" data-followup-question-result="${escapeAttr(question.id)}">${followUpQuestionResultMarkup(question, moduleResponses, true)}</article>`
         ).join("")}</div>
@@ -73,7 +73,7 @@
   }
 
   function followUpCoverageMetaMarkup(coverage) {
-    return `<p class="result-coverage">Answered n=${coverage.answered} · Skipped n=${coverage.skipped} · Module n=${coverage.moduleRespondents}</p>`;
+    return `<details class="denominator-note"><summary>How percentages are calculated</summary><p>Answered n=${coverage.answered} · Skipped n=${coverage.skipped} · Voluntary module n=${coverage.moduleRespondents}.</p></details>`;
   }
 
   function followUpCategoricalMarkup(question, answeredResponses) {
@@ -91,7 +91,7 @@
     const max = Math.max(...entries.map(([, count]) => count), 1);
     return `<div class="bar-list">${entries
       .sort((a, b) => b[1] - a[1])
-      .map(([value, count]) => barMarkup(labels[value] || humanize(value), count, max, `${count} · ${percent(count, answeredResponses.length)} · answered n=${answeredResponses.length}`))
+      .map(([value, count]) => barMarkup(labels[value] || humanize(value), count, max, percent(count, answeredResponses.length)))
       .join("")}</div>`;
   }
 

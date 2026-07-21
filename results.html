@@ -30,35 +30,29 @@
       <div class="container">
         <p class="eyebrow">Results preview · local test</p>
         <h1>WNMU-TV viewer questionnaire results</h1>
-        <p class="lead">The test dashboard combines synthetic and browser-submitted core responses with linked optional follow-up responses.</p>
+        <div class="hero-response-summary" aria-live="polite">
+          <p><strong id="heroCoreResponses">0</strong> questionnaire responses in view</p>
+          <p><strong id="heroFollowUpRespondents">0</strong> respondents completed <strong id="heroFollowUpModules">0</strong> optional follow-up modules</p>
+        </div>
       </div>
     </section>
 
     <section id="resultsApp" class="results-shell">
       <div class="container">
-        <div class="result-controls">
-          <button class="button primary" id="reloadTestData" type="button">Reload combined test responses</button>
-          <label class="button secondary file-button">Import response JSON<input id="jsonUpload" type="file" accept="application/json,.json" /></label>
-          <button class="button quiet" id="exportRaw" type="button">Export loaded JSON</button>
-          <button class="button quiet" id="exportSummary" type="button">Export core summary CSV</button>
-          <button class="button quiet" id="exportFollowUpSummary" type="button">Export follow-up summary CSV</button>
-          <button class="button quiet danger-button" id="clearLocal" type="button">Clear submitted browser responses</button>
-          <span class="data-status" id="dataStatus">Loading combined test responses…</span>
-          <span class="data-status" id="followUpDataStatus"></span>
-          <div id="excludedRecordDiagnostics" class="excluded-record-diagnostics" hidden></div>
-        </div>
-
-        <section id="filters" class="filter-panel" aria-labelledby="filterHeading">
-          <p class="eyebrow">Audience filters</p>
-          <h2 id="filterHeading">Compare viewing habits, programming priorities, perceived delivery, and linked follow-up answers</h2>
-          <div class="filter-grid admin-filter-grid">
+        <details id="filters" class="filter-panel">
+          <summary><span>Filter results</span><small id="filterSummary">Showing all responses</small></summary>
+          <div class="filter-panel-body">
+            <p>Compare viewing habits, programming priorities, perceived delivery, and linked follow-up answers.</p>
+            <div class="filter-grid admin-filter-grid">
             <label>Viewer type<select id="filterViewer"><option value="">All viewer types</option></select></label>
             <label>Viewing method<select id="filterMethod"><option value="">All methods</option></select></label>
             <label>Age range<select id="filterAge"><option value="">All ages</option></select></label>
             <label>Location<select id="filterCounty"><option value="">All locations</option></select></label>
             <label>Children's role<select id="filterChildren"><option value="">All households and roles</option></select></label>
+            </div>
+            <button class="button quiet" id="resetFilters" type="button">Reset filters</button>
           </div>
-        </section>
+        </details>
 
         <div id="emptyState" class="empty-state"><h2>No response data loaded</h2><p>Reload the combined test responses or import an exported JSON file.</p></div>
 
@@ -106,6 +100,7 @@
 
           <section id="resultsAudience" class="results-panel" role="tabpanel" data-results-panel="audience" aria-labelledby="audienceHeading">
             <div class="results-panel-heading"><p class="eyebrow">Audience &amp; Access</p><h2 id="audienceHeading">Who responded, what they can access, and how they watch</h2></div>
+            <div id="audienceSnapshot" class="section-snapshot" aria-label="Audience and access snapshot"></div>
 
             <section class="metric-grid" aria-label="Response summary">
               <article class="metric-card"><span id="metricResponses">0</span><strong>responses in view</strong><p id="metricResponsesNote"></p></article>
@@ -160,6 +155,7 @@
 
           <section id="resultsProgramming" class="results-panel" role="tabpanel" data-results-panel="programming" hidden aria-labelledby="programmingHeading">
             <div class="results-panel-heading"><p class="eyebrow">Programming Priorities</p><h2 id="programmingHeading">What viewers value and what they want WNMU-TV to emphasize</h2></div>
+            <div id="programmingSnapshot" class="section-snapshot" aria-label="Programming priorities snapshot"></div>
             <div class="result-grid">
               <section class="result-section"><p class="eyebrow">Programming interest</p><h2>Highest average interests</h2><p>Average 1–5 interest score among respondents who rated each viewer-facing category.</p><div id="programInterest" class="bar-list"></div></section>
               <section class="result-section"><p class="eyebrow">Forced priorities</p><h2>Most-selected top-five categories</h2><p>Selections use the same 17 categories as the interest ratings.</p><div id="topPriorities" class="bar-list"></div></section>
@@ -171,6 +167,7 @@
 
           <section id="resultsPerformance" class="results-panel" role="tabpanel" data-results-panel="performance" hidden aria-labelledby="performanceHeading">
             <div class="results-panel-heading"><p class="eyebrow">Performance &amp; Opportunities</p><h2 id="performanceHeading">What viewers consider important and how they rate WNMU-TV's delivery</h2></div>
+            <div id="performanceSnapshot" class="section-snapshot" aria-label="Performance and opportunities snapshot"></div>
 
             <div class="result-grid">
               <section class="result-section"><p class="eyebrow">Importance</p><h2>Importance of station roles</h2><div id="importanceResult"></div></section>
@@ -201,6 +198,7 @@
 
           <section id="resultsVoices" class="results-panel" role="tabpanel" data-results-panel="voices" hidden aria-labelledby="voicesHeading">
             <div class="results-panel-heading"><p class="eyebrow">Viewer Voices</p><h2 id="voicesHeading">Themes and original comments</h2><p>Theme organization helps reviewers scan the open responses. Original comments remain unchanged and are still grouped by their source question below.</p></div>
+            <div id="voicesSnapshot" class="section-snapshot" aria-label="Viewer voices snapshot"></div>
             <section class="result-section qualitative-themes-section"><p class="eyebrow">Transparent theme organization</p><h2>Recurring subjects across open responses</h2><div id="qualitativeThemes"></div></section>
             <div class="results-panel-heading"><p class="eyebrow">Core questionnaire comments</p><h2>Original responses grouped by question</h2><p>Comments are shown exactly as submitted.</p></div>
             <div id="viewerVoiceGroups" class="viewer-voice-groups"></div>
@@ -210,6 +208,20 @@
 
           <section id="resultsAllData" class="results-panel" role="tabpanel" data-results-panel="all-data" hidden aria-labelledby="allDataHeading">
             <div class="results-panel-heading"><p class="eyebrow">All Data &amp; Export</p><h2 id="allDataHeading">Every core and follow-up question with honest denominators</h2><p>Core questions show answered, skipped, and not-applicable counts. Follow-up questions show module respondents, answered, and skipped counts.</p></div>
+            <details class="result-controls utility-panel">
+              <summary>Test data, diagnostics, and exports</summary>
+              <div class="utility-panel-body">
+                <button class="button primary" id="reloadTestData" type="button">Reload combined test responses</button>
+                <label class="button secondary file-button">Import response JSON<input id="jsonUpload" type="file" accept="application/json,.json" /></label>
+                <button class="button quiet" id="exportRaw" type="button">Export loaded JSON</button>
+                <button class="button quiet" id="exportSummary" type="button">Export core summary CSV</button>
+                <button class="button quiet" id="exportFollowUpSummary" type="button">Export follow-up summary CSV</button>
+                <button class="button quiet danger-button" id="clearLocal" type="button">Clear submitted browser responses</button>
+                <span class="data-status" id="dataStatus">Loading combined test responses…</span>
+                <span class="data-status" id="followUpDataStatus"></span>
+                <div id="excludedRecordDiagnostics" class="excluded-record-diagnostics" hidden></div>
+              </div>
+            </details>
             <div id="allDataResults" class="all-data-results"></div>
             <div class="results-panel-heading"><p class="eyebrow">Optional follow-up questionnaires</p><h2>All 40 live follow-up questions</h2><p>Participation is voluntary and self-selected. Module percentages must not be presented as percentages of all core respondents.</p></div>
             <div id="followUpAllDataResults" class="all-data-results"></div>
@@ -221,15 +233,15 @@
 
   <footer class="site-footer"><div class="container footer-grid"><div><strong>Local prototype</strong><p>No external database is connected.</p></div><div><strong>Combined test data</strong><p>Synthetic and browser-submitted records remain visibly distinguishable.</p></div><div><strong>Future deployment</strong><p>Production will use only approved Supabase responses.</p></div></div></footer>
 
-  <script src="js/config.js?v=6.3.0-test"></script>
-  <script src="js/questions.js?v=6.3.0-test"></script>
-  <script src="js/follow-up-local.js?v=6.3.0-test"></script>
-  <script src="js/follow-up-programming.js?v=6.3.0-test"></script>
-  <script src="js/follow-up-online.js?v=6.3.0-test"></script>
-  <script src="js/follow-up-children.js?v=6.3.0-test"></script>
-  <script src="js/follow-up-communication.js?v=6.3.0-test"></script>
-  <script src="js/follow-up-definitions.js?v=6.3.0-test"></script>
-  <script src="js/storage.js?v=6.3.0-test"></script>
-  <script src="js/results.js?v=6.3.0-test"></script>
+  <script src="js/config.js?v=6.3.1-test"></script>
+  <script src="js/questions.js?v=6.3.1-test"></script>
+  <script src="js/follow-up-local.js?v=6.3.1-test"></script>
+  <script src="js/follow-up-programming.js?v=6.3.1-test"></script>
+  <script src="js/follow-up-online.js?v=6.3.1-test"></script>
+  <script src="js/follow-up-children.js?v=6.3.1-test"></script>
+  <script src="js/follow-up-communication.js?v=6.3.1-test"></script>
+  <script src="js/follow-up-definitions.js?v=6.3.1-test"></script>
+  <script src="js/storage.js?v=6.3.1-test"></script>
+  <script src="js/results.js?v=6.3.1-test"></script>
 </body>
 </html>

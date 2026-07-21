@@ -4,7 +4,7 @@
 
 - Follow-up schema: `wnmu-viewer-follow-ups-v2`
 - Core schema linked: `wnmu-viewer-questionnaire-v6`
-- Interface build: `6.3.0-test`
+- Interface build: `6.3.1-test`
 - Release date: 2026-07-21
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
