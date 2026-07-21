@@ -3,8 +3,8 @@
 
   window.WNMU_CONFIG = Object.freeze({
     schemaVersion: "wnmu-viewer-questionnaire-v6",
-    buildVersion: "6.1.2-test",
-    releaseDate: "2026-07-20",
+    buildVersion: "6.1.3-test",
+    releaseDate: "2026-07-21",
     mode: "test",
     modeLabel: "Test Mode",
     campaign: "viewer-questionnaire-2026",
