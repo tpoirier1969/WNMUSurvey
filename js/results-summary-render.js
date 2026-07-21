@@ -42,8 +42,6 @@
     const methodAnswered = responses.filter((response) => Array.isArray(response.routeProfile?.viewing_methods));
     const onlineMethods = ["wnmu_livestream", "pbs_app", "pbs_org", "pbs_passport", "youtube_tv", "youtube"];
     const online = methodAnswered.filter((response) => response.routeProfile.viewing_methods.some((method) => onlineMethods.includes(method))).length;
-    const childrenAnswered = responses.filter((response) => hasValue(response.routeProfile?.children_role));
-    const children = childrenAnswered.filter((response) => ["household", "educator", "both"].includes(response.routeProfile.children_role)).length;
     const sourceCounts = responseSourceCounts(responses);
     const sourceNote = [
       sourceCounts.synthetic ? `${sourceCounts.synthetic} synthetic` : "",
@@ -55,7 +53,6 @@
     els.metricResponsesNote.textContent = sourceNote || `${loadedResponses.length} total loaded.`;
     els.metricCurrent.textContent = percent(current, viewerAnswered.length);
     els.metricOnline.textContent = percent(online, methodAnswered.length);
-    els.metricChildren.textContent = percent(children, childrenAnswered.length);
   }
 
   function renderQuestionBars(container, responses, questionId, getter, arrayValue) {

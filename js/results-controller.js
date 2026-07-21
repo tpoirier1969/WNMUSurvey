@@ -48,7 +48,6 @@
       metricResponsesNote: document.getElementById("metricResponsesNote"),
       metricCurrent: document.getElementById("metricCurrent"),
       metricOnline: document.getElementById("metricOnline"),
-      metricChildren: document.getElementById("metricChildren"),
       viewerMix: document.getElementById("viewerMix"),
       methodMix: document.getElementById("methodMix"),
       channelResultsBody: document.getElementById("channelResultsBody"),
