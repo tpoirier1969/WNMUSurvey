@@ -1,6 +1,6 @@
 # WNMU-TV Viewer Questionnaire — Local Test
 
-This repository contains the five-stage WNMU-TV core viewer questionnaire, the local core-results preview, and five optional follow-up questionnaire mockups linked to a completed core response.
+This repository contains the five-stage WNMU-TV core viewer questionnaire, the core-results test dashboard, and five optional follow-up questionnaires linked to a completed core response.
 
 ## Core questionnaire
 
@@ -14,19 +14,19 @@ The respondent starts from a five-stage hub:
 
 The core questionnaire targets approximately 6–8 minutes. Drafts save automatically in the current browser, and stages may be completed in any order.
 
-Every stage uses **Complete stage**. Finishing the numerically final stage does not submit the questionnaire. After all five stages are complete, the hub displays **Submit questionnaire**. The thank-you screen appears only after the response has been stored successfully.
+Every stage uses **Complete stage**. Finishing Stage 5 does not submit the questionnaire by itself. After all five stages are complete, the hub displays **Submit questionnaire**. The thank-you screen appears only after the response has been stored successfully.
 
 ## Landing page and brand
 
-The landing page uses the official WNMU-TV logo referenced by WNMU Home from the WNMU Programming Library. `css/brand.css` is the canonical core-questionnaire branding layer and follows the WNMU Home navy, blue, green, background, and border palette.
+The landing page uses the official WNMU-TV logo referenced by WNMU Home from the WNMU Programming Library. `css/brand.css` is the canonical core-questionnaire branding layer.
 
-The current test page references the logo through the Programming Library raw-file URL. Before public production, copy that logo into the questionnaire asset set so the public application does not depend on another repository at runtime.
+The current test page references the logo through the Programming Library raw-file URL. Before production, copy the logo into the questionnaire asset set so the public application does not depend on another repository at runtime.
 
-The desktop landing layout reserves measured vertical space for the full introduction before the stage cards. Saved-draft and ready-to-submit panels sit below the cards, and the questionnaire facts and footer remain below those panels. At 900 pixels and below, those elements use document flow and named grid rows rather than fixed vertical positions.
+The desktop landing layout reserves space for the complete introduction before the stage cards. At 900 pixels and below, the landing elements remain in document flow.
 
 ## Linked optional follow-up questionnaires
 
-After the core response is submitted, the thank-you page offers five working test modules:
+After the core response is submitted, the thank-you page offers five test modules:
 
 - Local and Upper Peninsula programming, 5–7 minutes
 - Programming interests and ideas, 5–7 minutes
@@ -34,40 +34,51 @@ After the core response is submitted, the thank-you page offers five working tes
 - Children's programming and education, 4–6 minutes, when applicable
 - Communication and finding programs, 3–5 minutes
 
-Each module has two pages and eight optional questions. The detailed question IDs, values, purposes, and analytics contract are in `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`.
+Each module has two pages and eight optional questions. The detailed IDs, values, purposes, and analytics contract are in `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`.
 
 ### Continuing later without repeating the core
 
-The thank-you page creates a private continuation record linked to:
+The thank-you page creates a private continuation record linked to the existing pseudonymous respondent ID, submitted core response ID, core schema version, and a separate long random token.
 
-- the existing pseudonymous respondent ID
-- the submitted core response ID
-- the core questionnaire schema version
-- a separate long random continuation token
+Respondents may open a module immediately, copy a private link, open their email application with the link already in a message, return later to a saved draft, and complete one, several, or none of the modules.
 
-Respondents may:
-
-- open a module immediately
-- copy a private link to the follow-up hub
-- open their own email application with the private link already in the message
-- return later and continue saved module drafts
-- complete one, several, or none of the modules
-
-The follow-up hub confirms that the core questionnaire is already complete and does not ask the respondent to repeat it. It uses selected core information, such as programming priorities, as context where useful.
-
-The continuation token is kept in a separate access record and appears in the URL fragment. It is not stored inside follow-up answer records.
+The continuation token appears in the URL fragment and is not stored inside follow-up answer records.
 
 **Current test limitation:** no database is connected, so the private link works later only in the browser where the core questionnaire was submitted. Production must store the token mapping in the approved database so the same link works across devices.
 
-### Follow-up test review
+The follow-up hub can download that linked respondent's follow-up responses as JSON. Aggregate follow-up results and CSV export remain later work.
 
-The follow-up hub shows each module as:
+## Core results dashboard
 
-- Not started
-- Saved for later
-- Completed
+Run `OPEN-RESULTS.bat`, then open:
 
-Its Test tools section downloads the follow-up responses linked to that core response as JSON. Aggregate and qualitative follow-up dashboards and CSV exports remain production work.
+```text
+http://localhost:8765/results.html
+```
+
+In Test mode, the dashboard automatically combines:
+
+- 25 synthetic v6 responses
+- every valid current-schema response submitted in the same browser
+
+The dashboard shows separate synthetic and browser-submitted counts. Older, preview, and non-v6 browser records are excluded with the excluded count shown. Importing a JSON file temporarily replaces the loaded dataset until **Reload combined test responses** is selected.
+
+The six result sections are:
+
+1. **Decision Brief** — foundation only in build 6.1.3; interpretation rules remain later work
+2. **Audience & Access**
+3. **Programming Priorities**
+4. **Performance & Opportunities**
+5. **Viewer Voices**
+6. **All Data & Export**
+
+All 28 core questions appear in **All Data & Export**, with answered, skipped, and not-applicable counts. Standalone importance and performance results appear in addition to the paired-gap analysis. Viewer Voices groups original comments by their source question.
+
+The synthetic records now exercise every core question and include several Michigan Learning Channel viewers. The online-use headline separately recognizes PBS App and PBS.org as valid online methods.
+
+Raw JSON exports every loaded response. The summary CSV includes stable IDs and labels, source category, answered count, applicable count, skipped count, not-applicable count, filtered count, and calculation notes.
+
+Production will remove synthetic and browser aggregation and load only approved Supabase responses.
 
 ## Open locally
 
@@ -79,15 +90,7 @@ http://localhost:8765/index.html
 
 After submitting a test core response, use the private links on the thank-you screen to open the follow-up hub.
 
-While the authoritative mode is Test, the landing-page footer also shows **Test Thank You page**. It opens the normal respondent-facing Thank You screen using the latest completed v6 response in that browser. When none exists, the app creates a clearly marked internal preview record solely to support linked-page testing; that record uses a non-v6 preview schema and is excluded from v6 questionnaire results. The Thank You page itself does not display preview or test commentary. The shortcut is hidden outside Test Mode and must be removed before public release.
-
-Run `OPEN-RESULTS.bat`, then open:
-
-```text
-http://localhost:8765/results.html
-```
-
-The core results page begins with 25 clearly marked synthetic responses aligned with the v6 core schema. **Use submitted browser responses** loads v6 core questionnaires submitted in that browser.
+While the authoritative mode is Test, the landing-page footer also shows **Test Thank You page**. It opens the normal respondent-facing Thank You screen using the latest completed v6 response in that browser. When none exists, the app may create a clearly marked internal non-v6 preview record solely to support linked-page testing. Preview records are excluded from v6 questionnaire results.
 
 ## Active mode and versions
 
@@ -95,9 +98,9 @@ The authoritative configuration is `js/config.js`.
 
 - core schema: `wnmu-viewer-questionnaire-v6`
 - follow-up schema: `wnmu-viewer-follow-ups-v1`
-- build: `6.1.2-test`
+- build: `6.1.3-test`
 - mode: Test
-- release date: 2026-07-20
+- release date: 2026-07-21
 
 Test mode allows blank page navigation in the core. It does not allow core submission until all stages are explicitly complete and all applicable required questions are answered. All follow-up questions are optional.
 
@@ -125,47 +128,53 @@ Core questionnaire:
 - `js/questions-foundation.js`: shared scales and About You definitions
 - `js/questions-wnmu.js`: WNMU & You definitions
 - `js/questions-programming.js`: What You Watch and What You Want definitions
-- `js/questions-final.js`: How We're Doing, follow-up menu labels, and final core assembly
-- `js/app-core.js`: shared application state, routing helpers, status, save, and sound
-- `js/app-question-render.js`: ordinary core-question rendering
-- `js/app-matrix-render.js`: core matrices and paired importance/performance rendering
-- `js/app-navigation.js`: core stage/page navigation, validation, completion, and submission
-- `js/app-completion.js`: core input handling and linked thank-you/follow-up actions
-- `js/app.js`: core DOM initialization and event wiring
-- `js/storage.js`: core and follow-up browser storage, respondent IDs, and continuation records
+- `js/questions-final.js`: How We're Doing and final core assembly
+- `js/app-core.js`: state, routing helpers, status, save, and sound
+- `js/app-question-render.js`: ordinary question rendering
+- `js/app-matrix-render.js`: matrices and paired importance/performance rendering
+- `js/app-navigation.js`: navigation, validation, completion, and submission
+- `js/app-completion.js`: input handling and linked thank-you/follow-up actions
+- `js/app.js`: DOM initialization and event wiring
+- `js/storage.js`: core and follow-up browser storage and linkage records
 - `css/brand.css`: core brand treatment and landing-page spacing
 
 Follow-up questionnaires:
 
-- `follow-up.html`: linked follow-up hub, questionnaire shell, and completion view
-- `js/follow-up-definitions.js`: five module definitions and 40 stable follow-up question IDs
-- `js/follow-up-app.js`: token resolution, linked-core context, drafts, module navigation, submission, and JSON review export
+- `follow-up.html`: linked hub, questionnaire shell, and completion view
+- `js/follow-up-definitions.js`: five modules and 40 stable question IDs
+- `js/follow-up-app.js`: token resolution, linked context, drafts, navigation, submission, and JSON export
 - `css/follow-up.css`: responsive follow-up interface
-- `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`: follow-up blueprint, stored values, linkage, and analytics purposes
+- `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`: follow-up blueprint and analytics purposes
 
 Results and documentation:
 
-- `js/results-controller.js`: core-results state, loading, filters, and shared helpers
-- `js/results-summary-render.js`: core audience, channel, programming, and comment summaries
-- `js/results-gap-render.js`: paired core importance/performance analysis
-- `js/results-export.js`: core JSON and CSV export
-- `js/results-data.js`: synthetic v6 core responses and results initialization
-- `QUESTIONNAIRE_SPEC.md`: living core blueprint and linkage contract
+- `results.html`: six-section dashboard shell
+- `js/results-controller.js`: combined loading, filters, source counts, and section navigation
+- `js/results-summary-render.js`: headline and primary section summaries
+- `js/results-detail-render.js`: routing-aware complete core coverage and Viewer Voices
+- `js/results-gap-render.js`: paired importance/performance analysis
+- `js/results-export.js`: raw JSON and coverage-aware summary CSV
+- `js/results-data.js`: synthetic v6 test responses
+- `css/results-sections.css`: dashboard section and responsive layout
+- `QUESTIONNAIRE_SPEC.md`: living core blueprint and results contract
+- `RESULTS_COVERAGE_LEDGER.md`: canonical question-to-results inventory
 
 ## Production work still required
 
 Before public launch:
 
-- remove the test-only **Test Thank You page** shortcut from the landing page
+- remove the test-only Thank You shortcut
 - copy the official logo into the production asset set
-- connect the approved production database
+- connect the approved Supabase database
+- replace combined test loading with Supabase-only responses
+- protect results access
 - make private continuation links work across devices
-- define continuation-token expiration, revocation, and withdrawal behavior
-- protect core and follow-up results
-- build aggregate and qualitative follow-up results and CSV exports
+- define token expiration, revocation, and withdrawal behavior
+- complete the Decision Brief interpretation layer
+- build aggregate follow-up results and CSV export
 - publish privacy, linkage, retention, and withdrawal information
 - implement optional server-side email delivery separately from answer records
 - disable blank test navigation
-- prevent synthetic data from becoming the live source
+- prevent synthetic data from becoming a live source
 - verify official station, channel, PBS.org, PBS App, and Passport wording
 - complete phone/desktop, portrait/landscape, keyboard, screen-reader, focus, reduced-motion, routing, save/resume, continuation-link, submission, results, import, and export QA
