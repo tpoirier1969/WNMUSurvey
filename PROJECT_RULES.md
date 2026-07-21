@@ -413,6 +413,8 @@ For every changed question, scale, option, category, or ID:
 
 Do not collect new information that cannot be meaningfully reviewed in the results system unless Tod explicitly approves that temporary state.
 
+Maintain `RESULTS_COVERAGE_LEDGER.md` as the canonical question-to-results inventory. Every live core and follow-up question must have a current ledger row showing its visible-results status, primary future results section, planned presentation, Decision Brief eligibility, export treatment, and denominator or routing notes. Update the ledger whenever questionnaire definitions, routing, result renderers, exports, or schemas change. A questionnaire revision is not analytically complete until the affected ledger rows are current.
+
 ---
 
 ## 18. Versioning rule
