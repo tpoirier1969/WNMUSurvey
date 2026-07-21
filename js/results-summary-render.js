@@ -10,7 +10,7 @@
       return;
     }
 
-    if (els.dataStatus) els.dataStatus.textContent = `${loadedResponses.length} loaded from ${dataSourceLabel}; ${responses.length} match current filters.`;
+    if (els.dataStatus) els.dataStatus.textContent = dataStatusText(responses.length);
     renderMetrics(responses);
     renderQuestionBars(els.viewerMix, responses, "viewer_status", (response) => response.routeProfile?.viewer_status, false);
     renderQuestionBars(els.methodMix, responses, "viewing_methods", (response) => response.routeProfile?.viewing_methods, true);
@@ -20,20 +20,26 @@
     renderGapResults(responses);
     renderQuestionBars(els.ageMix, responses, "age_range", (response) => response.answers?.age_range, false);
     renderQuestionBars(els.countyMix, responses, "county_region", (response) => response.answers?.county_region, false);
-    renderComments(responses);
+    renderCoreDetailResults(responses);
   }
 
   function renderMetrics(responses) {
     const viewerAnswered = responses.filter((response) => hasValue(response.routeProfile?.viewer_status));
     const current = viewerAnswered.filter((response) => ["regular", "occasional", "once_twice"].includes(response.routeProfile.viewer_status)).length;
     const methodAnswered = responses.filter((response) => Array.isArray(response.routeProfile?.viewing_methods));
-    const onlineMethods = ["wnmu_livestream", "pbs_app_web", "pbs_passport", "youtube_tv", "youtube"];
+    const onlineMethods = ["wnmu_livestream", "pbs_app", "pbs_org", "pbs_passport", "youtube_tv", "youtube"];
     const online = methodAnswered.filter((response) => response.routeProfile.viewing_methods.some((method) => onlineMethods.includes(method))).length;
     const childrenAnswered = responses.filter((response) => hasValue(response.routeProfile?.children_role));
     const children = childrenAnswered.filter((response) => ["household", "educator", "both"].includes(response.routeProfile.children_role)).length;
+    const sourceCounts = responseSourceCounts(responses);
+    const sourceNote = [
+      sourceCounts.synthetic ? `${sourceCounts.synthetic} synthetic` : "",
+      sourceCounts.browser_submitted ? `${sourceCounts.browser_submitted} browser-submitted` : "",
+      sourceCounts.other ? `${sourceCounts.other} imported or other` : ""
+    ].filter(Boolean).join(" + ");
 
     els.metricResponses.textContent = responses.length;
-    els.metricResponsesNote.textContent = `${loadedResponses.length} total loaded.`;
+    els.metricResponsesNote.textContent = sourceNote || `${loadedResponses.length} total loaded.`;
     els.metricCurrent.textContent = percent(current, viewerAnswered.length);
     els.metricOnline.textContent = percent(online, methodAnswered.length);
     els.metricChildren.textContent = percent(children, childrenAnswered.length);
@@ -116,4 +122,3 @@
       barMarkup(labels[value] || humanize(value), count, max, `${count} · ${percent(count, answered.length)} · n=${answered.length}`)
     ).join("");
   }
-
