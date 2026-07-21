@@ -3,7 +3,7 @@
 ## 1. Release contract
 
 - Schema: `wnmu-viewer-questionnaire-v6`
-- Build: `6.1.0-test`
+- Build: `6.1.2-test`
 - Release date: 2026-07-20
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -172,6 +172,8 @@ The core thank-you page creates a random private continuation token and offers:
 - a copyable private link to the follow-up hub
 - an option to open the respondent's own email application with the link
 - **I'm done now**
+
+The test-only landing-page shortcut may create an internal non-v6 preview response when no completed v6 response exists. That record is excluded from v6 results. The Thank You page always uses the same respondent-facing wording and controls, without preview labels, test limitations, or test-response controls.
 
 The follow-up hub states that the core questionnaire is complete and does not ask the respondent to repeat it. It displays a limited summary of linked core information and shows each module as Not started, Saved for later, or Completed.
 
