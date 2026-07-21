@@ -45,6 +45,7 @@
           <button class="button quiet danger-button" id="clearLocal" type="button">Clear submitted browser responses</button>
           <span class="data-status" id="dataStatus">Loading combined test responses…</span>
           <span class="data-status" id="followUpDataStatus"></span>
+          <div id="excludedRecordDiagnostics" class="excluded-record-diagnostics" hidden></div>
         </div>
 
         <section id="filters" class="filter-panel" aria-labelledby="filterHeading">
@@ -74,9 +75,32 @@
           <section id="resultsDecision" class="results-panel" role="tabpanel" data-results-panel="decision" hidden aria-labelledby="decisionHeading">
             <section class="result-section decision-foundation">
               <p class="eyebrow">Interpretation layer</p>
-              <h2 id="decisionHeading">Decision Brief foundation</h2>
+              <h2 id="decisionHeading">Decision Brief</h2>
+              <p>Rules-based findings surface the strongest decision signals in the current filtered view without replacing the underlying evidence.</p>
               <div id="decisionBriefStatus"></div>
               <div id="followUpDecisionStatus"></div>
+            </section>
+            <section class="result-section decision-rules">
+              <details>
+                <summary>How findings are generated and limited</summary>
+                <ul>
+                  <li>No finding is shown without its answered, paired, or module denominator.</li>
+                  <li>Core findings require at least five usable answers for the stated measure.</li>
+                  <li>Optional follow-up findings always identify the voluntary, self-selected module population.</li>
+                  <li>Synthetic records remain labeled as test data and are not research conclusions.</li>
+                  <li>Practical responses are presented as options to investigate, not automatic directives.</li>
+                  <li>Filters recalculate the findings; small filtered groups may produce no finding.</li>
+                </ul>
+              </details>
+            </section>
+            <div class="results-panel-heading"><p class="eyebrow">Core questionnaire findings</p><h2>Signals supported by the current core evidence</h2></div>
+            <div id="decisionFindings" class="decision-finding-grid"></div>
+            <div class="results-panel-heading"><p class="eyebrow">Optional follow-up findings</p><h2>Signals from voluntary, self-selected modules</h2><p>These findings describe only the people who submitted each module and answered the named question.</p></div>
+            <div id="followUpDecisionFindings" class="decision-finding-grid"></div>
+            <section class="result-section contact-request-summary">
+              <p class="eyebrow">Operational follow-up</p>
+              <h2>Contact requests</h2>
+              <div id="contactRequestSummary"></div>
             </section>
           </section>
 
@@ -176,7 +200,9 @@
           </section>
 
           <section id="resultsVoices" class="results-panel" role="tabpanel" data-results-panel="voices" hidden aria-labelledby="voicesHeading">
-            <div class="results-panel-heading"><p class="eyebrow">Viewer Voices</p><h2 id="voicesHeading">Original comments grouped by their purpose</h2><p>Comments are shown as written. Automated theme synthesis is reserved for the later interpretation package.</p></div>
+            <div class="results-panel-heading"><p class="eyebrow">Viewer Voices</p><h2 id="voicesHeading">Themes and original comments</h2><p>Theme organization helps reviewers scan the open responses. Original comments remain unchanged and are still grouped by their source question below.</p></div>
+            <section class="result-section qualitative-themes-section"><p class="eyebrow">Transparent theme organization</p><h2>Recurring subjects across open responses</h2><div id="qualitativeThemes"></div></section>
+            <div class="results-panel-heading"><p class="eyebrow">Core questionnaire comments</p><h2>Original responses grouped by question</h2><p>Comments are shown exactly as submitted.</p></div>
             <div id="viewerVoiceGroups" class="viewer-voice-groups"></div>
             <div class="results-panel-heading"><p class="eyebrow">Optional follow-up comments</p><h2>Ideas, needs, barriers, and communication guidance</h2><p>Each comment remains connected to its module and question.</p></div>
             <div id="followUpVoiceGroups" class="viewer-voice-groups"></div>
@@ -195,15 +221,15 @@
 
   <footer class="site-footer"><div class="container footer-grid"><div><strong>Local prototype</strong><p>No external database is connected.</p></div><div><strong>Combined test data</strong><p>Synthetic and browser-submitted records remain visibly distinguishable.</p></div><div><strong>Future deployment</strong><p>Production will use only approved Supabase responses.</p></div></div></footer>
 
-  <script src="js/config.js?v=6.2.0-test"></script>
-  <script src="js/questions.js?v=6.2.0-test"></script>
-  <script src="js/follow-up-local.js?v=6.2.0-test"></script>
-  <script src="js/follow-up-programming.js?v=6.2.0-test"></script>
-  <script src="js/follow-up-online.js?v=6.2.0-test"></script>
-  <script src="js/follow-up-children.js?v=6.2.0-test"></script>
-  <script src="js/follow-up-communication.js?v=6.2.0-test"></script>
-  <script src="js/follow-up-definitions.js?v=6.2.0-test"></script>
-  <script src="js/storage.js?v=6.2.0-test"></script>
-  <script src="js/results.js?v=6.2.0-test"></script>
+  <script src="js/config.js?v=6.3.0-test"></script>
+  <script src="js/questions.js?v=6.3.0-test"></script>
+  <script src="js/follow-up-local.js?v=6.3.0-test"></script>
+  <script src="js/follow-up-programming.js?v=6.3.0-test"></script>
+  <script src="js/follow-up-online.js?v=6.3.0-test"></script>
+  <script src="js/follow-up-children.js?v=6.3.0-test"></script>
+  <script src="js/follow-up-communication.js?v=6.3.0-test"></script>
+  <script src="js/follow-up-definitions.js?v=6.3.0-test"></script>
+  <script src="js/storage.js?v=6.3.0-test"></script>
+  <script src="js/results.js?v=6.3.0-test"></script>
 </body>
 </html>

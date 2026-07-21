@@ -8,12 +8,12 @@ Current contract:
 
 - core schema: `wnmu-viewer-questionnaire-v6`
 - follow-up schema: `wnmu-viewer-follow-ups-v2`
-- build: `6.2.0-test`
+- build: `6.3.0-test`
 - audit date: 2026-07-21
 
 ## 2. Results structure
 
-1. Decision Brief, interpretation rules pending
+1. Decision Brief with denominator-safe core and voluntary self-selected follow-up findings
 2. Audience & Access
 3. Programming Priorities
 4. Performance & Opportunities
@@ -32,6 +32,8 @@ Core and follow-up results share these sections, but follow-up findings retain m
 - Raw JSON contains both core and follow-up records.
 - Core and follow-up stable-label CSV exports are separate.
 - `deeper_priority_categories` and `program_recommendations` are retired and not reused.
+- Open responses are organized into transparent keyword themes while original comments remain unchanged under their source questions.
+- Optional contact details remain outside research results and exports; only an aggregate linked-request count appears.
 
 ## 4. Core questionnaire ledger
 
@@ -51,7 +53,7 @@ Core and follow-up results share these sections, but follow-up findings retain m
 | What You Watch | `channels_watched` | Channels watched | Full | Audience & Access | Channel funnel; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV | Never-viewer routing |
 | What You Watch | `watch_preference` | Scheduled, recorded, and online preference | Full | Audience & Access | Distribution; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV | Linear versus on-demand |
 | What You Watch | `program_category_interest` | Interest ratings across 17 categories | Full | Programming Priorities | Ranked averages and detailed distributions; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV | Missing and na excluded |
-| What You Watch | `valued_programs` | Valuable or memorable programs | Full | Viewer Voices | Original comments and answered count; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV answered count | Theme synthesis pending |
+| What You Watch | `valued_programs` | Valuable or memorable programs | Full | Viewer Voices | Themed review aid plus unchanged original comments and answered count; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV answered count | Theme matching may place one original comment in multiple themes |
 | What You Watch | `kids_use` | How children content is used | Full | Audience & Access | Eligible-segment distribution; answered/skipped/not-applicable in All Data | Conditional | JSON + core CSV | Child-role routing |
 | What You Want | `program_category_priorities` | Five categories to emphasize | Full | Programming Priorities | Ranked selections; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV | Linked follow-up context |
 | What You Want | `local_formats` | Preferred local/regional formats | Full | Programming Priorities | Ranked selections; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV | Production format input |
@@ -64,7 +66,7 @@ Core and follow-up results share these sections, but follow-up findings retain m
 | How We're Doing | `trust_station` | Trust in WNMU-TV | Full | Performance & Opportunities | Distribution; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV | Headline candidate |
 | How We're Doing | `nonviewer_reasons` | Reasons for not watching more | Full | Performance & Opportunities | Ranked barriers; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV | Former/never/unsure only |
 | How We're Doing | `nonviewer_return` | Changes that could attract/regain viewers | Full | Viewer Voices | Original comments and answered count; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV answered count | Also opportunity input |
-| How We're Doing | `final_feedback` | Strengths, improvements, and other feedback | Full | Viewer Voices | Original comments and answered count; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV answered count | Theme synthesis pending |
+| How We're Doing | `final_feedback` | Strengths, improvements, and other feedback | Full | Viewer Voices | Themed review aid plus unchanged original comments and answered count; answered/skipped/not-applicable in All Data | Yes | JSON + core CSV answered count | Theme matching may place one original comment in multiple themes |
 
 ## 5. Follow-up questionnaire ledger
 
@@ -125,7 +127,7 @@ Core and follow-up results share these sections, but follow-up findings retain m
 
 | Record | Current state | Intended storage | Results treatment |
 |---|---|---|---|
-| Optional email/contact opt-in | Not yet collected | Separate protected contact table, not questionnaire answers | Aggregate request count only; no addresses in research results or exports |
+| Optional email/contact opt-in | Active in Test after core submission; name optional, email and consent required, one or more contact reasons required | `wnmu-viewer-contact-v1`; separate browser key in Test and separate protected contact table required for production | Aggregate valid linked-request count only; no contact details or records in research results, raw JSON, or CSV exports |
 
 ## 8. Maintenance procedure
 

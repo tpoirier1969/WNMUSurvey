@@ -32,7 +32,18 @@
     });
   }
 
+  function migrateStoredThankYouPreview() {
+    const responses = safeParse(localStorage.getItem(config.storageKeys.responses), []);
+    if (!Array.isArray(responses)) return;
+    const previews = responses.filter((response) => response?.isTestPreview);
+    if (!previews.length) return;
+    const latest = previews.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
+    localStorage.setItem(config.storageKeys.thankYouPreview, JSON.stringify(latest));
+    localStorage.setItem(config.storageKeys.responses, JSON.stringify(responses.filter((response) => !response?.isTestPreview)));
+  }
+
   clearRetiredPrototypeData();
+  migrateStoredThankYouPreview();
 
   function getRespondentId() {
     let id = localStorage.getItem(config.storageKeys.respondentId);
@@ -61,6 +72,11 @@
   function getFollowUpResponses() {
     const responses = safeParse(localStorage.getItem(config.storageKeys.followUpResponses), []);
     return Array.isArray(responses) ? responses : [];
+  }
+
+  function getContactRequests() {
+    const requests = safeParse(localStorage.getItem(config.storageKeys.contactRequests), []);
+    return Array.isArray(requests) ? requests : [];
   }
 
   const storage = {
@@ -98,9 +114,21 @@
     },
 
     getResponse(responseId) {
-      return this.getResponses().find((response) =>
+      const submitted = this.getResponses().find((response) =>
         response.responseId === responseId || response.id === responseId
-      ) || null;
+      );
+      if (submitted) return submitted;
+      const preview = safeParse(localStorage.getItem(config.storageKeys.thankYouPreview), null);
+      return preview && (preview.responseId === responseId || preview.id === responseId) ? preview : null;
+    },
+
+    getTestThankYouPreview() {
+      return safeParse(localStorage.getItem(config.storageKeys.thankYouPreview), null);
+    },
+
+    saveTestThankYouPreview(preview) {
+      localStorage.setItem(config.storageKeys.thankYouPreview, JSON.stringify(preview));
+      return preview;
     },
 
     saveResponse(payload) {
@@ -182,6 +210,67 @@
     },
 
     getFollowUpAccessRecords,
+
+    getContactRequests,
+
+    getContactRequestForResponse(coreResponseId) {
+      return getContactRequests().find((request) => request.coreResponseId === coreResponseId) || null;
+    },
+
+    saveContactRequest(coreResponse, payload) {
+      if (!config.contact?.enabled) throw new Error("Contact requests are not enabled.");
+      if (!coreResponse?.responseId || !coreResponse?.respondentId) {
+        throw new Error("A submitted core response is required before saving a contact request.");
+      }
+
+      const email = String(payload.email || "").trim();
+      const name = String(payload.name || "").trim();
+      const allowedReasons = new Set(["response_followup", "programming_idea", "future_research"]);
+      const reasons = Array.from(new Set(Array.isArray(payload.reasons) ? payload.reasons : [])).filter((reason) => allowedReasons.has(reason));
+      if (!payload.consent) throw new Error("Contact consent is required.");
+      if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("A valid email address is required.");
+      if (!reasons.length) throw new Error("At least one contact reason is required.");
+      if (name.length > 100) throw new Error("The contact name is too long.");
+
+      const requests = getContactRequests();
+      const existingIndex = requests.findIndex((request) => request.coreResponseId === coreResponse.responseId);
+      const existing = existingIndex >= 0 ? requests[existingIndex] : null;
+      const now = new Date().toISOString();
+      const request = {
+        contactRequestId: existing?.contactRequestId || makeId("contact-request"),
+        contactSchemaVersion: config.contact.schemaVersion,
+        respondentId: coreResponse.respondentId,
+        coreResponseId: coreResponse.responseId,
+        coreSchemaVersion: coreResponse.schemaVersion || coreResponse.surveyVersion || config.schemaVersion,
+        buildVersion: config.buildVersion,
+        mode: config.mode,
+        source: config.mode === "test" ? "local-browser-contact-test" : "local-browser-contact",
+        status: "contact_requested",
+        isTestPreview: Boolean(coreResponse.isTestPreview),
+        name,
+        email,
+        reasons,
+        consentGiven: true,
+        consentVersion: "contact-opt-in-v1",
+        createdAt: existing?.createdAt || now,
+        updatedAt: now
+      };
+
+      if (existingIndex >= 0) requests[existingIndex] = request;
+      else requests.push(request);
+      localStorage.setItem(config.storageKeys.contactRequests, JSON.stringify(requests));
+      return request;
+    },
+
+    removeContactRequestForResponse(coreResponseId) {
+      const requests = getContactRequests().filter((request) => request.coreResponseId !== coreResponseId);
+      localStorage.setItem(config.storageKeys.contactRequests, JSON.stringify(requests));
+      return requests.length;
+    },
+
+    clearContactRequests() {
+      localStorage.removeItem(config.storageKeys.contactRequests);
+    },
 
     loadFollowUpDraft(accessId, moduleId) {
       return getFollowUpDraftMap()[`${accessId}:${moduleId}`] || null;

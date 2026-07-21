@@ -283,6 +283,109 @@
   color: var(--ink-soft);
 }
 
+.contact-opt-in {
+  max-width: 900px;
+  margin: 22px auto 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+  text-align: left;
+}
+
+.contact-opt-in > summary {
+  padding: 18px 20px;
+  color: var(--navy);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.contact-opt-in > summary:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.contact-opt-in-body {
+  padding: 0 20px 20px;
+}
+
+.contact-opt-in-body > p {
+  color: var(--ink-soft);
+}
+
+.contact-test-note {
+  padding: 12px 14px;
+  border-left: 5px solid var(--gold);
+  border-radius: 8px;
+  background: #fff8df;
+}
+
+.contact-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.contact-field-grid label,
+.contact-reasons legend {
+  color: var(--navy);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.contact-field-grid label span,
+.contact-reasons legend span {
+  color: var(--ink-soft);
+  font-weight: 650;
+}
+
+.contact-field-grid input {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-dark);
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--white);
+}
+
+.contact-reasons {
+  display: grid;
+  gap: 9px;
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+}
+
+.contact-reasons legend {
+  margin-bottom: 8px;
+}
+
+.contact-reasons label,
+.contact-consent {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fafb;
+}
+
+.contact-reasons input,
+.contact-consent input {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.contact-consent {
+  margin-bottom: 16px;
+  font-size: 0.86rem;
+}
+
 .followup-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -368,6 +471,10 @@
 }
 
 @media (max-width: 680px) {
+  .contact-field-grid {
+    grid-template-columns: 1fr;
+  }
+
   .question-card .choice-grid.compact-choice-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

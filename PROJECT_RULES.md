@@ -512,3 +512,41 @@ Do not repeat these mistakes:
 - Do not count missing older answers as negative answers.
 - Do not create a new file merely to avoid editing the canonical file.
 - Do not leave README instructions stale when live behavior changes.
+
+---
+
+## 22. Decision Brief and qualitative interpretation
+
+The Decision Brief is a rules-based interpretation layer over the canonical results calculations. It must not create a second, conflicting analytics system.
+
+Every generated finding must:
+
+- state the answered, paired, routed, or module denominator used
+- distinguish core evidence from optional follow-up evidence
+- identify optional follow-up populations as voluntary and self-selected
+- keep synthetic test evidence unmistakably labeled and unsuitable for station decisions
+- avoid broad audience claims from small or nonrepresentative samples
+- present practical responses as options to investigate, not automatic directives
+- recalculate when audience filters change
+
+The current minimum for an automated finding is five usable answers for the stated measure. Meeting that minimum does not make the sample representative or conclusive.
+
+Qualitative theme organization is a review aid, not a statistical finding. Original comments must remain unchanged, remain available under their source questions, and never be rewritten and presented as quotations. Transparent keyword matching may place one comment in more than one theme and must say so.
+
+---
+
+## 23. Optional contact records
+
+Optional post-submission contact details are operational records, not questionnaire answers.
+
+Requirements:
+
+- collect contact information only after a successful core submission and explicit consent
+- store contact details under a separate contact schema and storage key or protected production table
+- link the operational record through the pseudonymous respondent and core response IDs
+- never place names or email addresses inside core or follow-up answer records
+- show only an aggregate contact-request count in research results
+- exclude contact records and contact details from research JSON and CSV exports
+- remove linked test contact records when submitted browser test responses are cleared
+
+The local Test version is not an approved production contact system. Public release requires protected server-side contact storage, access controls, retention and deletion rules, and final respondent-facing privacy language.

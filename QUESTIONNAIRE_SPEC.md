@@ -4,7 +4,7 @@
 
 - Core schema: `wnmu-viewer-questionnaire-v6`
 - Follow-up schema: `wnmu-viewer-follow-ups-v2`
-- Build: `6.2.0-test`
+- Build: `6.3.0-test`
 - Release date: 2026-07-21
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -191,12 +191,17 @@ The continuation token appears in the URL fragment and separate access record. I
 
 Current test limitation: links resolve only under the same browser origin because no production database is connected. Public production requires approved server-side token resolution and protected response storage.
 
+After core submission, a respondent may separately ask WNMU-TV to contact them about their response, a programming idea, or future research. The form collects an optional name, required email address, one or more approved contact reasons, and explicit consent. The contact record uses `wnmu-viewer-contact-v1` and contains pseudonymous respondent and core response IDs, but it is stored separately from core and follow-up answers.
+
+Research results show only the aggregate number of valid contact requests linked to responses in the filtered view. Names, email addresses, contact reasons, and contact records are excluded from research JSON and CSV exports. The Test version stores contact requests only in the current browser; production requires a separate protected contact system.
+
 ## 8. Storage keys
 
 Core:
 
 - draft: `wnmuViewerSurveyDraft:v6`
 - responses: `wnmuViewerSurveyResponses:v3`
+- Test Thank You preview: `wnmuViewerThankYouPreview:v1`
 - respondent ID: `wnmuViewerRespondentId:v1`
 
 Follow-up v2:
@@ -204,6 +209,12 @@ Follow-up v2:
 - access records: `wnmuViewerFollowUpAccess:v1`
 - drafts: `wnmuViewerFollowUpDrafts:v2`
 - responses: `wnmuViewerFollowUpResponses:v2`
+
+Operational contact:
+
+- contact requests: `wnmuViewerContactRequests:v1`
+
+Test Thank You previews use their own storage key and are not submitted core responses. Older preview objects that were previously placed in the shared response array are moved to the preview key so they no longer appear as excluded questionnaire records.
 
 Retired follow-up prototype history:
 
@@ -222,6 +233,7 @@ Core analytics rules:
 - Calculate each respondent's importance-performance gap first, then average paired gaps.
 - Preserve standalone importance and performance distributions.
 - Load only v6 records into the v6 core dashboard.
+- Diagnose excluded browser records by pseudonymous record ID, schema, and rejection reason without displaying their answers.
 
 Test data behavior:
 
@@ -238,9 +250,25 @@ Follow-up analytics rules:
 - Children follow-up responses must link only to eligible core respondents.
 - Follow-up percentages must not be described as percentages of all core respondents unless explicitly calculated and labeled that way.
 
+Decision Brief rules:
+
+- Every finding states the denominator used.
+- Automated findings require at least five usable answers for the stated measure.
+- Follow-up findings explicitly identify the voluntary, self-selected module population and module n.
+- Synthetic findings display a test-data warning and must not be used for station decisions.
+- Implications are tentative and recommended responses are practical options, not directives.
+- Audience filters recalculate both evidence and findings.
+
+Qualitative organization:
+
+- Open responses are organized by transparent keyword themes as a review aid.
+- A comment may appear in more than one theme.
+- Original text remains unchanged and continues to appear under its source question.
+- Theme counts are comment counts, not audience percentages or representative conclusions.
+
 Results sections:
 
-1. Decision Brief, interpretation rules pending
+1. Decision Brief with denominator-safe core and self-selected follow-up findings
 2. Audience & Access
 3. Programming Priorities
 4. Performance & Opportunities
@@ -255,6 +283,8 @@ Exports:
 
 ## 10. Production checklist
 
+Build 6.3.0 Test QA completed: JavaScript syntax, loaded-asset references, duplicate HTML IDs, Test Thank You preview migration, valid and invalid browser-record handling, combined 25-core/60-follow-up synthetic loading, browser-core inclusion, contact-record separation and aggregate counting, denominator-bearing core and follow-up findings, audience-filter recalculation, small-sample suppression, and original-comment preservation in the theme renderer. The available remote browser could not open the local test origin, so a hands-on desktop and phone visual/interaction pass remains required before production.
+
 Before public release:
 
 - switch the authoritative mode to production
@@ -266,6 +296,7 @@ Before public release:
 - define token expiration, revocation, response editing, withdrawal, and retention
 - publish final privacy and linkage language
 - implement optional email delivery in a separate protected contact system
+- replace local contact-request storage with a protected operational contact table
 - verify current WNMU channel and PBS service wording against governing sources
 - copy the logo into the application asset set
 - complete desktop, phone portrait/landscape, keyboard, screen-reader, focus, reduced-motion, routing, draft, submission, linkage, filters, import, JSON, and CSV QA

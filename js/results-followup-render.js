@@ -2,21 +2,11 @@
 
   function renderFollowUpResults(coreResponses) {
     const responses = filteredFollowUpResponses(coreResponses);
-    renderFollowUpDecisionStatus(responses);
     renderFollowUpSection(els.followUpAudienceResults, "audience", responses);
     renderFollowUpSection(els.followUpProgrammingResults, "programming", responses);
     renderFollowUpSection(els.followUpPerformanceResults, "performance", responses);
     renderFollowUpVoices(responses);
     renderFollowUpAllData(responses);
-  }
-
-  function renderFollowUpDecisionStatus(responses) {
-    if (!els.followUpDecisionStatus) return;
-    const modulesCompleted = new Set(responses.map((response) => response.moduleId)).size;
-    const linkedPeople = new Set(responses.map((response) => response.respondentId || response.coreResponseId)).size;
-    els.followUpDecisionStatus.innerHTML = responses.length
-      ? `<p>The filtered evidence also includes <strong>${responses.length}</strong> optional follow-up module responses from <strong>${linkedPeople}</strong> linked respondents across <strong>${modulesCompleted}</strong> modules.</p><p>Follow-up findings use module-specific, self-selected denominators and are not percentages of all core respondents.</p>`
-      : `<p>No optional follow-up responses are linked to the currently filtered core respondents.</p>`;
   }
 
   function renderFollowUpSection(container, sectionId, responses) {

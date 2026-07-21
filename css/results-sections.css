@@ -51,6 +51,28 @@
   font-weight: 700;
 }
 
+.excluded-record-diagnostics {
+  flex: 1 1 100%;
+}
+
+.excluded-record-details {
+  padding: 12px 14px;
+  border: 1px solid #c98f2d;
+  border-radius: 10px;
+  color: var(--ink);
+  background: #fff8df;
+}
+
+.excluded-record-details summary {
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.excluded-record-details p,
+.excluded-record-details li {
+  font-size: 0.82rem;
+}
+
 .filter-panel {
   margin: 18px 0;
   padding: 22px;
@@ -356,11 +378,177 @@
   max-width: 900px;
 }
 
-.decision-foundation #decisionBriefStatus {
+.decision-foundation #decisionBriefStatus,
+.decision-foundation #followUpDecisionStatus {
+  margin-top: 12px;
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: #f8fafb;
+}
+
+.decision-foundation #followUpDecisionStatus {
+  border-left: 6px solid var(--lake);
+}
+
+.decision-test-warning {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 2px solid #b56b00;
+  border-radius: 10px;
+  color: #5f3800;
+  background: #fff3c4;
+}
+
+.decision-test-warning strong {
+  font-size: 0.92rem;
+  letter-spacing: 0.035em;
+}
+
+.decision-rules {
+  max-width: 900px;
+}
+
+.decision-rules summary {
+  color: var(--navy);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.decision-rules li {
+  margin: 7px 0;
+}
+
+.decision-finding-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.decision-finding-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-top: 7px solid var(--lake);
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 10px 28px rgba(14, 44, 61, 0.06);
+}
+
+.decision-finding-card h3 {
+  margin-bottom: 16px;
+  color: var(--navy);
+  font-size: 1.28rem;
+}
+
+.decision-finding-parts {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.decision-finding-parts > div {
+  padding: 12px 13px;
+  border-radius: 10px;
+  background: #f8fafb;
+}
+
+.decision-finding-parts dt {
+  margin-bottom: 4px;
+  color: var(--navy);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.decision-finding-parts dd {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+
+.decision-finding-parts ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.decision-finding-parts li + li {
+  margin-top: 5px;
+}
+
+.decision-finding-parts .decision-caution {
+  border-left: 5px solid #c98f2d;
+  background: #fff8df;
+}
+
+.contact-count-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.contact-count-card strong {
+  color: var(--lake);
+  font-size: 2.3rem;
+  line-height: 1;
+}
+
+.contact-count-card span {
+  max-width: 460px;
+  font-weight: 800;
+}
+
+.theme-method-note {
+  padding: 14px;
+  border-left: 5px solid var(--gold);
+  border-radius: 8px;
+  color: var(--ink-soft);
+  background: #fff8df;
+}
+
+.qualitative-theme-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.qualitative-theme-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f8fafb;
+}
+
+.qualitative-theme-card summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 15px;
+  color: var(--navy);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.qualitative-theme-card summary strong {
+  flex: 0 0 auto;
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+}
+
+.qualitative-theme-comments {
+  display: grid;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
+.themed-comment small {
+  display: block;
+  margin-top: 9px;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
 }
 
 .empty-state {
@@ -377,7 +565,8 @@
   }
 
   .metric-grid,
-  .all-data-grid {
+  .all-data-grid,
+  .decision-finding-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -390,9 +579,14 @@
 
   .metric-grid,
   .result-grid,
-  .all-data-grid,
+    .all-data-grid,
+  .decision-finding-grid,
   .filter-grid {
     grid-template-columns: 1fr;
+  }
+
+  .qualitative-theme-card summary {
+    display: grid;
   }
 
   .bar-item {

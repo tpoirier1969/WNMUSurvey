@@ -1,7 +1,10 @@
 "use strict";
 
+  let activeCompletionResponse = null;
+
   function renderCompletionPanel(response) {
     if (!els.completePanel) return;
+    activeCompletionResponse = response || null;
     const modules = (survey.followUpModules || []).filter((module) => matchesCondition(module.when, state));
     const followUpPath = config.followUp?.placeholderPath || "follow-up.html";
     let followUpHubUrl = new URL(followUpPath, window.location.href).href;
@@ -27,6 +30,39 @@
     const emailBody = encodeURIComponent(
       `Use this private link to return to the optional WNMU-TV follow-up questionnaires:\n\n${followUpHubUrl}`
     );
+    const existingContact = config.contact?.enabled
+      ? storage.getContactRequestForResponse(response?.responseId)
+      : null;
+    const selectedReasons = new Set(existingContact?.reasons || []);
+    const contactReasonOptions = [
+      ["response_followup", "Discuss something in my questionnaire response"],
+      ["programming_idea", "Follow up about a programming idea or opportunity"],
+      ["future_research", "Invite me to future WNMU-TV research"]
+    ];
+    const contactMarkup = config.contact?.enabled ? `
+      <details id="contactRequestPanel" class="contact-opt-in">
+        <summary>Would you like WNMU-TV to contact you?</summary>
+        <div class="contact-opt-in-body">
+          <p>This is optional. Your contact details will be stored in a separate contact record, not in your questionnaire answers. Research results show only the number of people requesting contact.</p>
+          <p class="contact-test-note"><strong>Test version:</strong> this contact request is stored only in this browser. A protected contact system is still required before public release.</p>
+          <form id="contactRequestForm" data-core-response-id="${escapeAttr(response?.responseId || "")}" novalidate>
+            <div class="contact-field-grid">
+              <label>Your name <span>(optional)</span><input name="contactName" type="text" autocomplete="name" maxlength="100" value="${escapeAttr(existingContact?.name || "")}" /></label>
+              <label>Email address <span>(required)</span><input name="contactEmail" type="email" autocomplete="email" maxlength="254" required value="${escapeAttr(existingContact?.email || "")}" /></label>
+            </div>
+            <fieldset class="contact-reasons">
+              <legend>What may WNMU-TV contact you about? <span>(choose at least one)</span></legend>
+              ${contactReasonOptions.map(([value, label]) => `<label><input name="contactReason" type="checkbox" value="${escapeAttr(value)}"${selectedReasons.has(value) ? " checked" : ""} /><span>${escapeHtml(label)}</span></label>`).join("")}
+            </fieldset>
+            <label class="contact-consent"><input name="contactConsent" type="checkbox" required${existingContact ? " checked" : ""} /><span>I agree that WNMU-TV may use this information to contact me for the purposes I selected.</span></label>
+            <div class="button-row">
+              <button class="button secondary" type="submit">${existingContact ? "Update contact request" : "Save contact request"}</button>
+              ${existingContact ? '<button class="button quiet danger-button" id="removeContactRequest" type="button">Remove saved contact request</button>' : ""}
+            </div>
+            <p id="contactRequestStatus" class="question-message" role="status" aria-live="polite">${existingContact ? "A contact request is already saved for this response. You may update it here." : ""}</p>
+          </form>
+        </div>
+      </details>` : "";
 
     els.completePanel.innerHTML = `
       <div class="completion-mark" aria-hidden="true">✓</div>
@@ -45,8 +81,45 @@
         <p id="copyFollowUpStatus" class="question-message" aria-live="polite"></p>
         <p class="completion-note">Keep this private link if you plan to return later.</p>
       </div>
+      ${contactMarkup}
       <p id="completionFinalMessage" class="completion-final-message" hidden>Thank you. You may close this page. Your private follow-up link remains available if you saved it.</p>
       <span class="sr-only">Response ${escapeHtml(response?.responseId || "saved")}</span>`;
+  }
+
+  function handleCompletionSubmit(event) {
+    if (event.target?.id !== "contactRequestForm") return;
+    event.preventDefault();
+    const form = event.target;
+    const status = form.querySelector("#contactRequestStatus");
+    const response = storage.getResponse(form.dataset.coreResponseId)
+      || (activeCompletionResponse?.responseId === form.dataset.coreResponseId ? activeCompletionResponse : null);
+    const reasons = Array.from(form.querySelectorAll('input[name="contactReason"]:checked')).map((input) => input.value);
+
+    if (!form.reportValidity()) return;
+    if (!reasons.length) {
+      if (status) status.textContent = "Choose at least one reason WNMU-TV may contact you.";
+      form.querySelector('input[name="contactReason"]')?.focus();
+      return;
+    }
+    if (!response) {
+      if (status) status.textContent = "This contact request could not be linked to the submitted questionnaire.";
+      return;
+    }
+
+    try {
+      storage.saveContactRequest(response, {
+        name: form.elements.contactName.value,
+        email: form.elements.contactEmail.value,
+        reasons,
+        consent: form.elements.contactConsent.checked
+      });
+      const button = form.querySelector('button[type="submit"]');
+      if (button) button.textContent = "Update contact request";
+      if (status) status.textContent = "Your contact request was saved separately from your questionnaire answers.";
+    } catch (error) {
+      console.warn("The contact request could not be saved.", error);
+      if (status) status.textContent = "The contact request could not be saved. Please try again.";
+    }
   }
 
   function handleCompletionAction(event) {
@@ -54,7 +127,19 @@
     if (!target) return;
     if (target.id === "copyFollowUpLink") copyFollowUpLink(target.dataset.followUpUrl);
     else if (target.id === "finishThankYou") finishThankYou();
+    else if (target.id === "removeContactRequest") removeContactRequest();
     else if (target.id === "newResponse") startNewResponse();
+  }
+
+  function removeContactRequest() {
+    if (!activeCompletionResponse?.responseId) return;
+    if (!window.confirm("Remove the saved contact request for this questionnaire response?")) return;
+    storage.removeContactRequestForResponse(activeCompletionResponse.responseId);
+    renderCompletionPanel(activeCompletionResponse);
+    const panel = document.getElementById("contactRequestPanel");
+    if (panel) panel.open = true;
+    const status = document.getElementById("contactRequestStatus");
+    if (status) status.textContent = "The saved contact request was removed.";
   }
 
   async function copyFollowUpLink(followUpUrl) {
@@ -79,8 +164,10 @@
 
   function finishThankYou() {
     const followups = document.getElementById("completionFollowups");
+    const contact = document.getElementById("contactRequestPanel");
     const message = document.getElementById("completionFinalMessage");
     if (followups) followups.hidden = true;
+    if (contact) contact.hidden = true;
     if (message) message.hidden = false;
   }
 

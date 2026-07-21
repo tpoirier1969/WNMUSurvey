@@ -6,7 +6,7 @@ This repository contains the five-stage WNMU-TV core viewer questionnaire, five 
 
 - core schema: `wnmu-viewer-questionnaire-v6`
 - follow-up schema: `wnmu-viewer-follow-ups-v2`
-- build: `6.2.0-test`
+- build: `6.3.0-test`
 - release date: 2026-07-21
 - mode: Test
 - campaign: `viewer-questionnaire-2026`
@@ -64,7 +64,7 @@ Current test limitation: the private link works only under the same browser orig
 
 Open `results.html` to review the six result sections:
 
-1. Decision Brief foundation
+1. Decision Brief
 2. Audience & Access
 3. Programming Priorities
 4. Performance & Opportunities
@@ -78,7 +78,11 @@ The default Test dataset combines:
 - 60 synthetic follow-up module responses
 - valid v2 follow-up responses submitted in the current browser
 
-Synthetic and browser-submitted records remain separately labeled. Older-schema records are excluded rather than reinterpreted.
+Synthetic and browser-submitted records remain separately labeled. Older-schema or malformed records are excluded rather than reinterpreted, and an expandable diagnostic identifies each excluded record's pseudonymous ID, schema, and rejection reason without showing answers.
+
+The Decision Brief generates denominator-safe core findings and clearly separated optional follow-up findings. Follow-up findings always identify the voluntary, self-selected module population. Synthetic findings are marked as Test data and must not be used for station decisions. Findings contain evidence, a tentative implication, practical options, and a caution.
+
+Viewer Voices organizes open responses into transparent keyword themes while preserving the original comments under their source questions. A comment may appear in more than one theme, and theme counts are not audience estimates.
 
 Synthetic follow-up module counts:
 
@@ -95,6 +99,8 @@ Exports:
 - combined raw JSON for loaded core and follow-up records
 - core summary CSV
 - follow-up summary CSV with stable stored values, labels, module counts, answered/skipped counts, linkage fields, and schema versions
+
+Optional post-submission contact requests are stored separately from questionnaire answers and are not included in these research exports. Results show only the aggregate number of contact requests linked to responses in the filtered view.
 
 ## Open locally
 
@@ -124,6 +130,7 @@ Core:
 
 - draft: `wnmuViewerSurveyDraft:v6`
 - responses: `wnmuViewerSurveyResponses:v3`
+- Test Thank You preview: `wnmuViewerThankYouPreview:v1`
 - respondent ID: `wnmuViewerRespondentId:v1`
 
 Follow-up v2:
@@ -131,6 +138,10 @@ Follow-up v2:
 - access records: `wnmuViewerFollowUpAccess:v1`
 - drafts: `wnmuViewerFollowUpDrafts:v2`
 - responses: `wnmuViewerFollowUpResponses:v2`
+
+Operational contact:
+
+- contact requests: `wnmuViewerContactRequests:v1`
 
 Retired follow-up prototype history:
 
@@ -144,7 +155,7 @@ The old v1 drafts and submissions are not loaded or migrated into v2. The access
 Configuration and storage:
 
 - `js/config.js`: mode, versions, campaign, follow-up schema, and storage keys
-- `js/storage.js`: core and follow-up browser storage, pseudonymous IDs, and continuation records
+- `js/storage.js`: core, follow-up, separate contact, and Test Thank You preview storage; pseudonymous IDs; continuation records
 
 Core questionnaire:
 
@@ -177,6 +188,7 @@ Results:
 - `js/results-gap-render.js`: paired importance-performance analysis
 - `js/results-followup-data.js`: synthetic v2 follow-up responses
 - `js/results-followup-render.js`: aggregate follow-up results and qualitative display
+- `js/results-decision-render.js`: denominator-safe findings, contact-request aggregate, and transparent qualitative theme organization
 - `js/results-export.js`: combined raw JSON, core CSV, and follow-up CSV
 - `js/results-data.js`: synthetic v6 core responses
 - `css/results-sections.css`: results sections and All Data layout
@@ -190,6 +202,8 @@ Specifications and governance:
 
 ## Production work still required
 
+Build 6.3.0 passed JavaScript syntax and nonvisual integration QA for loading, filtering, Decision Brief rules, denominator labels, small-sample suppression, qualitative preservation, contact separation, Test Thank You preview migration, diagnostics, and local asset references. The available remote browser could not open the local test origin, so hands-on desktop and phone visual/interaction QA is still required.
+
 Before public launch:
 
 - connect and approve Supabase response storage
@@ -198,7 +212,7 @@ Before public launch:
 - make private continuation links work across devices
 - define token expiration, revocation, editing, withdrawal, and retention
 - publish final privacy and linkage information
-- implement optional email delivery in a separate protected contact system
+- replace the local Test contact store with a separate protected production contact system
 - remove test-only controls and synthetic data
 - disable blank test navigation
 - copy the WNMU-TV logo into the application asset set

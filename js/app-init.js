@@ -53,6 +53,7 @@
     els.sectionStage?.addEventListener("change", handleInput);
     els.sectionStage?.addEventListener("input", handleInput);
     els.completePanel?.addEventListener("click", handleCompletionAction);
+    els.completePanel?.addEventListener("submit", handleCompletionSubmit);
 
     wireDialogs();
     updateBuildLabels();
@@ -136,16 +137,13 @@
   }
 
   function getOrCreateThankYouPreviewResponse() {
-    const responses = storage.getResponses();
-    const existing = responses
-      .filter((item) => item.isTestPreview && item.previewForSchema === config.schemaVersion)
-      .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
-    if (existing) return existing;
+    const existing = storage.getTestThankYouPreview();
+    if (existing?.isTestPreview && existing.previewForSchema === config.schemaVersion) return existing;
 
     const now = new Date().toISOString();
     const randomPart = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
     const responseId = `thank-you-preview-${randomPart}`;
-    const preview = {
+    return storage.saveTestThankYouPreview({
       responseId,
       id: responseId,
       respondentId: storage.getRespondentId(),
@@ -178,10 +176,7 @@
       visibleQuestionIds: [],
       completedStageIds: survey.stages.map((stage) => stage.id),
       followUpOffered: Boolean(config.followUp?.enabled)
-    };
-
-    storage.replaceResponses([...responses, preview]);
-    return preview;
+    });
   }
 
   function showPanel(name) {

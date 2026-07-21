@@ -8,9 +8,12 @@
 
   let loadedResponses = [];
   let loadedFollowUpResponses = [];
+  let loadedContactRequests = [];
   let dataSourceLabel = "No responses loaded";
   let excludedBrowserResponses = 0;
   let excludedBrowserFollowUpResponses = 0;
+  let excludedBrowserResponseDetails = [];
+  let excludedBrowserFollowUpResponseDetails = [];
   const filters = { viewer: "", method: "", age: "", county: "", children: "" };
   const els = {};
 
@@ -24,6 +27,7 @@
       clearLocal: document.getElementById("clearLocal"),
       dataStatus: document.getElementById("dataStatus"),
       followUpDataStatus: document.getElementById("followUpDataStatus"),
+      excludedRecordDiagnostics: document.getElementById("excludedRecordDiagnostics"),
       filterViewer: document.getElementById("filterViewer"),
       filterMethod: document.getElementById("filterMethod"),
       filterAge: document.getElementById("filterAge"),
@@ -68,7 +72,11 @@
       followUpProgrammingResults: document.getElementById("followUpProgrammingResults"),
       followUpPerformanceResults: document.getElementById("followUpPerformanceResults"),
       followUpVoiceGroups: document.getElementById("followUpVoiceGroups"),
-      followUpAllDataResults: document.getElementById("followUpAllDataResults")
+      followUpAllDataResults: document.getElementById("followUpAllDataResults"),
+      qualitativeThemes: document.getElementById("qualitativeThemes"),
+      decisionFindings: document.getElementById("decisionFindings"),
+      followUpDecisionFindings: document.getElementById("followUpDecisionFindings"),
+      contactRequestSummary: document.getElementById("contactRequestSummary")
     });
 
     els.reloadTestData?.addEventListener("click", loadDefaultResponses);
@@ -98,15 +106,18 @@
   function loadCombinedTestResponses() {
     const storedCore = storage.getResponses();
     const browserCore = storedCore.filter(isResponseLike);
-    excludedBrowserResponses = storedCore.length - browserCore.length;
+    excludedBrowserResponseDetails = excludedRecordDetails(storedCore, coreResponseRejectionReasons, "core");
+    excludedBrowserResponses = excludedBrowserResponseDetails.length;
 
     const storedFollowUps = storage.getFollowUpResponses();
     const browserFollowUps = storedFollowUps.filter(isFollowUpResponseLike);
-    excludedBrowserFollowUpResponses = storedFollowUps.length - browserFollowUps.length;
+    excludedBrowserFollowUpResponseDetails = excludedRecordDetails(storedFollowUps, followUpResponseRejectionReasons, "follow-up");
+    excludedBrowserFollowUpResponses = excludedBrowserFollowUpResponseDetails.length;
 
     const demoCore = makeDemoData();
     loadedResponses = [...demoCore, ...browserCore];
     loadedFollowUpResponses = [...makeDemoFollowUpData(demoCore), ...browserFollowUps];
+    loadedContactRequests = storage.getContactRequests().filter(isContactRequestLike);
     dataSourceLabel = "combined test responses";
     resetAndRender();
   }
@@ -114,11 +125,14 @@
   function loadBrowserResponses() {
     const storedCore = storage.getResponses();
     loadedResponses = storedCore.filter(isResponseLike);
-    excludedBrowserResponses = storedCore.length - loadedResponses.length;
+    excludedBrowserResponseDetails = excludedRecordDetails(storedCore, coreResponseRejectionReasons, "core");
+    excludedBrowserResponses = excludedBrowserResponseDetails.length;
 
     const storedFollowUps = storage.getFollowUpResponses();
     loadedFollowUpResponses = storedFollowUps.filter(isFollowUpResponseLike);
-    excludedBrowserFollowUpResponses = storedFollowUps.length - loadedFollowUpResponses.length;
+    excludedBrowserFollowUpResponseDetails = excludedRecordDetails(storedFollowUps, followUpResponseRejectionReasons, "follow-up");
+    excludedBrowserFollowUpResponses = excludedBrowserFollowUpResponseDetails.length;
+    loadedContactRequests = storage.getContactRequests().filter(isContactRequestLike);
 
     dataSourceLabel = "submitted browser responses";
     resetAndRender();
@@ -127,6 +141,7 @@
   function resetAndRender() {
     resetFilters();
     populateFilters();
+    renderExcludedRecordDiagnostics();
     renderAnalysis();
   }
 
@@ -141,6 +156,9 @@
       loadedFollowUpResponses = normalized.followUpResponses;
       excludedBrowserResponses = 0;
       excludedBrowserFollowUpResponses = 0;
+      excludedBrowserResponseDetails = [];
+      excludedBrowserFollowUpResponseDetails = [];
+      loadedContactRequests = [];
       dataSourceLabel = `imported file: ${file.name}`;
       resetAndRender();
     } catch (error) {
@@ -172,39 +190,88 @@
   }
 
   function isResponseLike(item) {
-    const schemaVersion = item?.schemaVersion || item?.surveyVersion;
-    return Boolean(
-      item
-      && typeof item === "object"
-      && item.routeProfile
-      && typeof item.routeProfile === "object"
-      && item.answers
-      && typeof item.answers === "object"
-      && schemaVersion === config.schemaVersion
-    );
+    return coreResponseRejectionReasons(item).length === 0;
   }
 
   function isFollowUpResponseLike(item) {
+    return followUpResponseRejectionReasons(item).length === 0;
+  }
+
+  function coreResponseRejectionReasons(item) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) return ["Record is not an object."];
+    const reasons = [];
+    if (item.isTestPreview) reasons.push("This is a Test Thank You preview record, not a submitted core questionnaire response.");
+    const schemaVersion = item.schemaVersion || item.surveyVersion || "missing";
+    if (schemaVersion !== config.schemaVersion) reasons.push(`Schema is ${schemaVersion}; expected ${config.schemaVersion}.`);
+    if (!item.routeProfile || typeof item.routeProfile !== "object" || Array.isArray(item.routeProfile)) reasons.push("routeProfile is missing or invalid.");
+    if (!item.answers || typeof item.answers !== "object" || Array.isArray(item.answers)) reasons.push("answers is missing or invalid.");
+    return reasons;
+  }
+
+  function followUpResponseRejectionReasons(item) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) return ["Record is not an object."];
+    const reasons = [];
+    const schemaVersion = item.followUpSchemaVersion || "missing";
+    if (schemaVersion !== config.followUp.schemaVersion) reasons.push(`Schema is ${schemaVersion}; expected ${config.followUp.schemaVersion}.`);
+    if (!item.answers || typeof item.answers !== "object" || Array.isArray(item.answers)) reasons.push("answers is missing or invalid.");
+    if (!item.coreResponseId) reasons.push("coreResponseId is missing.");
+    if (!item.moduleId) reasons.push("moduleId is missing.");
+    return reasons;
+  }
+
+  function isContactRequestLike(item) {
     return Boolean(
       item
       && typeof item === "object"
-      && item.answers
-      && typeof item.answers === "object"
+      && !Array.isArray(item)
       && item.coreResponseId
-      && item.moduleId
-      && item.followUpSchemaVersion === config.followUp.schemaVersion
+      && !item.isTestPreview
+      && item.contactSchemaVersion === config.contact?.schemaVersion
+      && item.status === "contact_requested"
+      && item.consentGiven === true
     );
+  }
+
+  function excludedRecordDetails(records, reasonGetter, kind) {
+    return records.flatMap((record, index) => {
+      const reasons = reasonGetter(record);
+      if (!reasons.length) return [];
+      return [{
+        kind,
+        id: record?.responseId || record?.id || `${kind} record ${index + 1}`,
+        schema: record?.schemaVersion || record?.surveyVersion || record?.followUpSchemaVersion || "missing",
+        reasons
+      }];
+    });
+  }
+
+  function renderExcludedRecordDiagnostics() {
+    if (!els.excludedRecordDiagnostics) return;
+    const details = [...excludedBrowserResponseDetails, ...excludedBrowserFollowUpResponseDetails];
+    if (!details.length) {
+      els.excludedRecordDiagnostics.innerHTML = "";
+      els.excludedRecordDiagnostics.hidden = true;
+      return;
+    }
+    els.excludedRecordDiagnostics.hidden = false;
+    els.excludedRecordDiagnostics.innerHTML = `<details class="excluded-record-details">
+      <summary>${details.length} stored browser record${details.length === 1 ? " was" : "s were"} excluded — view exact reasons</summary>
+      <p>Excluded records are not used in any calculation. IDs and schemas are shown for diagnosis; answer contents are not displayed here.</p>
+      <ul>${details.map((detail) => `<li><strong>${escapeHtml(detail.id)}</strong> · ${escapeHtml(detail.kind)} · schema ${escapeHtml(detail.schema)}<ul>${detail.reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul></li>`).join("")}</ul>
+    </details>`;
   }
 
   function clearLocalResponses() {
     const coreCount = storage.getResponses().length;
     const followUpCount = storage.getFollowUpResponses().length;
-    const total = coreCount + followUpCount;
+    const contactCount = storage.getContactRequests().length;
+    const total = coreCount + followUpCount + contactCount;
     if (!total) return window.alert("There are no submitted browser responses to clear.");
-    const message = `Clear ${coreCount} core and ${followUpCount} follow-up response${total === 1 ? "" : "s"} from this browser? Export them first if they matter.`;
+    const message = `Clear ${coreCount} core response${coreCount === 1 ? "" : "s"}, ${followUpCount} follow-up response${followUpCount === 1 ? "" : "s"}, and ${contactCount} separate contact request${contactCount === 1 ? "" : "s"} from this browser? Export questionnaire responses first if they matter.`;
     if (!window.confirm(message)) return;
     storage.clearResponses();
     storage.clearFollowUpResponses();
+    storage.clearContactRequests();
     loadDefaultResponses();
   }
 
@@ -257,6 +324,11 @@
     return loadedFollowUpResponses.filter((response) => coreIds.has(response.coreResponseId));
   }
 
+  function filteredContactRequests(coreResponses = filteredResponses()) {
+    const coreIds = new Set(coreResponses.flatMap((response) => [response.responseId, response.id].filter(Boolean)));
+    return loadedContactRequests.filter((request) => coreIds.has(request.coreResponseId));
+  }
+
   function responseSourceCategory(response) {
     const source = String(response?.source || "").toLowerCase();
     if (source.includes("synthetic")) return "synthetic";
@@ -284,10 +356,10 @@
     if (coreCounts.browser_submitted) coreParts.push(`${coreCounts.browser_submitted} browser-submitted`);
     if (coreCounts.other) coreParts.push(`${coreCounts.other} imported or other`);
     const excludedCore = excludedBrowserResponses
-      ? ` ${excludedBrowserResponses} older or non-${config.schemaVersion} core browser record${excludedBrowserResponses === 1 ? " was" : "s were"} excluded.`
+      ? ` ${excludedBrowserResponses} browser core record${excludedBrowserResponses === 1 ? " was" : "s were"} excluded; see the diagnostic below.`
       : "";
     const excludedFollowUp = excludedBrowserFollowUpResponses
-      ? ` ${excludedBrowserFollowUpResponses} older or non-${config.followUp.schemaVersion} follow-up browser record${excludedBrowserFollowUpResponses === 1 ? " was" : "s were"} excluded.`
+      ? ` ${excludedBrowserFollowUpResponses} browser follow-up record${excludedBrowserFollowUpResponses === 1 ? " was" : "s were"} excluded; see the diagnostic below.`
       : "";
     if (els.followUpDataStatus) {
       const parts = [];

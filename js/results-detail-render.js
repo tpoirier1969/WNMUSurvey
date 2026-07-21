@@ -18,7 +18,6 @@
     renderQuestionInto(els.nonviewerReasonsResult, responses, "nonviewer_reasons");
     renderViewerVoiceGroups(responses);
     renderAllData(responses);
-    renderDecisionFoundation(responses);
   }
 
   function renderQuestionInto(container, responses, questionId, options = {}) {
@@ -171,10 +170,4 @@
       const questions = stage.pages.flatMap((page) => page.questions);
       return `<section class="all-data-stage"><div class="all-data-stage-heading"><p class="eyebrow">Stage ${stage.number}</p><h3>${escapeHtml(stage.title)}</h3></div><div class="all-data-grid">${questions.map((question) => `<article class="all-data-card" data-question-result="${escapeAttr(question.id)}">${questionResultMarkup(question, responses, { includeTitle: true })}</article>`).join("")}</div></section>`;
     }).join("");
-  }
-
-  function renderDecisionFoundation(responses) {
-    if (!els.decisionBriefStatus) return;
-    const counts = responseSourceCounts(responses);
-    els.decisionBriefStatus.innerHTML = `<p>The evidence base currently contains <strong>${responses.length}</strong> responses after filters: ${counts.synthetic} synthetic, ${counts.browser_submitted} browser-submitted, and ${counts.other} imported or other.</p><p>This section intentionally does not generate findings yet. The Decision Brief will be added after every core result, denominator, routing count, and export has been verified. Until then, use the five evidence sections to inspect the underlying results.</p>`;
   }

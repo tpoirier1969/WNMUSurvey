@@ -4,7 +4,7 @@
 
 - Follow-up schema: `wnmu-viewer-follow-ups-v2`
 - Core schema linked: `wnmu-viewer-questionnaire-v6`
-- Interface build: `6.2.0-test`
+- Interface build: `6.3.0-test`
 - Release date: 2026-07-21
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -163,6 +163,8 @@ The v1 draft and response keys are left untouched as historical prototype data b
 - Open responses appear in Viewer Voices and raw JSON.
 - All 40 live questions appear in All Data & Export.
 - The follow-up CSV includes module, question ID, item ID, stable stored value, viewer-facing label, count or answered count, module n, answered n, skipped n, linked core response IDs, core schema version, follow-up schema version, and denominator notes.
+- The Decision Brief may generate a follow-up finding only when the named question has at least five usable answers. Every such finding states answered n and module n and identifies participation as voluntary and self-selected.
+- Follow-up open responses participate in transparent qualitative theme organization while remaining unchanged under their original module and question.
 
 ## 13. Production work still required
 

@@ -22,6 +22,9 @@
     renderQuestionBars(els.countyMix, responses, "county_region", (response) => response.answers?.county_region, false);
     renderCoreDetailResults(responses);
     renderFollowUpResults(responses);
+    const followUpResponses = filteredFollowUpResponses(responses);
+    renderDecisionBrief(responses, followUpResponses);
+    renderQualitativeThemes(responses, followUpResponses);
   }
 
   function renderMetrics(responses) {
