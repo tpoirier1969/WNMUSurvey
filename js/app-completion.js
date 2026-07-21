@@ -25,15 +25,8 @@
 
     const emailSubject = encodeURIComponent("My WNMU-TV follow-up questionnaire link");
     const emailBody = encodeURIComponent(
-      `Use this private link to return to the optional WNMU-TV follow-up questionnaires:\n\n${followUpHubUrl}\n\n`
-      + "In the current test version, the link works in the browser where the main questionnaire was submitted."
+      `Use this private link to return to the optional WNMU-TV follow-up questionnaires:\n\n${followUpHubUrl}`
     );
-    const testRestart = config.mode === "test"
-      ? '<button class="button quiet" id="newResponse" type="button">Start another test response</button>'
-      : "";
-    const limitation = config.mode === "test"
-      ? "In this test version, the private link works later in this browser. Cross-device continuation will be enabled when the production database is connected."
-      : "Keep this private link if you plan to return later.";
 
     els.completePanel.innerHTML = `
       <div class="completion-mark" aria-hidden="true">✓</div>
@@ -50,10 +43,9 @@
           <button class="button primary" id="finishThankYou" type="button">I'm done now</button>
         </div>
         <p id="copyFollowUpStatus" class="question-message" aria-live="polite"></p>
-        <p class="completion-note">${escapeHtml(limitation)}</p>
+        <p class="completion-note">Keep this private link if you plan to return later.</p>
       </div>
       <p id="completionFinalMessage" class="completion-final-message" hidden>Thank you. You may close this page. Your private follow-up link remains available if you saved it.</p>
-      <div class="button-row centered">${testRestart}</div>
       <span class="sr-only">Response ${escapeHtml(response?.responseId || "saved")}</span>`;
   }
 
