@@ -68,6 +68,42 @@ Do not force-update `main` without Tod's explicit approval.
 
 ---
 
+## 2A. GitHub authentication and worker handoffs
+
+Never include access tokens, passwords, SSH private keys, credential files, authenticated URLs, or other secrets in a worker handoff.
+
+At the beginning of every worker session that may change the repository:
+
+1. Fetch and verify remote `main` before making changes.
+2. Confirm that local `main` and remote `main` are synchronized, or explain and safely resolve any difference before editing.
+3. Check which GitHub authentication and publishing method is actually available before beginning the work.
+4. Record the confirmed remote commit and available authentication method in the handoff or work report.
+
+If command-line Git authentication is unavailable, use the connected GitHub service from the outset rather than waiting until publication to discover the limitation.
+
+After connector-based publishing:
+
+- treat the remote commit SHA as authoritative
+- immediately synchronize the local checkout to remote `main`
+- confirm that the local and remote trees match
+- record the final remote SHA in the handoff or completion report
+
+Never force-push merely to reconcile different commit SHAs when the local and remote trees contain identical content. Resolve the history safely and preserve the tested file content.
+
+An authentication failure is not a lack of authorization. When Tod has already authorized making requested work live on `main`, change to the available approved publishing method without asking him to repeat that authorization.
+
+Worker handoffs must state:
+
+- the repository and live branch
+- the last confirmed remote commit
+- the publishing method that worked
+- whether connector publishing recreated a commit under a different SHA
+- whether local and remote histories and file trees are synchronized
+
+Project rules can govern this workflow but cannot transfer or create credentials. Persistent repository credentials, if provided by the platform, must remain in the platform's protected credential system and never be copied into project files or handoffs.
+
+---
+
 ## 3. Authorization and action rules
 
 Questions and discussion do not automatically authorize repo edits.
