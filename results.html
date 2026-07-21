@@ -99,14 +99,13 @@
           </section>
 
           <section id="resultsAudience" class="results-panel" role="tabpanel" data-results-panel="audience" aria-labelledby="audienceHeading">
-            <div class="results-panel-heading"><p class="eyebrow">Audience &amp; Access</p><h2 id="audienceHeading">Who responded, what they can access, and how they watch</h2></div>
+            <div class="results-panel-heading"><h2 id="audienceHeading">Audience &amp; Access</h2><p>Who responded, what they can access, and how they watch.</p></div>
             <div id="audienceSnapshot" class="section-snapshot" aria-label="Audience and access snapshot"></div>
 
             <section class="metric-grid" aria-label="Response summary">
               <article class="metric-card"><span id="metricResponses">0</span><strong>responses in view</strong><p id="metricResponsesNote"></p></article>
               <article class="metric-card"><span id="metricCurrent">0%</span><strong>current viewers</strong><p>Regular, occasional, or once/twice in the past year.</p></article>
               <article class="metric-card"><span id="metricOnline">0%</span><strong>used an online method</strong><p>Livestream, PBS App, PBS.org, Passport, or online video.</p></article>
-              <article class="metric-card"><span id="metricChildren">0%</span><strong>select children's content</strong><p>Household, educator, or both.</p></article>
             </section>
 
             <div class="result-grid">
@@ -124,10 +123,7 @@
               <section class="result-section"><p class="eyebrow">Online awareness</p><h2>WNMU-TV and PBS services respondents knew</h2><div id="onlineAwarenessResult"></div></section>
             </div>
 
-            <div class="result-grid">
-              <section class="result-section"><p class="eyebrow">Viewing preference</p><h2>Scheduled, recorded, and online viewing</h2><div id="watchPreferenceResult"></div></section>
-              <section class="result-section"><p class="eyebrow">Children's role</p><h2>Who selects or recommends children's content</h2><div id="childrenRoleResult"></div></section>
-            </div>
+            <section class="result-section"><p class="eyebrow">Viewing preference</p><h2>Scheduled, recorded, and online viewing</h2><div id="watchPreferenceResult"></div></section>
 
             <section id="channels" class="result-section" aria-labelledby="channelResultsHeading">
               <p class="eyebrow">Four-channel awareness and use</p>
@@ -137,10 +133,9 @@
               <p id="channelResultsNote" class="channel-results-note"></p>
             </section>
 
-            <div class="result-grid">
-              <section class="result-section"><p class="eyebrow">Children's use</p><h2>How children's public-media content is used</h2><div id="kidsUseResult"></div></section>
-              <section class="result-section"><p class="eyebrow">Digital priorities</p><h2>What would encourage online use</h2><div id="onlineImprovementsResult"></div></section>
-            </div>
+            <section class="result-section"><p class="eyebrow">Digital priorities</p><h2>What would encourage online use</h2><div id="onlineImprovementsResult"></div></section>
+
+            <section class="result-section"><p class="eyebrow">Children and education</p><h2>Who uses children's programming—and how</h2><div class="result-grid compact-child-results"><div id="childrenRoleResult"></div><div id="kidsUseResult"></div></div></section>
 
             <section class="result-section"><p class="eyebrow">Communication</p><h2>How respondents prefer to learn about programming</h2><div id="learnPreferredResult"></div></section>
 
@@ -154,7 +149,7 @@
           </section>
 
           <section id="resultsProgramming" class="results-panel" role="tabpanel" data-results-panel="programming" hidden aria-labelledby="programmingHeading">
-            <div class="results-panel-heading"><p class="eyebrow">Programming Priorities</p><h2 id="programmingHeading">What viewers value and what they want WNMU-TV to emphasize</h2></div>
+            <div class="results-panel-heading"><h2 id="programmingHeading">Programming Priorities</h2><p>What viewers value and want WNMU-TV to emphasize.</p></div>
             <div id="programmingSnapshot" class="section-snapshot" aria-label="Programming priorities snapshot"></div>
             <div class="result-grid">
               <section class="result-section"><p class="eyebrow">Programming interest</p><h2>Highest average interests</h2><p>Average 1–5 interest score among respondents who rated each viewer-facing category.</p><div id="programInterest" class="bar-list"></div></section>
@@ -166,7 +161,7 @@
           </section>
 
           <section id="resultsPerformance" class="results-panel" role="tabpanel" data-results-panel="performance" hidden aria-labelledby="performanceHeading">
-            <div class="results-panel-heading"><p class="eyebrow">Performance &amp; Opportunities</p><h2 id="performanceHeading">What viewers consider important and how they rate WNMU-TV's delivery</h2></div>
+            <div class="results-panel-heading"><h2 id="performanceHeading">Performance &amp; Opportunities</h2><p>What matters to viewers and how WNMU-TV is doing.</p></div>
             <div id="performanceSnapshot" class="section-snapshot" aria-label="Performance and opportunities snapshot"></div>
 
             <div class="result-grid">
@@ -183,7 +178,7 @@
               </div>
             </section>
 
-            <details class="result-section gap-detail-panel"><summary>View the detailed paired-gap table</summary><p>Each person's gap is calculated first, then those paired gaps are averaged.</p><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Station role</th><th>Paired importance</th><th>Viewer-rated delivery</th><th>Average paired gap</th><th>Paired respondents</th></tr></thead><tbody id="gapTable"></tbody></table></div></details>
+            <details class="result-section gap-detail-panel"><summary>View the detailed importance and performance table</summary><p>Only people who rated both measures for a role are included.</p><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Station role</th><th>Importance</th><th>WNMU-TV performance</th><th>Difference</th><th>People rating both</th></tr></thead><tbody id="gapTable"></tbody></table></div></details>
 
             <div class="result-grid">
               <section class="result-section"><p class="eyebrow">Regional reflection</p><h2>How well WNMU-TV reflects people like the respondent</h2><div id="reflectsMeResult"></div></section>
@@ -197,7 +192,7 @@
           </section>
 
           <section id="resultsVoices" class="results-panel" role="tabpanel" data-results-panel="voices" hidden aria-labelledby="voicesHeading">
-            <div class="results-panel-heading"><p class="eyebrow">Viewer Voices</p><h2 id="voicesHeading">Themes and original comments</h2><p>Theme organization helps reviewers scan the open responses. Original comments remain unchanged and are still grouped by their source question below.</p></div>
+            <div class="results-panel-heading"><h2 id="voicesHeading">Viewer Voices</h2><p>Recurring themes and original comments.</p></div>
             <div id="voicesSnapshot" class="section-snapshot" aria-label="Viewer voices snapshot"></div>
             <section class="result-section qualitative-themes-section"><p class="eyebrow">Transparent theme organization</p><h2>Recurring subjects across open responses</h2><div id="qualitativeThemes"></div></section>
             <div class="results-panel-heading"><p class="eyebrow">Core questionnaire comments</p><h2>Original responses grouped by question</h2><p>Comments are shown exactly as submitted.</p></div>
@@ -233,15 +228,15 @@
 
   <footer class="site-footer"><div class="container footer-grid"><div><strong>Local prototype</strong><p>No external database is connected.</p></div><div><strong>Combined test data</strong><p>Synthetic and browser-submitted records remain visibly distinguishable.</p></div><div><strong>Future deployment</strong><p>Production will use only approved Supabase responses.</p></div></div></footer>
 
-  <script src="js/config.js?v=6.3.1-test"></script>
-  <script src="js/questions.js?v=6.3.1-test"></script>
-  <script src="js/follow-up-local.js?v=6.3.1-test"></script>
-  <script src="js/follow-up-programming.js?v=6.3.1-test"></script>
-  <script src="js/follow-up-online.js?v=6.3.1-test"></script>
-  <script src="js/follow-up-children.js?v=6.3.1-test"></script>
-  <script src="js/follow-up-communication.js?v=6.3.1-test"></script>
-  <script src="js/follow-up-definitions.js?v=6.3.1-test"></script>
-  <script src="js/storage.js?v=6.3.1-test"></script>
-  <script src="js/results.js?v=6.3.1-test"></script>
+  <script src="js/config.js?v=6.3.2-test"></script>
+  <script src="js/questions.js?v=6.3.2-test"></script>
+  <script src="js/follow-up-local.js?v=6.3.2-test"></script>
+  <script src="js/follow-up-programming.js?v=6.3.2-test"></script>
+  <script src="js/follow-up-online.js?v=6.3.2-test"></script>
+  <script src="js/follow-up-children.js?v=6.3.2-test"></script>
+  <script src="js/follow-up-communication.js?v=6.3.2-test"></script>
+  <script src="js/follow-up-definitions.js?v=6.3.2-test"></script>
+  <script src="js/storage.js?v=6.3.2-test"></script>
+  <script src="js/results.js?v=6.3.2-test"></script>
 </body>
 </html>

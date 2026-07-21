@@ -62,7 +62,7 @@
       implication: "This is the clearest core signal about where respondents want WNMU-TV to place greater programming attention.",
       options: [
         "Treat it as a candidate for scheduling, acquisition, partnership, or development exploration.",
-        "Compare it with average interest ratings and audience filters before choosing a specific investment."
+        "Check the interest scores and audience filters before choosing what to do."
       ],
       caution: coreFindingCaution(responses, "Respondents could choose up to five categories, so percentages do not sum to 100%.")
     };
@@ -80,10 +80,10 @@
       priority: 100 + top.gapAverage,
       eyebrow: "Core · Performance opportunity",
       title: `${top.role.label} has the largest material importance–delivery gap`,
-      evidence: `Among ${top.count} respondents who rated both measures, average importance is ${top.importanceAverage.toFixed(2)} and viewer-rated delivery is ${top.performanceAverage.toFixed(2)}, an average paired gap of ${formatSigned(top.gapAverage)} (paired n=${top.count}).`,
+      evidence: `Among ${top.count} people who rated both, importance averaged ${top.importanceAverage.toFixed(2)} and WNMU-TV's performance averaged ${top.performanceAverage.toFixed(2)}. Performance trails importance by ${formatSigned(top.gapAverage)} points.`,
       implication: "Respondents in this paired group place more importance on this role than they believe WNMU-TV currently delivers.",
       options: [
-        "Investigate which specific part of the role is falling short before selecting a remedy.",
+        "Ask what specifically is falling short before choosing a remedy.",
         "Set a measurable improvement experiment, then repeat the paired measure to see whether the gap narrows."
       ],
       caution: coreFindingCaution(responses, "Only respondents who rated both importance and delivery for this same role are included.")
@@ -132,9 +132,9 @@
       eyebrow: "Core · Viewing path",
       title: `${percent(online, coverage.answered)} report using at least one online viewing method`,
       evidence: `${online} of ${coverage.answered} respondents answering viewing methods selected the WNMU-TV livestream, PBS App, PBS.org, Passport, YouTube TV, or YouTube (answered n=${coverage.answered}, skipped n=${coverage.skipped}).`,
-      implication: "Online viewing is part of the service mix for this respondent group, but this measure does not show which online path is primary.",
+      implication: "Online viewing is part of the service mix. The optional online follow-up identifies the service used most often.",
       options: [
-        "Use the optional online follow-up to identify primary services, barriers, devices, and support needs.",
+        "Use the online follow-up's most-used-service result to identify the primary path.",
         "Avoid treating all online methods as interchangeable when planning promotion or support."
       ],
       caution: coreFindingCaution(responses, "This is a multi-select measure and combines several distinct online services.")
@@ -215,7 +215,7 @@
     const specs = [
       ["local-programming", "local_subjects", "Regional subject development", "Use the leading subject as one candidate for development, acquisition, or partnership research."],
       ["programming-ideas", "regional_music_performance_interest", "Regional music-performance concept", "Use the leading selection to shape a concept test, not as approval to produce a series."],
-      ["online-viewing", "online_barriers", "Online viewing support", "Use the leading barrier to prioritize a small support or usability experiment."],
+      ["online-viewing", "online_primary_service", "Primary online service", "Focus promotion and support on the service people use most."],
       ["children-education", "children_learning_goals", "Children's learning priorities", "Use the leading learning goal to guide a resource or programming prototype with families and educators."],
       ["communication", "schedule_format", "Schedule and program information", "Use the leading format as a candidate communication product to test with this module's participants."]
     ];
@@ -246,9 +246,9 @@
     return {
       priority: 0,
       eyebrow: `Optional follow-up · ${module.title}`,
-      title: `${labels[top[0]] || humanize(top[0])} leads this module's ${context.toLowerCase()} signal`,
+      title: `${context}: ${labels[top[0]] || humanize(top[0])}`,
       evidence: `${top[1]} of ${coverage.answered} people who answered this question selected this option (${percent(top[1], coverage.answered)}; answered n=${coverage.answered}, skipped n=${coverage.skipped}, module n=${coverage.moduleRespondents}).`,
-      implication: `Within this voluntary ${module.title} module, this is the most-selected response for ${context.toLowerCase()}.`,
+      implication: "This was the most common answer in this optional follow-up.",
       options: [option, "Compare it with core filters and related open comments before deciding what to do."],
       caution: `Voluntary, self-selected module population; not a percentage of all core respondents. Module sources: ${sourceCounts.synthetic} synthetic, ${sourceCounts.browser_submitted} browser-submitted, ${sourceCounts.other} imported or other.${config.mode === "test" ? " TEST DATA — not for station decisions." : ""}${found.question.type === "checkbox" ? " Respondents could select more than one option." : ""}`
     };
@@ -274,8 +274,8 @@
       <h3>${escapeHtml(finding.title)}</h3>
       <dl class="decision-finding-parts">
         <div><dt>Evidence</dt><dd>${escapeHtml(finding.evidence)}</dd></div>
-        <div><dt>What it may mean</dt><dd>${escapeHtml(finding.implication)}</dd></div>
-        <div><dt>Practical options</dt><dd><ul>${finding.options.map((option) => `<li>${escapeHtml(option)}</li>`).join("")}</ul></dd></div>
+        <div><dt>What it means</dt><dd>${escapeHtml(finding.implication)}</dd></div>
+        <div><dt>What WNMU-TV could do</dt><dd><ul>${finding.options.map((option) => `<li>${escapeHtml(option)}</li>`).join("")}</ul></dd></div>
         <div class="decision-caution"><dt>Caution</dt><dd>${escapeHtml(finding.caution)}</dd></div>
       </dl>
     </article>`;

@@ -6,7 +6,7 @@ This repository contains the five-stage WNMU-TV core viewer questionnaire, five 
 
 - core schema: `wnmu-viewer-questionnaire-v6`
 - follow-up schema: `wnmu-viewer-follow-ups-v2`
-- build: `6.3.1-test`
+- build: `6.3.2-test`
 - release date: 2026-07-21
 - mode: Test
 - campaign: `viewer-questionnaire-2026`
@@ -205,6 +205,8 @@ Specifications and governance:
 Build 6.3.0 passed JavaScript syntax and nonvisual integration QA for loading, filtering, Decision Brief rules, denominator labels, small-sample suppression, qualitative preservation, contact separation, Test Thank You preview migration, diagnostics, and local asset references. The available remote browser could not open the local test origin, so hands-on desktop and phone visual/interaction QA is still required.
 
 Build 6.3.1 reorganizes the results page around section snapshots and percentages, moves test/export controls under All Data, collapses audience filters, and clearly separates core responses from linked follow-up respondents and completed modules. Detailed denominators remain available wherever interpretation or auditing requires them.
+
+Build 6.3.2 makes the results page plain-language and scan-first: section names lead, result panels collapse, Decision Brief copy is shorter, the online brief uses the existing primary-service question, children's results are consolidated, and each section snapshot uses three visual gauges instead of text-only cards. Questionnaire definitions and schemas are unchanged.
 
 Before public launch:
 

@@ -33,6 +33,7 @@
     renderDecisionBrief(responses, followUpResponses);
     renderQualitativeThemes(responses, followUpResponses);
     renderSectionSnapshots(responses, followUpResponses);
+    window.enhanceCollapsibleResults?.();
   }
 
   function renderMetrics(responses) {
@@ -143,7 +144,7 @@
   }
 
   function snapshotMarkup(title, items, note) {
-    return `<div class="snapshot-heading"><p class="eyebrow">Section snapshot</p><h3>${escapeHtml(title)}</h3></div><div class="snapshot-grid">${items.map((item) => `<article class="snapshot-card snapshot-${escapeAttr(item.tone)}"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong><p>${escapeHtml(item.text)}</p></article>`).join("")}</div>${note ? `<p class="snapshot-note">${escapeHtml(note)}</p>` : ""}`;
+    return `<div class="snapshot-heading"><p class="eyebrow">At a glance</p><h3>${escapeHtml(title)}</h3></div><div class="snapshot-grid">${items.map((item) => `<article class="snapshot-card snapshot-${escapeAttr(item.tone)}"><div class="snapshot-meter" style="--snapshot-level:${Math.max(0, Math.min(100, Number(item.level) || 0))}%" aria-hidden="true"><span></span></div><div><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong><p>${escapeHtml(item.text)}</p></div></article>`).join("")}</div>${note ? `<p class="snapshot-note">${escapeHtml(note)}</p>` : ""}`;
   }
 
   function topSelection(responses, questionId, getter) {
@@ -161,10 +162,10 @@
     const awareness = responses.filter((response) => hasValue(response.answers?.station_awareness));
     const knowsLocal = awareness.filter((response) => response.answers.station_awareness === "local_pbs").length;
     els.audienceSnapshot.innerHTML = snapshotMarkup("Access signals at a glance", [
-      { tone: constrained ? "attention" : "positive", label: "Pay attention", value: percent(constrained, internet.length), text: "report slow, unreliable, or no home internet." },
-      { tone: "steady", label: "Strong audience signal", value: methods?.percentage || "—", text: methods ? `use ${methods.label}, the most-selected viewing method.` : "No viewing-method answers are available." },
-      { tone: "positive", label: "Positive result", value: percent(knowsLocal, awareness.length), text: "identified WNMU-TV as their local PBS station." }
-    ], "These are descriptive signals, not expectation ratings.");
+      { tone: constrained ? "attention" : "positive", level: internet.length ? constrained / internet.length * 100 : 0, label: "Pay attention", value: percent(constrained, internet.length), text: "have limited home streaming." },
+      { tone: "steady", level: Number.parseFloat(methods?.percentage) || 0, label: "Most-used method", value: methods?.percentage || "—", text: methods ? methods.label : "No answers available." },
+      { tone: "positive", level: awareness.length ? knowsLocal / awareness.length * 100 : 0, label: "Station awareness", value: percent(knowsLocal, awareness.length), text: "knew WNMU-TV is their local PBS station." }
+    ]);
   }
 
   function renderProgrammingSnapshot(responses) {
@@ -177,10 +178,10 @@
     }).filter((item) => item.average).sort((a, b) => b.average - a.average);
     const local = topSelection(responses, "local_formats", (response) => response.answers?.local_formats);
     els.programmingSnapshot.innerHTML = snapshotMarkup("What programming evidence says", [
-      { tone: "attention", label: "Pay attention", value: priority?.percentage || "—", text: priority ? `placed ${priority.label} in their limited priority selections.` : "No priority selections are available." },
-      { tone: "steady", label: "Strong audience signal", value: interests[0]?.average ? `${interests[0].average.toFixed(1)} / 5` : "—", text: interests[0] ? `${interests[0].label} has the highest average interest.` : "No interest ratings are available." },
-      { tone: "positive", label: "Opportunity", value: local?.percentage || "—", text: local ? `${local.label} is the most-selected local or regional format.` : "No local-format selections are available." }
-    ], "Interest and priority indicate demand; they do not measure current station performance.");
+      { tone: "attention", level: Number.parseFloat(priority?.percentage) || 0, label: "Top priority", value: priority?.percentage || "—", text: priority?.label || "No answers available." },
+      { tone: "steady", level: interests[0]?.average ? interests[0].average / 5 * 100 : 0, label: "Highest interest", value: interests[0]?.average ? `${interests[0].average.toFixed(1)} / 5` : "—", text: interests[0]?.label || "No ratings available." },
+      { tone: "positive", level: Number.parseFloat(local?.percentage) || 0, label: "Local opportunity", value: local?.percentage || "—", text: local?.label || "No answers available." }
+    ]);
   }
 
   function renderPerformanceSnapshot(responses) {
@@ -192,10 +193,10 @@
     const exceeding = rows.filter((item) => item.stats.gapAverage <= -0.5);
     const total = rows.length;
     els.performanceSnapshot.innerHTML = snapshotMarkup("Expectations compared with delivery", [
-      { tone: "attention", label: "Needs attention", value: percent(needs.length, total), text: "of rated roles fall at least 0.50 points below importance." },
-      { tone: "steady", label: "Meeting expectations", value: percent(meeting.length, total), text: "of rated roles are within 0.49 points of importance." },
-      { tone: "positive", label: "Exceeding expectations", value: percent(exceeding.length, total), text: "of rated roles exceed importance by at least 0.50 points." }
-    ], "Role percentages summarize paired importance-versus-delivery measures; details retain paired denominators.");
+      { tone: "attention", level: total ? needs.length / total * 100 : 0, label: "Needs attention", value: percent(needs.length, total), text: "of rated station roles." },
+      { tone: "steady", level: total ? meeting.length / total * 100 : 0, label: "Meeting expectations", value: percent(meeting.length, total), text: "of rated station roles." },
+      { tone: "positive", level: total ? exceeding.length / total * 100 : 0, label: "Exceeding expectations", value: percent(exceeding.length, total), text: "of rated station roles." }
+    ]);
   }
 
   function renderVoicesSnapshot(responses, followUpResponses) {
@@ -205,8 +206,8 @@
     const top = themes[0];
     const followUpCount = comments.filter((comment) => comment.source !== "Core questionnaire").length;
     els.voicesSnapshot.innerHTML = snapshotMarkup("What viewers chose to say", [
-      { tone: "attention", label: "Review closely", value: comments.length ? percent(comments.length - (top?.count || 0), comments.length) : "—", text: "of comments fall outside the largest automatically matched theme or may overlap other themes." },
-      { tone: "steady", label: "Most recurring theme", value: comments.length ? percent(top?.count || 0, comments.length) : "—", text: top ? top.label : "No open responses are available." },
-      { tone: "positive", label: "Additional depth", value: comments.length ? percent(followUpCount, comments.length) : "—", text: "of open responses came from voluntary follow-up modules." }
-    ], "Keyword matching is an organizing aid. Original comments remain the evidence and may appear in more than one theme.");
+      { tone: "attention", level: comments.length ? (comments.length - (top?.count || 0)) / comments.length * 100 : 0, label: "Other comments", value: comments.length ? percent(comments.length - (top?.count || 0), comments.length) : "—", text: "need individual review." },
+      { tone: "steady", level: comments.length ? (top?.count || 0) / comments.length * 100 : 0, label: "Top theme", value: comments.length ? percent(top?.count || 0, comments.length) : "—", text: top?.label || "No comments available." },
+      { tone: "positive", level: comments.length ? followUpCount / comments.length * 100 : 0, label: "From follow-ups", value: comments.length ? percent(followUpCount, comments.length) : "—", text: "of open comments." }
+    ]);
   }

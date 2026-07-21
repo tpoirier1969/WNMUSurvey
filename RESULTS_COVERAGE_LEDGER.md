@@ -8,7 +8,7 @@ Current contract:
 
 - core schema: `wnmu-viewer-questionnaire-v6`
 - follow-up schema: `wnmu-viewer-follow-ups-v2`
-- build: `6.3.1-test`
+- build: `6.3.2-test`
 - audit date: 2026-07-21
 
 ## 2. Results structure

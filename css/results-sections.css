@@ -211,7 +211,9 @@
 
 .results-panel-heading h2 {
   max-width: 920px;
-  font-size: clamp(1.8rem, 3vw, 2.55rem);
+  margin-bottom: 7px;
+  color: var(--navy);
+  font-size: clamp(2.15rem, 4vw, 3.25rem);
 }
 
 .results-panel-heading > p:last-child {
@@ -240,6 +242,10 @@
 }
 
 .snapshot-card {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
   min-width: 0;
   padding: 16px;
   border: 1px solid var(--line);
@@ -252,7 +258,7 @@
 .snapshot-card.snapshot-steady { border-top-color: var(--gold); }
 .snapshot-card.snapshot-positive { border-top-color: var(--success); }
 
-.snapshot-card > span {
+.snapshot-card > div > span {
   display: block;
   color: var(--ink-soft);
   font-size: 0.72rem;
@@ -261,18 +267,60 @@
   text-transform: uppercase;
 }
 
-.snapshot-card > strong {
+.snapshot-card > div > strong {
   display: block;
   margin: 8px 0 5px;
   color: var(--navy);
   font-size: 1.65rem;
 }
 
-.snapshot-card > p,
+.snapshot-card > div > p,
 .snapshot-note {
   margin: 0;
   color: var(--ink-soft);
   font-size: 0.84rem;
+}
+
+.snapshot-meter {
+  width: 58px;
+  aspect-ratio: 1;
+  padding: 7px;
+  border-radius: 50%;
+  background: conic-gradient(currentColor var(--snapshot-level), #e4eaec 0);
+  color: var(--lake);
+}
+
+.snapshot-attention .snapshot-meter { color: var(--danger); }
+.snapshot-steady .snapshot-meter { color: var(--gold); }
+.snapshot-positive .snapshot-meter { color: var(--success); }
+
+.snapshot-meter span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--white);
+}
+
+.result-collapse-button {
+  min-height: 42px;
+  margin: 2px 0 0;
+  padding: 8px 13px;
+  border: 1px solid var(--line-dark);
+  border-radius: 999px;
+  color: var(--navy);
+  background: #f4f8f9;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.result-collapse-button::after { content: " +"; }
+.result-collapse-button[aria-expanded="true"]::after { content: " −"; }
+.collapsible-result-body { margin-top: 16px; }
+.collapsible-result-body[hidden] { display: none; }
+
+.compact-child-results {
+  padding-top: 4px;
 }
 
 .snapshot-note {
@@ -296,7 +344,7 @@
 
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 
