@@ -28,9 +28,7 @@
       <p class="eyebrow">Private follow-up link</p>
       <h1>We could not connect this page to your main questionnaire.</h1>
       <p id="followUpAccessErrorText"></p>
-      <div class="button-row">
-        <a class="button primary" href="index.html">Return to the main questionnaire</a>
-      </div>
+      <div class="button-row"><a class="button primary" href="index.html">Return to the main questionnaire</a></div>
     </section>
 
     <section id="followUpHub" class="followup-hub" hidden>
@@ -60,10 +58,7 @@
 
       <section aria-labelledby="followUpTopicsTitle">
         <div class="followup-section-heading">
-          <div>
-            <p class="eyebrow">Choose a topic</p>
-            <h2 id="followUpTopicsTitle">Optional questionnaires</h2>
-          </div>
+          <div><p class="eyebrow">Choose a topic</p><h2 id="followUpTopicsTitle">Optional questionnaires</h2></div>
           <p>All questions are optional. Saved drafts may be continued later with your private link.</p>
         </div>
         <div id="followUpModuleGrid" class="followup-module-grid"></div>
@@ -91,7 +86,10 @@
         <h1 id="followUpModuleTitle"></h1>
         <p id="followUpModuleIntro"></p>
         <h2 id="followUpPageTitle"></h2>
+        <p id="followUpPageIntro" class="followup-page-intro" hidden></p>
       </header>
+
+      <div id="followUpPageContext" class="followup-page-context" hidden></div>
 
       <form novalidate>
         <div id="followUpQuestions" class="question-stack"></div>
@@ -120,10 +118,15 @@
     </section>
   </main>
 
-  <script src="js/config.js"></script>
-  <script src="js/questions.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/follow-up-definitions.js"></script>
-  <script src="js/follow-up-app.js"></script>
+  <script src="js/config.js?v=6.2.0-test"></script>
+  <script src="js/questions.js?v=6.2.0-test"></script>
+  <script src="js/storage.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-local.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-programming.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-online.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-children.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-communication.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-definitions.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-app.js?v=6.2.0-test"></script>
 </body>
 </html>
