@@ -79,7 +79,7 @@ http://localhost:8765/index.html
 
 After submitting a test core response, use the private links on the thank-you screen to open the follow-up hub.
 
-While the authoritative mode is Test, the landing-page footer also shows **Test Thank You page**. It opens the actual post-submission Thank You screen using the latest completed v6 core response stored in that browser. When no completed test response exists, the landing page explains that one must be submitted first. The shortcut is hidden outside Test Mode and must be removed before public release.
+While the authoritative mode is Test, the landing-page footer also shows **Test Thank You page**. It opens the normal respondent-facing Thank You screen using the latest completed v6 response in that browser. When none exists, the app creates a clearly marked internal preview record solely to support linked-page testing; that record uses a non-v6 preview schema and is excluded from v6 questionnaire results. The Thank You page itself does not display preview or test commentary. The shortcut is hidden outside Test Mode and must be removed before public release.
 
 Run `OPEN-RESULTS.bat`, then open:
 
@@ -95,7 +95,7 @@ The authoritative configuration is `js/config.js`.
 
 - core schema: `wnmu-viewer-questionnaire-v6`
 - follow-up schema: `wnmu-viewer-follow-ups-v1`
-- build: `6.1.0-test`
+- build: `6.1.2-test`
 - mode: Test
 - release date: 2026-07-20
 
