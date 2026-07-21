@@ -21,6 +21,7 @@
     renderQuestionBars(els.ageMix, responses, "age_range", (response) => response.answers?.age_range, false);
     renderQuestionBars(els.countyMix, responses, "county_region", (response) => response.answers?.county_region, false);
     renderCoreDetailResults(responses);
+    renderFollowUpResults(responses);
   }
 
   function renderMetrics(responses) {
