@@ -3,7 +3,7 @@
 ## 1. Prototype contract
 
 - Follow-up schema: `wnmu-viewer-follow-ups-v1`
-- Interface build: `6.1.0-test`
+- Interface build: `6.1.2-test`
 - Release date: 2026-07-20
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
