@@ -27,12 +27,13 @@
       button.className = "result-collapse-button";
       button.setAttribute("aria-expanded", "false");
       button.setAttribute("aria-controls", body.id);
-      button.textContent = "Show results";
+      button.innerHTML = "<span>View results</span><span class=\"result-collapse-icon\" aria-hidden=\"true\">+</span>";
       button.addEventListener("click", () => {
         const opening = body.hidden;
         body.hidden = !opening;
         button.setAttribute("aria-expanded", String(opening));
-        button.textContent = opening ? "Hide results" : "Show results";
+        button.querySelector("span:first-child").textContent = opening ? "Hide results" : "View results";
+        button.querySelector(".result-collapse-icon").textContent = opening ? "−" : "+";
       });
       heading.insertAdjacentElement("afterend", button);
       panel.appendChild(body);

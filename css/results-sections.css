@@ -303,19 +303,32 @@
 }
 
 .result-collapse-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   min-height: 42px;
-  margin: 2px 0 0;
-  padding: 8px 13px;
+  margin: 10px 0 0;
+  padding: 10px 14px;
   border: 1px solid var(--line-dark);
-  border-radius: 999px;
+  border-radius: 9px;
   color: var(--navy);
   background: #f4f8f9;
+  font-size: 0.9rem;
   font-weight: 850;
+  text-align: left;
   cursor: pointer;
 }
 
-.result-collapse-button::after { content: " +"; }
-.result-collapse-button[aria-expanded="true"]::after { content: " −"; }
+.result-collapse-button:hover { background: #e8f1f4; }
+.result-collapse-button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.result-collapse-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
 .collapsible-result-body { margin-top: 16px; }
 .collapsible-result-body[hidden] { display: none; }
 
@@ -387,7 +400,7 @@
 }
 
 .result-section h2 {
-  font-size: 1.65rem;
+  font-size: 1.4rem;
 }
 
 .result-section > p:not(.eyebrow),
@@ -622,7 +635,7 @@
 .decision-finding-card h3 {
   margin-bottom: 16px;
   color: var(--navy);
-  font-size: 1.28rem;
+  font-size: 1.03rem;
 }
 
 .decision-finding-parts {
