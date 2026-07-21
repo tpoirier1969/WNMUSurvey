@@ -1,13 +1,16 @@
 "use strict";
 
   const survey = window.WNMU_SURVEY;
+  const followUps = window.WNMU_FOLLOW_UPS;
   const config = window.WNMU_CONFIG;
   const storage = window.WNMUStorage;
-  if (!survey || !config || !storage) throw new Error("WNMU results scripts loaded in the wrong order.");
+  if (!survey || !followUps || !config || !storage) throw new Error("WNMU results scripts loaded in the wrong order.");
 
   let loadedResponses = [];
+  let loadedFollowUpResponses = [];
   let dataSourceLabel = "No responses loaded";
   let excludedBrowserResponses = 0;
+  let excludedBrowserFollowUpResponses = 0;
   const filters = { viewer: "", method: "", age: "", county: "", children: "" };
   const els = {};
 
@@ -17,8 +20,10 @@
       jsonUpload: document.getElementById("jsonUpload"),
       exportRaw: document.getElementById("exportRaw"),
       exportSummary: document.getElementById("exportSummary"),
+      exportFollowUpSummary: document.getElementById("exportFollowUpSummary"),
       clearLocal: document.getElementById("clearLocal"),
       dataStatus: document.getElementById("dataStatus"),
+      followUpDataStatus: document.getElementById("followUpDataStatus"),
       filterViewer: document.getElementById("filterViewer"),
       filterMethod: document.getElementById("filterMethod"),
       filterAge: document.getElementById("filterAge"),
@@ -57,13 +62,20 @@
       nonviewerReasonsResult: document.getElementById("nonviewerReasonsResult"),
       viewerVoiceGroups: document.getElementById("viewerVoiceGroups"),
       allDataResults: document.getElementById("allDataResults"),
-      decisionBriefStatus: document.getElementById("decisionBriefStatus")
+      decisionBriefStatus: document.getElementById("decisionBriefStatus"),
+      followUpDecisionStatus: document.getElementById("followUpDecisionStatus"),
+      followUpAudienceResults: document.getElementById("followUpAudienceResults"),
+      followUpProgrammingResults: document.getElementById("followUpProgrammingResults"),
+      followUpPerformanceResults: document.getElementById("followUpPerformanceResults"),
+      followUpVoiceGroups: document.getElementById("followUpVoiceGroups"),
+      followUpAllDataResults: document.getElementById("followUpAllDataResults")
     });
 
     els.reloadTestData?.addEventListener("click", loadDefaultResponses);
     els.jsonUpload?.addEventListener("change", importJson);
     els.exportRaw?.addEventListener("click", exportRaw);
     els.exportSummary?.addEventListener("click", exportSummary);
+    els.exportFollowUpSummary?.addEventListener("click", exportFollowUpSummary);
     els.clearLocal?.addEventListener("click", clearLocalResponses);
 
     [
@@ -84,18 +96,30 @@
   }
 
   function loadCombinedTestResponses() {
-    const stored = storage.getResponses();
-    const browserResponses = stored.filter(isResponseLike);
-    excludedBrowserResponses = stored.length - browserResponses.length;
-    loadedResponses = [...makeDemoData(), ...browserResponses];
+    const storedCore = storage.getResponses();
+    const browserCore = storedCore.filter(isResponseLike);
+    excludedBrowserResponses = storedCore.length - browserCore.length;
+
+    const storedFollowUps = storage.getFollowUpResponses();
+    const browserFollowUps = storedFollowUps.filter(isFollowUpResponseLike);
+    excludedBrowserFollowUpResponses = storedFollowUps.length - browserFollowUps.length;
+
+    const demoCore = makeDemoData();
+    loadedResponses = [...demoCore, ...browserCore];
+    loadedFollowUpResponses = [...makeDemoFollowUpData(demoCore), ...browserFollowUps];
     dataSourceLabel = "combined test responses";
     resetAndRender();
   }
 
   function loadBrowserResponses() {
-    const stored = storage.getResponses();
-    loadedResponses = stored.filter(isResponseLike);
-    excludedBrowserResponses = stored.length - loadedResponses.length;
+    const storedCore = storage.getResponses();
+    loadedResponses = storedCore.filter(isResponseLike);
+    excludedBrowserResponses = storedCore.length - loadedResponses.length;
+
+    const storedFollowUps = storage.getFollowUpResponses();
+    loadedFollowUpResponses = storedFollowUps.filter(isFollowUpResponseLike);
+    excludedBrowserFollowUpResponses = storedFollowUps.length - loadedFollowUpResponses.length;
+
     dataSourceLabel = "submitted browser responses";
     resetAndRender();
   }
@@ -111,10 +135,12 @@
     if (!file) return;
     try {
       const parsed = JSON.parse(await file.text());
-      const responses = normalizeImportedData(parsed);
-      if (!responses.length) throw new Error(`No ${config.schemaVersion} response records were found.`);
-      loadedResponses = responses;
+      const normalized = normalizeImportedData(parsed);
+      if (!normalized.coreResponses.length) throw new Error(`No ${config.schemaVersion} core response records were found.`);
+      loadedResponses = normalized.coreResponses;
+      loadedFollowUpResponses = normalized.followUpResponses;
       excludedBrowserResponses = 0;
+      excludedBrowserFollowUpResponses = 0;
       dataSourceLabel = `imported file: ${file.name}`;
       resetAndRender();
     } catch (error) {
@@ -125,9 +151,24 @@
   }
 
   function normalizeImportedData(parsed) {
-    if (Array.isArray(parsed)) return parsed.filter(isResponseLike);
-    if (parsed && Array.isArray(parsed.responses)) return parsed.responses.filter(isResponseLike);
-    return isResponseLike(parsed) ? [parsed] : [];
+    if (Array.isArray(parsed)) {
+      return {
+        coreResponses: parsed.filter(isResponseLike),
+        followUpResponses: parsed.filter(isFollowUpResponseLike)
+      };
+    }
+    if (parsed && typeof parsed === "object") {
+      const coreCandidates = parsed.coreResponses || parsed.responses || [];
+      const followUpCandidates = parsed.followUpResponses || [];
+      if (isResponseLike(parsed)) {
+        return { coreResponses: [parsed], followUpResponses: [] };
+      }
+      return {
+        coreResponses: Array.isArray(coreCandidates) ? coreCandidates.filter(isResponseLike) : [],
+        followUpResponses: Array.isArray(followUpCandidates) ? followUpCandidates.filter(isFollowUpResponseLike) : []
+      };
+    }
+    return { coreResponses: [], followUpResponses: [] };
   }
 
   function isResponseLike(item) {
@@ -143,11 +184,27 @@
     );
   }
 
+  function isFollowUpResponseLike(item) {
+    return Boolean(
+      item
+      && typeof item === "object"
+      && item.answers
+      && typeof item.answers === "object"
+      && item.coreResponseId
+      && item.moduleId
+      && item.followUpSchemaVersion === config.followUp.schemaVersion
+    );
+  }
+
   function clearLocalResponses() {
-    const count = storage.getResponses().length;
-    if (!count) return window.alert("There are no submitted browser responses to clear.");
-    if (!window.confirm(`Clear ${count} submitted response${count === 1 ? "" : "s"} from this browser? Export them first if they matter.`)) return;
+    const coreCount = storage.getResponses().length;
+    const followUpCount = storage.getFollowUpResponses().length;
+    const total = coreCount + followUpCount;
+    if (!total) return window.alert("There are no submitted browser responses to clear.");
+    const message = `Clear ${coreCount} core and ${followUpCount} follow-up response${total === 1 ? "" : "s"} from this browser? Export them first if they matter.`;
+    if (!window.confirm(message)) return;
     storage.clearResponses();
+    storage.clearFollowUpResponses();
     loadDefaultResponses();
   }
 
@@ -195,6 +252,11 @@
     });
   }
 
+  function filteredFollowUpResponses(coreResponses = filteredResponses()) {
+    const coreIds = new Set(coreResponses.flatMap((response) => [response.responseId, response.id].filter(Boolean)));
+    return loadedFollowUpResponses.filter((response) => coreIds.has(response.coreResponseId));
+  }
+
   function responseSourceCategory(response) {
     const source = String(response?.source || "").toLowerCase();
     if (source.includes("synthetic")) return "synthetic";
@@ -210,16 +272,31 @@
     }, { synthetic: 0, browser_submitted: 0, other: 0 });
   }
 
+  function followUpSourceCounts(responses = loadedFollowUpResponses) {
+    return responseSourceCounts(responses);
+  }
+
   function dataStatusText(filteredCount) {
-    const counts = responseSourceCounts();
-    const sourceParts = [];
-    if (counts.synthetic) sourceParts.push(`${counts.synthetic} synthetic`);
-    if (counts.browser_submitted) sourceParts.push(`${counts.browser_submitted} browser-submitted`);
-    if (counts.other) sourceParts.push(`${counts.other} imported or other`);
-    const excluded = excludedBrowserResponses
-      ? ` ${excludedBrowserResponses} older or non-${config.schemaVersion} browser record${excludedBrowserResponses === 1 ? " was" : "s were"} excluded.`
+    const coreCounts = responseSourceCounts();
+    const followUpCounts = followUpSourceCounts();
+    const coreParts = [];
+    if (coreCounts.synthetic) coreParts.push(`${coreCounts.synthetic} synthetic`);
+    if (coreCounts.browser_submitted) coreParts.push(`${coreCounts.browser_submitted} browser-submitted`);
+    if (coreCounts.other) coreParts.push(`${coreCounts.other} imported or other`);
+    const excludedCore = excludedBrowserResponses
+      ? ` ${excludedBrowserResponses} older or non-${config.schemaVersion} core browser record${excludedBrowserResponses === 1 ? " was" : "s were"} excluded.`
       : "";
-    return `${loadedResponses.length} loaded from ${dataSourceLabel}${sourceParts.length ? ` (${sourceParts.join(" + ")})` : ""}; ${filteredCount} match current filters.${excluded}`;
+    const excludedFollowUp = excludedBrowserFollowUpResponses
+      ? ` ${excludedBrowserFollowUpResponses} older or non-${config.followUp.schemaVersion} follow-up browser record${excludedBrowserFollowUpResponses === 1 ? " was" : "s were"} excluded.`
+      : "";
+    if (els.followUpDataStatus) {
+      const parts = [];
+      if (followUpCounts.synthetic) parts.push(`${followUpCounts.synthetic} synthetic`);
+      if (followUpCounts.browser_submitted) parts.push(`${followUpCounts.browser_submitted} browser-submitted`);
+      if (followUpCounts.other) parts.push(`${followUpCounts.other} imported or other`);
+      els.followUpDataStatus.textContent = `${loadedFollowUpResponses.length} follow-up module responses loaded${parts.length ? ` (${parts.join(" + ")})` : ""}.${excludedFollowUp}`;
+    }
+    return `${loadedResponses.length} core responses loaded from ${dataSourceLabel}${coreParts.length ? ` (${coreParts.join(" + ")})` : ""}; ${filteredCount} match current filters.${excludedCore}`;
   }
 
   function wireResultTabs() {
