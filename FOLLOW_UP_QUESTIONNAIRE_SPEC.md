@@ -3,8 +3,8 @@
 ## 1. Prototype contract
 
 - Follow-up schema: `wnmu-viewer-follow-ups-v1`
-- Interface build: `6.1.2-test`
-- Release date: 2026-07-20
+- Interface build: `6.1.3-test`
+- Release date: 2026-07-21
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
 - Core schema linked: `wnmu-viewer-questionnaire-v6`
@@ -14,7 +14,7 @@
 - Current storage: browser local storage only
 - Current review/export: per-linked-respondent JSON download in the follow-up hub
 
-The five follow-up questionnaires are optional modules offered only after the core questionnaire has been submitted. They do not require the respondent to repeat the core questionnaire.
+The five follow-up questionnaires are optional modules offered only after the core questionnaire has been submitted. They do not require the respondent to repeat the core questionnaire. Build 6.1.3 updates the shared interface version and core results foundation; the live follow-up wording, IDs, limits, routing, and storage contract remain unchanged in this build.
 
 ## 2. Linkage and continuation
 
@@ -29,14 +29,9 @@ After successful core submission, the app creates a separate access record conta
 
 The continuation token appears in the URL fragment (`#continue=...`), not in the ordinary query string. The token is used only to resolve the separate access record. Follow-up answer records store `accessId`, `respondentId`, and `coreResponseId`; they do not use an email address as the linkage key.
 
-The thank-you page offers:
+The thank-you page offers direct private module links, a copyable private hub link, a `mailto:` action containing the link, and **I'm done now**.
 
-- direct private links to each eligible module
-- a copyable private link to the follow-up hub
-- a `mailto:` action that opens the respondent's own email app with the private link
-- an **I'm done now** action
-
-Current test limitation: because no database exists, the private link resolves only in the browser where the core questionnaire was submitted. Production must store the token-to-respondent mapping in the approved database so the same private link can work across devices without repeating the core questionnaire.
+Current test limitation: because no database exists, the private link resolves only in the browser where the core questionnaire was submitted. Production must store the token-to-respondent mapping in the approved database so the same link can work across devices without repeating the core questionnaire.
 
 The follow-up hub displays a limited linked-core summary: submission date, viewer-status label, and selected programming priorities. It does not ask those questions again.
 
@@ -48,12 +43,13 @@ The follow-up hub displays a limited linked-core summary: submission date, viewe
 - The hub shows **Not started**, **Saved for later**, or **Completed**.
 - One submitted response is maintained per linked respondent/module in the test prototype. Re-submitting replaces that module's earlier test response.
 - The children's module is offered only when the linked core response has `children_role` equal to `household`, `educator`, or `both`.
-- Self-selected follow-up respondents must be reported with follow-up-specific denominators. Follow-up percentages must never be presented as percentages of all core respondents unless the denominator is explicitly all core respondents.
-- The production results system must join follow-up responses to the core through `respondentId` and `coreResponseId`.
+- Self-selected follow-up respondents must be reported with follow-up-specific denominators.
+- Follow-up percentages must never be presented as percentages of all core respondents unless that denominator is explicitly intended and labeled.
+- Production results must join follow-up responses to the core through `respondentId` and `coreResponseId`.
 
 ## 4. Local and Upper Peninsula programming
 
-Purpose: identify regional subjects, underrepresented places and voices, preferred formats, demand for renewed WNMU-TV production, and acceptable use of outside producers.
+Purpose: identify regional subjects, underrepresented areas and voices, preferred formats, demand for renewed WNMU-TV production, and acceptable use of outside producers.
 
 Estimated time: 5–7 minutes.
 
@@ -70,7 +66,7 @@ Estimated time: 5–7 minutes.
 
 ## 5. Programming interests and ideas
 
-Purpose: use the respondent's linked core priorities as the starting point, then gather specific subjects, desired program qualities, lengths, sources, and recommendations without repeating the core category-selection task.
+Purpose: use the respondent's linked core priorities as the starting point, then gather specific subjects, desired program qualities, lengths, sources, and recommendations.
 
 Estimated time: 5–7 minutes.
 
@@ -106,9 +102,7 @@ Estimated time: 4–6 minutes.
 
 Purpose: understand age groups, settings, learning goals, regional content needs, resource formats, and access barriers for respondents who select or recommend children's programming.
 
-Estimated time: 4–6 minutes.
-
-Eligibility: linked core `children_role` is `household`, `educator`, or `both`.
+Estimated time: 4–6 minutes. Eligibility: linked core `children_role` is `household`, `educator`, or `both`.
 
 | Page | ID | Wording / type | Stored values / limits | Analytics use |
 |---|---|---|---|---|
@@ -146,24 +140,25 @@ Test storage keys:
 - module drafts: `wnmuViewerFollowUpDrafts:v1`
 - submitted module responses: `wnmuViewerFollowUpResponses:v1`
 
-Each submitted follow-up response records:
+Each submitted follow-up response records `responseId`, `accessId`, `respondentId`, `coreResponseId`, core and follow-up schema versions, build version, campaign, module/survey part, status, timestamps, and answers. The continuation token is stored in the separate access record and is not copied into the follow-up answer record.
 
-- `responseId`
-- `accessId`
-- `respondentId`
-- `coreResponseId`
-- `coreSchemaVersion`
-- `followUpSchemaVersion`
-- `buildVersion`
-- campaign
-- module/survey part
-- status
-- start, creation, and submission dates
-- answers
+## 10. Pending revisions already identified
 
-The continuation token is stored in the separate access record and is not copied into the follow-up answer record.
+The following user-approved design concerns are documented but not implemented in build 6.1.3:
 
-## 10. Production work still required
+- clearer `local_areas` wording
+- inclusivity review for `local_voices`
+- plain-language explanation of regional content licensing and outside producers
+- replace the repeated `deeper_priority_categories` selection with linked-priority context
+- create a clearer path for music-performance series ideas
+- revise selection limits for program characteristics, origins, special programming, and children’s learning goals
+- clarify on-demand and broadcast-versus-streaming wording
+- refocus the open programming-idea prompt away from specific unobtainable programs and series
+- decide whether children’s follow-up needs a distinct performance question
+
+Any meaning change requires ID review, analytics updates, synthetic follow-up data where applicable, export updates, and a synchronized `RESULTS_COVERAGE_LEDGER.md` row.
+
+## 11. Production work still required
 
 Before public release:
 
