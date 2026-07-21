@@ -30,7 +30,7 @@
       <div class="container">
         <p class="eyebrow">Results preview · local test</p>
         <h1>WNMU-TV viewer questionnaire results</h1>
-        <p class="lead">The test dashboard combines 25 synthetic responses with every valid current-schema response submitted in this browser.</p>
+        <p class="lead">The test dashboard combines synthetic and browser-submitted core responses with linked optional follow-up responses.</p>
       </div>
     </section>
 
@@ -40,14 +40,16 @@
           <button class="button primary" id="reloadTestData" type="button">Reload combined test responses</button>
           <label class="button secondary file-button">Import response JSON<input id="jsonUpload" type="file" accept="application/json,.json" /></label>
           <button class="button quiet" id="exportRaw" type="button">Export loaded JSON</button>
-          <button class="button quiet" id="exportSummary" type="button">Export summary CSV</button>
+          <button class="button quiet" id="exportSummary" type="button">Export core summary CSV</button>
+          <button class="button quiet" id="exportFollowUpSummary" type="button">Export follow-up summary CSV</button>
           <button class="button quiet danger-button" id="clearLocal" type="button">Clear submitted browser responses</button>
           <span class="data-status" id="dataStatus">Loading combined test responses…</span>
+          <span class="data-status" id="followUpDataStatus"></span>
         </div>
 
         <section id="filters" class="filter-panel" aria-labelledby="filterHeading">
           <p class="eyebrow">Audience filters</p>
-          <h2 id="filterHeading">Compare viewing habits, programming priorities, and perceived delivery</h2>
+          <h2 id="filterHeading">Compare viewing habits, programming priorities, perceived delivery, and linked follow-up answers</h2>
           <div class="filter-grid admin-filter-grid">
             <label>Viewer type<select id="filterViewer"><option value="">All viewer types</option></select></label>
             <label>Viewing method<select id="filterMethod"><option value="">All methods</option></select></label>
@@ -74,6 +76,7 @@
               <p class="eyebrow">Interpretation layer</p>
               <h2 id="decisionHeading">Decision Brief foundation</h2>
               <div id="decisionBriefStatus"></div>
+              <div id="followUpDecisionStatus"></div>
             </section>
           </section>
 
@@ -126,6 +129,9 @@
               <section class="result-section"><p class="eyebrow">Demographics</p><h2>Age groups</h2><div id="ageMix" class="bar-list"></div></section>
               <section class="result-section"><p class="eyebrow">Geography</p><h2>Locations</h2><div id="countyMix" class="bar-list"></div></section>
             </div>
+
+            <div class="results-panel-heading"><p class="eyebrow">Optional follow-up evidence</p><h2>Online, children's, and communication follow-ups</h2><p>Each module uses its own self-selected denominator.</p></div>
+            <div id="followUpAudienceResults"></div>
           </section>
 
           <section id="resultsProgramming" class="results-panel" role="tabpanel" data-results-panel="programming" hidden aria-labelledby="programmingHeading">
@@ -135,6 +141,8 @@
               <section class="result-section"><p class="eyebrow">Forced priorities</p><h2>Most-selected top-five categories</h2><p>Selections use the same 17 categories as the interest ratings.</p><div id="topPriorities" class="bar-list"></div></section>
             </div>
             <section class="result-section"><p class="eyebrow">Local and regional formats</p><h2>Formats respondents would be most likely to watch</h2><div id="localFormatsResult"></div></section>
+            <div class="results-panel-heading"><p class="eyebrow">Optional follow-up evidence</p><h2>Regional subjects, formats, music, children, and content strategy</h2><p>Each module uses its own self-selected denominator.</p></div>
+            <div id="followUpProgrammingResults"></div>
           </section>
 
           <section id="resultsPerformance" class="results-panel" role="tabpanel" data-results-panel="performance" hidden aria-labelledby="performanceHeading">
@@ -162,16 +170,23 @@
             </div>
 
             <section class="result-section"><p class="eyebrow">Former and non-viewers</p><h2>Reasons respondents do not watch more often</h2><div id="nonviewerReasonsResult"></div></section>
+
+            <div class="results-panel-heading"><p class="eyebrow">Optional follow-up evidence</p><h2>Original regional production and outside-producer opportunities</h2><p>Each module uses its own self-selected denominator.</p></div>
+            <div id="followUpPerformanceResults"></div>
           </section>
 
           <section id="resultsVoices" class="results-panel" role="tabpanel" data-results-panel="voices" hidden aria-labelledby="voicesHeading">
-            <div class="results-panel-heading"><p class="eyebrow">Viewer Voices</p><h2 id="voicesHeading">What respondents are saying in their own words</h2><p>Comments are grouped by the question that prompted them. These are original responses, not automated quotations or inferred themes.</p></div>
+            <div class="results-panel-heading"><p class="eyebrow">Viewer Voices</p><h2 id="voicesHeading">Original comments grouped by their purpose</h2><p>Comments are shown as written. Automated theme synthesis is reserved for the later interpretation package.</p></div>
             <div id="viewerVoiceGroups" class="viewer-voice-groups"></div>
+            <div class="results-panel-heading"><p class="eyebrow">Optional follow-up comments</p><h2>Ideas, needs, barriers, and communication guidance</h2><p>Each comment remains connected to its module and question.</p></div>
+            <div id="followUpVoiceGroups" class="viewer-voice-groups"></div>
           </section>
 
           <section id="resultsAllData" class="results-panel" role="tabpanel" data-results-panel="all-data" hidden aria-labelledby="allDataHeading">
-            <div class="results-panel-heading"><p class="eyebrow">All Data &amp; Export</p><h2 id="allDataHeading">Every core question with answered, skipped, and not-applicable counts</h2><p>Use the controls above to export the loaded response records or a stable-label summary CSV.</p></div>
+            <div class="results-panel-heading"><p class="eyebrow">All Data &amp; Export</p><h2 id="allDataHeading">Every core and follow-up question with honest denominators</h2><p>Core questions show answered, skipped, and not-applicable counts. Follow-up questions show module respondents, answered, and skipped counts.</p></div>
             <div id="allDataResults" class="all-data-results"></div>
+            <div class="results-panel-heading"><p class="eyebrow">Optional follow-up questionnaires</p><h2>All 40 live follow-up questions</h2><p>Participation is voluntary and self-selected. Module percentages must not be presented as percentages of all core respondents.</p></div>
+            <div id="followUpAllDataResults" class="all-data-results"></div>
           </section>
         </div>
       </div>
@@ -180,9 +195,15 @@
 
   <footer class="site-footer"><div class="container footer-grid"><div><strong>Local prototype</strong><p>No external database is connected.</p></div><div><strong>Combined test data</strong><p>Synthetic and browser-submitted records remain visibly distinguishable.</p></div><div><strong>Future deployment</strong><p>Production will use only approved Supabase responses.</p></div></div></footer>
 
-  <script src="js/config.js?v=6.1.3-test"></script>
-  <script src="js/questions.js?v=6.1.3-test"></script>
-  <script src="js/storage.js?v=6.1.3-test"></script>
-  <script src="js/results.js?v=6.1.3-test"></script>
+  <script src="js/config.js?v=6.2.0-test"></script>
+  <script src="js/questions.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-local.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-programming.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-online.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-children.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-communication.js?v=6.2.0-test"></script>
+  <script src="js/follow-up-definitions.js?v=6.2.0-test"></script>
+  <script src="js/storage.js?v=6.2.0-test"></script>
+  <script src="js/results.js?v=6.2.0-test"></script>
 </body>
 </html>
