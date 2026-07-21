@@ -1,42 +1,36 @@
-# QUESTIONNAIRE_SPEC.md — WNMU-TV Viewer Questionnaire
+# QUESTIONNAIRE_SPEC.md - WNMU-TV Viewer Questionnaire
 
 ## 1. Release contract
 
-- Schema: `wnmu-viewer-questionnaire-v6`
-- Build: `6.1.3-test`
+- Core schema: `wnmu-viewer-questionnaire-v6`
+- Follow-up schema: `wnmu-viewer-follow-ups-v2`
+- Build: `6.2.0-test`
 - Release date: 2026-07-21
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
-- Survey part: `core`
+- Core survey part: `core`
 - Primary stages: About You; WNMU & You; What You Watch; What You Want; How We're Doing
-- Target core time: approximately 6–8 minutes
-- Follow-up schema: `wnmu-viewer-follow-ups-v1`
+- Target core time: approximately 6-8 minutes
 
-This remains a pre-production revision. No Supabase database or production responses exist. Prototype and synthetic responses do not count as research data.
+This remains a pre-production test revision. No Supabase response collection is active. Browser and synthetic responses are prototype test data and do not count as research data.
 
 ## 2. Landing page and branding
 
-The landing page uses the official WNMU-TV logo already used by the WNMU Home project. The current source is `WNMU-TV-logo-head2019.png` in `tpoirier1969/WNMU-Programming-library`.
+The landing page uses the official WNMU-TV logo referenced from the WNMU Programming Library. `css/brand.css` is the canonical core-questionnaire branding layer. Before production, the logo must be copied into this application's asset set so the public questionnaire does not depend on another repository at runtime.
 
-The canonical questionnaire brand layer is `css/brand.css`. Its primary palette follows the WNMU Home visual system:
-
-- navy: `#17345f`
-- blue: `#315f8c`
-- green: `#376d5c`
-- page background: `#edf2f7`
-- border: `#d9e2ec`
-
-The landing introduction explains that WNMU-TV is beginning an ongoing process to understand viewers, earn their support, and change with their needs and viewing habits. It also tells respondents that the five stages may be completed in any order.
-
-On screens wider than 900 pixels, the stage cards must begin below the complete landing introduction with visible separation. The cards, saved-draft panel, ready-to-submit panel, questionnaire facts, and footer must not overlap. At 900 pixels and below, those elements remain in document flow and the ready-to-submit panel occupies its own grid row.
+The landing page explains that the questionnaire begins an ongoing process to understand viewers and that the five stages may be completed in any order. The common phone layout must avoid horizontal scrolling, overlapping panels, and oversized introductory content.
 
 ## 3. Stage completion and submission
 
-A stage is **Not started** with no saved answers and no explicit completion, **In progress** after at least one stored answer, and **Complete** only after the respondent selects **Complete stage** and all applicable required questions are answered.
+A stage is:
 
-Opening pages does not complete a stage. All five stages use the same completion behavior. When every stage is complete, the hub shows **Submit questionnaire**. Submission is not tied to Stage 5 or to completing stages in order. The thank-you screen appears only after successful storage. Optional blanks do not block submission.
+- **Not started** when it has no saved answers and has not been explicitly completed.
+- **In progress** after at least one answer is saved.
+- **Complete** only after the respondent selects **Complete stage** and all applicable required questions are answered.
 
-Required questions:
+Opening a page does not complete a stage. All five stages use the same completion behavior. When every stage is complete, the hub displays **Submit questionnaire**. Submission is not tied to Stage 5 or to completing stages in numerical order. The Thank You screen appears only after successful storage.
+
+Required core questions:
 
 - `children_role`
 - `viewer_status`
@@ -46,201 +40,232 @@ Hidden answers may remain in a draft so they can reappear if routing changes, bu
 
 ## 4. Rating scales and presentation
 
-- Interest: `1` Not interested, `2` Slightly, `3` Moderately, `4` Very, `5` Extremely, `na` Not sure
-- Importance: `1` Not important, `2` Slightly important, `3` Moderately important, `4` Very important, `5` Essential, `na` Not sure
-- Performance: `1` Poor, `2` Weak, `3` Adequate, `4` Good, `5` Excellent, `na` Not familiar enough to rate
+Interest scale:
 
-`na` and missing answers are excluded from numeric averages.
+- `1` Not interested
+- `2` Slightly interested
+- `3` Moderately interested
+- `4` Very interested
+- `5` Extremely interested
+- `na` Not sure
 
-Rating pages use one scale key before the first rated item. Each item appears as a compact flat row. Importance and performance share one role row when both apply. The controls wrap when necessary to protect phone readability and must not create horizontal page scrolling.
+Importance scale:
+
+- `1` Not important
+- `2` Slightly important
+- `3` Moderately important
+- `4` Very important
+- `5` Essential
+- `na` Not sure
+
+Performance scale:
+
+- `1` Poor
+- `2` Weak
+- `3` Adequate
+- `4` Good
+- `5` Excellent
+- `na` Not familiar enough to rate
+
+`na` and missing values are excluded from numeric averages. Importance and performance use aligned role rows but retain separate meanings and stored answers. The results system displays standalone importance, standalone performance, and paired importance-performance gaps.
 
 ## 5. Active core questionnaire
 
-### Stage 1 — About You
+### Stage 1 - About You
 
-| ID | Wording / values | Required | Routing / analytics |
-|---|---|---:|---|
-| `county_region` | What county or area do you live in? U.P. counties, northern Wisconsin, other Michigan, other state, Canada, prefer not | No | Geography filter |
-| `community_type` | Which best describes where you live? `city`, `town`, `rural`, `prefer_not` | No | Community comparison |
-| `age_range` | Under 18 through 85+, prefer not | No | Age filter |
-| `internet_streaming_quality` | How well does home internet support streaming WNMU-TV, PBS, or other video? `works_well`, `adequate`, `slow`, `unreliable`, `none`, `not_tried`, `prefer_not` | No | Streaming access |
-| `children_role` | Do you select or recommend programming for children? `household`, `educator`, `both`, `neither` | Yes | Child-detail and follow-up routing |
+| ID | Viewer-facing wording / values | Type | Required | Routing | Analytics purpose | Results location | Status / compatibility |
+|---|---|---|---:|---|---|---|---|
+| `county_region` | What county or area do you live in? U.P. counties, northern Wisconsin, other Michigan, another state, Canada, prefer not | Select | No | All | Geography and filtering | Audience & Access; All Data & Export | Retained v6 |
+| `community_type` | Which best describes where you live? `city`, `town`, `rural`, `prefer_not` | Radio | No | All | Community comparison | Audience & Access; All Data & Export | Retained v6 |
+| `age_range` | Age range from under 18 through 85 or older, plus prefer not | Radio | No | All | Age filtering and segmentation | Audience & Access; All Data & Export | Retained v6 |
+| `internet_streaming_quality` | How well does home internet support streaming video? `works_well`, `adequate`, `slow`, `unreliable`, `none`, `not_tried`, `prefer_not` | Radio | No | All | Streaming access | Audience & Access; All Data & Export | Retained v6 |
+| `children_role` | Do you select or recommend programming for children? `household`, `educator`, `both`, `neither` | Radio | Yes | All | Children detail and follow-up eligibility | Audience & Access; All Data & Export | Retained v6 |
 
-“Slow” means video is often too slow for comfortable streaming. “Unreliable” means service is frequently unavailable or unpredictable. Respondents choosing `neither` do not see detailed children-use, children-needs, or the optional children's follow-up questionnaire, but the broad children's-programming category remains available.
+Respondents choosing `neither` do not see `kids_use`, `kids_needs`, or the optional children's follow-up. The broad children-and-education programming category remains available to everyone.
 
-### Stage 2 — WNMU & You
+### Stage 2 - WNMU & You
 
-| ID | Wording / values | Required | Routing / analytics |
-|---|---|---:|---|
-| `station_awareness` | Before today, what did you know about WNMU-TV? `local_pbs`, `station_not_pbs`, `name_only`, `not_heard` | No | Awareness |
-| `viewer_status` | Past-12-month WNMU viewing: `regular`, `occasional`, `once_twice`, `former`, `never`, `unsure` | Yes | Viewer filter and performance routing |
-| `viewing_methods` | Antenna, cable/satellite, WNMU livestream, `pbs_app`, `pbs_org`, PBS Passport through WNMU-TV, YouTube TV, YouTube, not watched | Yes | Method filter; not watched is exclusive |
-| `channel_awareness` | “WNMU-TV broadcasts four channels. Before this questionnaire, which were you aware of?” | No | Channel awareness |
-| `channels_received` | Which four WNMU-TV channels can you receive? | No | Antenna, cable/satellite, or YouTube TV users only |
-| `online_awareness` | Awareness of WNMU website/livestream, `pbs_org`, `pbs_app`, Passport, PBS KIDS app, YouTube, and social media | No | Online awareness |
+| ID | Viewer-facing wording / values | Type | Required | Routing | Analytics purpose | Results location | Status / compatibility |
+|---|---|---|---:|---|---|---|---|
+| `station_awareness` | Before today, what did you know about WNMU-TV? | Radio | No | All | Station/PBS awareness | Audience & Access; All Data & Export | Retained v6 |
+| `viewer_status` | During the past 12 months, how often have you knowingly watched WNMU-TV or its programming? | Radio, stored in route profile | Yes | All | Viewer relationship and routing | Audience & Access; filter; All Data & Export | Retained v6 |
+| `viewing_methods` | Antenna, cable/satellite, WNMU livestream, PBS App, PBS.org, Passport, YouTube TV, YouTube, or not watched | Checkbox, stored in route profile | Yes | All | Access and viewing method | Audience & Access; filter; All Data & Export | `pbs_app` and `pbs_org` remain separate; not watched exclusive |
+| `channel_awareness` | Which of WNMU-TV's four broadcast channels were you aware of? | Checkbox | No | All | Channel awareness | Audience & Access; All Data & Export | Retained v6 |
+| `channels_received` | Which WNMU-TV channels can you receive? | Checkbox | No | Antenna, cable/satellite, or YouTube TV methods | Channel availability | Audience & Access; All Data & Export | Retained v6 |
+| `online_awareness` | Which WNMU-TV or PBS online services were you aware of? | Checkbox | No | All | Digital-service awareness | Audience & Access; All Data & Export | PBS App and PBS.org separate |
 
-`pbs_org` and `pbs_app` are separate stored values. The PBS.org website and PBS App must never be combined into one response choice in the Access, Channels, and Online Services section.
+Viewer-facing channel names are WNMU-TV 13.1, PBS KIDS 24/7 13.2, WNMU-TV Plus 13.3, and Michigan Learning Channel 13.4. Current channel and PBS service wording must be reverified against governing sources before production.
 
-Viewer-facing channels are WNMU-TV 13.1, PBS KIDS 24/7 13.2, WNMU-TV Plus 13.3, and Michigan Learning Channel 13.4. The over-the-air reception-quality question is retired from the core.
+### Stage 3 - What You Watch
 
-### Stage 3 — What You Watch
+| ID | Viewer-facing wording / values | Type | Required | Routing | Analytics purpose | Results location | Status / compatibility |
+|---|---|---|---:|---|---|---|---|
+| `channels_watched` | Which WNMU-TV channels do you watch, even occasionally? | Checkbox | No | Hidden for `never` | Channel use | Audience & Access; All Data & Export | Retained v6 |
+| `watch_preference` | Scheduled broadcast, recorded, on demand, livestream, short clips, depends, or no strong preference | Radio | No | All | Linear/on-demand preference | Audience & Access; All Data & Export | Retained v6 |
+| `program_category_interest` | Interest in 17 shared programming categories | Matrix 1-5 plus `na` | No | All | Category interest | Programming Priorities; All Data & Export | Retained v6 |
+| `valued_programs` | Current or past WNMU-TV or PBS programs that were valuable or memorable | Textarea | No | All | Qualitative program value | Viewer Voices; All Data & Export | Retained v6 |
+| `kids_use` | How PBS KIDS or other children's public-media content is used | Checkbox | No | Child-role respondents | Children's viewing methods | Audience & Access; All Data & Export | Retained v6 |
 
-| ID | Wording / values | Required | Routing / analytics |
-|---|---|---:|---|
-| `channels_watched` | Which WNMU-TV channels do you watch, even occasionally? | No | Hidden for never-viewers |
-| `watch_preference` | Scheduled, recorded, on demand, livestream, short clips, depends, no preference | No | Viewing preference |
-| `program_category_interest` | Interest in the 17 shared categories, presented as one compact flat 1–5 list with a single scale key | No | Average interest by category |
-| `valued_programs` | Current or past WNMU-TV/PBS programs that were valuable or memorable | No | Open response |
-| `kids_use` | Broadcast, PBS KIDS app, PBS App/PBS.org, YouTube, classroom/library/childcare, not used | No | Child-programming roles only |
+Shared programming categories:
 
-### Shared programming categories
+1. `history_biography` - History and biography
+2. `environment_nature` - Environment, nature, and wildlife
+3. `outdoor_recreation` - Outdoor recreation
+4. `regional_documentaries` - Upper Peninsula and regional documentaries
+5. `local_news_public_affairs` - Local news and public affairs
+6. `health_wellness` - Health and wellness
+7. `home_garden` - Home and garden
+8. `arts_performance` - Arts, music, and performance
+9. `children_education` - Children's programming and education
+10. `science_technology` - Science and technology
+11. `national_pbs_documentaries` - National PBS documentaries
+12. `national_international_news` - National and international news
+13. `drama_mysteries` - Drama and mysteries
+14. `food_cooking` - Food and cooking
+15. `regional_travel` - Regional travel and exploration
+16. `world_travel` - U.S. and world travel
+17. `independent_film` - Independent film
 
-Both `program_category_interest` and `program_category_priorities` use:
+### Stage 4 - What You Want
 
-1. `history_biography` — History and biography
-2. `environment_nature` — Environment, nature, and wildlife
-3. `outdoor_recreation` — Outdoor recreation
-4. `regional_documentaries` — Upper Peninsula and regional documentaries
-5. `local_news_public_affairs` — Local news and public affairs
-6. `health_wellness` — Health and wellness
-7. `home_garden` — Home and garden
-8. `arts_performance` — Arts, music, and performance
-9. `children_education` — Children's programming and education
-10. `science_technology` — Science and technology
-11. `national_pbs_documentaries` — National PBS documentaries
-12. `national_international_news` — National and international news
-13. `drama_mysteries` — Drama and mysteries
-14. `food_cooking` — Food and cooking
-15. `regional_travel` — Regional travel and exploration
-16. `world_travel` — U.S. and world travel
-17. `independent_film` — Independent film
+| ID | Viewer-facing wording / values | Type | Required | Routing | Analytics purpose | Results location | Status / compatibility |
+|---|---|---|---:|---|---|---|---|
+| `program_category_priorities` | Choose five programming categories that should receive greatest attention | Checkbox, max 5 | No | All | Forced programming priorities and follow-up context | Programming Priorities; All Data & Export | Retained v6 |
+| `local_formats` | Choose up to three local or regional formats | Checkbox, max 3 | No | All | Regional format preference | Programming Priorities; All Data & Export | Retained v6 |
+| `online_improvements` | Choose up to three improvements that could encourage online use | Checkbox, max 3; `nothing` exclusive | No | All | Digital improvement priorities | Audience & Access; All Data & Export | Retained v6 |
+| `learn_preferred` | Choose up to three ways to learn about WNMU-TV programming | Checkbox, max 3 | No | All | Communication-channel preference | Audience & Access; All Data & Export | Retained v6 |
+| `kids_needs` | What children's, family, classroom, or educator resources should WNMU-TV provide more of? | Textarea | No | Child-role respondents | Qualitative educational needs | Viewer Voices; All Data & Export | Retained v6 |
 
-### Stage 4 — What You Want
+### Stage 5 - How We're Doing
 
-| ID | Wording / values | Required | Routing / analytics |
-|---|---|---:|---|
-| `program_category_priorities` | Choose five categories for greatest WNMU-TV attention | No | Top-five counts and linked follow-up context |
-| `local_formats` | Choose up to three local/regional formats | No | Format preference |
-| `online_improvements` | Clear how/where to watch, local access, search, notifications, app help, Passport clarity, nothing | No | Choose up to three; nothing exclusive |
-| `learn_preferred` | On-air, TV guide, printed guide, WNMU/PBS website, PBS App, email, Facebook, Instagram, YouTube, radio, text/app notification | No | Choose up to three |
-| `kids_needs` | Children's, family, classroom, or educator resources WNMU-TV should provide more of | No | Child-programming roles only |
-
-The online list excludes more full episodes, larger local archive, and device compatibility. The communication list excludes community organizations and newspapers.
-
-### Stage 5 — How We're Doing
-
-Importance and performance appear together in a compact flat list. Performance is hidden after a respondent explicitly identifies as a former or never viewer. When Stage 5 is opened before viewer status has been answered, performance remains visible provisionally.
-
-| ID | Wording / values | Required | Routing / analytics |
-|---|---|---:|---|
-| `station_role_importance` | Importance of nine station roles | No | All; independent distribution and paired gap analysis |
-| `station_role_performance` | Performance on the same roles | No | Hidden for explicitly never/former viewers; independent distribution and paired gap analysis |
-| `reflects_me` | How well WNMU-TV reflects people like the respondent | No | Hidden for never/former |
-| `trust_station` | Trust in WNMU-TV programming and information | No | Hidden for never/former |
-| `nonviewer_reasons` | Reasons for not watching more often | No | Former, never, unsure |
-| `nonviewer_return` | Program, service, or change likely to attract or regain respondent | No | Former, never, unsure |
-| `final_feedback` | What is WNMU-TV doing well? Where could WNMU-TV improve? What else would you like us to know? | No | All; open response |
+| ID | Viewer-facing wording / values | Type | Required | Routing | Analytics purpose | Results location | Status / compatibility |
+|---|---|---|---:|---|---|---|---|
+| `station_role_importance` | Importance of nine station roles | Matrix | No | All | Role priorities and paired gaps | Performance & Opportunities; All Data & Export | Retained v6 |
+| `station_role_performance` | How well WNMU-TV performs the same nine roles | Matrix | No | Hidden for explicit former/never viewers | Viewer-rated delivery and paired gaps | Performance & Opportunities; All Data & Export | Retained v6 |
+| `reflects_me` | How well WNMU-TV reflects the interests and needs of people like the respondent | Radio | No | Hidden for explicit former/never viewers | Regional reflection | Performance & Opportunities; All Data & Export | Retained v6 |
+| `trust_station` | How much the respondent trusts WNMU-TV as a source of programming and information | Radio | No | Hidden for explicit former/never viewers | Trust | Performance & Opportunities; All Data & Export | Retained v6 |
+| `nonviewer_reasons` | Reasons for not watching WNMU-TV more often | Checkbox | No | Former, never, or unsure | Barriers | Performance & Opportunities; All Data & Export | Retained v6 |
+| `nonviewer_return` | Program, service, or change that could attract or regain the respondent | Textarea | No | Former, never, or unsure | Return opportunities | Viewer Voices; All Data & Export | Retained v6 |
+| `final_feedback` | What WNMU-TV is doing well, where it could improve, and anything else to know | Textarea | No | All | General qualitative feedback | Viewer Voices; All Data & Export | Retained v6 |
 
 Station roles:
 
-1. `trusted_public_media` — Select and provide trusted national and regional public-television programming
-2. `up_programming` — Provide programs about the Upper Peninsula, whether produced by WNMU-TV or by other producers
-3. `regional_issues` — Cover important regional issues and public affairs
-4. `reflect_region` — Reflect the people, places, communities, and cultures of the region
-5. `children_families` — Provide educational programming for children and families
-6. `science_nature` — Provide science, nature, and environmental programming
-7. `arts_culture` — Provide arts, music, and cultural programming
-8. `online_access` — Make programs easy to find online and on demand
-9. `access_for_all` — Serve people with disabilities or limited and unreliable internet access
+1. `trusted_public_media` - Select and provide trusted national and regional public-television programming
+2. `up_programming` - Provide programs about the Upper Peninsula, whether produced by WNMU-TV or other producers
+3. `regional_issues` - Cover important regional issues and public affairs
+4. `reflect_region` - Reflect the people, places, communities, and cultures of the region
+5. `children_families` - Provide educational programming for children and families
+6. `science_nature` - Provide science, nature, and environmental programming
+7. `arts_culture` - Provide arts, music, and cultural programming
+8. `online_access` - Make programs easy to find online and on demand
+9. `access_for_all` - Serve people with disabilities or limited and unreliable internet access
 
-The former separate history role is removed. The Local and Upper Peninsula follow-up separately measures demand for original WNMU-TV production.
+The broad `children_families` role is the canonical core measure of importance and performance for children and families. Follow-up v2 does not duplicate this broad performance question.
 
 ## 6. Optional follow-up questionnaires
 
-After successful core submission, the thank-you screen offers five working test-mode modules:
+After a successful core submission, the Thank You page offers five optional modules:
 
-- Local and Upper Peninsula programming, 5–7 minutes
-- Programming interests and ideas, 5–7 minutes
-- Online viewing, PBS App, and Passport, 4–6 minutes
-- Children's programming and education, 4–6 minutes, only when applicable
-- Communication and finding programs, 3–5 minutes
+- Local and Upper Peninsula programming
+- Programming interests and ideas
+- Online viewing, PBS App, and Passport
+- Children's programming and education, when eligible
+- Communication and finding programs
 
-Each module has two pages and eight optional questions. The detailed question IDs, values, purposes, and analytics are maintained in `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`.
+The follow-up blueprint is maintained in `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`. Version 2 contains 40 live question IDs, eight per module. It retires `deeper_priority_categories` and `program_recommendations`, adds `regional_music_performance_interest` and `program_development_ideas`, and creates a clean v2 draft/response boundary.
 
-The core thank-you page creates a random private continuation token and offers direct module links, a copyable private hub link, an option to open the respondent's email application with the link, and **I'm done now**.
+Core selected programming priorities are displayed as read-only context in the Programming Interests module rather than being asked again.
 
-The test-only landing-page shortcut may create an internal non-v6 preview response when no completed v6 response exists. That record is excluded from v6 results. Follow-up drafts and responses use the same pseudonymous `respondentId` and submitted `coreResponseId`. The continuation token remains in a separate access record and URL fragment.
+## 7. Linkage and privacy
 
-Current test limitation: without Supabase or another approved database, the private link works later only in the browser where the core questionnaire was submitted. Follow-up respondents are self-selected and must be reported with their own denominators.
+The core Thank You page creates or reuses a random access record containing:
 
-## 7. Results system
+- access ID
+- long continuation token
+- pseudonymous respondent ID
+- core response ID
+- core schema version
+- timestamps
 
-The core results dashboard uses six top-level sections:
+The continuation token appears in the URL fragment and separate access record. It is not stored inside core or follow-up answer records. Follow-up responses link to core through `respondentId` and `coreResponseId`, not names or email addresses.
 
-1. **Decision Brief** — interpretation foundation in build 6.1.3; final findings, implications, options, and cautions remain later work
-2. **Audience & Access** — audience relationship, awareness, internet, methods, channels, online awareness, communication, children’s use, age, and geography
-3. **Programming Priorities** — category interest, forced priorities, and local/regional formats
-4. **Performance & Opportunities** — independent importance and performance results, paired gaps, reflection, trust, and non-viewer barriers
-5. **Viewer Voices** — original comments grouped by the question that prompted them
-6. **All Data & Export** — all 28 core questions with answered, skipped, not-applicable, and filtered counts
+Current test limitation: links resolve only under the same browser origin because no production database is connected. Public production requires approved server-side token resolution and protected response storage.
 
-In Test mode, the default dataset is the 25 synthetic v6 records plus every valid current-schema browser-submitted response. Synthetic and browser-submitted source counts remain visibly separate. Older, preview, or non-v6 browser records are excluded and their exclusion count is shown. Importing JSON temporarily replaces the loaded dataset until the combined test data is reloaded.
+## 8. Storage keys
 
-The synthetic dataset exercises all 28 core questions and includes several respondents who watch Michigan Learning Channel. Production will remove synthetic and browser aggregation and load only approved Supabase responses.
-
-The online-method headline counts WNMU livestream, PBS App, PBS.org, Passport, YouTube TV, and YouTube as online methods. `pbs_app` and `pbs_org` remain separate stored values.
-
-## 8. Storage, exports, and analytics
-
-Core drafts and responses record schema/build/mode, respondent ID, campaign, survey part, timestamps, route profile, answers, visible question IDs, and completed stages. Core answer records contain no name or email address.
-
-Core storage keys:
+Core:
 
 - draft: `wnmuViewerSurveyDraft:v6`
 - responses: `wnmuViewerSurveyResponses:v3`
 - respondent ID: `wnmuViewerRespondentId:v1`
 
-Follow-up storage keys:
+Follow-up v2:
 
 - access records: `wnmuViewerFollowUpAccess:v1`
-- module drafts: `wnmuViewerFollowUpDrafts:v1`
-- module responses: `wnmuViewerFollowUpResponses:v1`
+- drafts: `wnmuViewerFollowUpDrafts:v2`
+- responses: `wnmuViewerFollowUpResponses:v2`
 
-Analytics rules:
+Retired follow-up prototype history:
+
+- `wnmuViewerFollowUpDrafts:v1`
+- `wnmuViewerFollowUpResponses:v1`
+
+The v1 draft and response records are not migrated or loaded into v2. The access key remains v1 so existing same-browser private links can continue to resolve to their core response.
+
+## 9. Results and analytics contract
+
+Core analytics rules:
 
 - Use only respondents who answered each question as its percentage denominator.
-- Display applicable, answered, skipped, and not-applicable counts where results are reviewed.
-- Exclude skipped and hidden answers from answer distributions.
-- Keep `na`, unable-to-rate, not sure, and prefer not distinct from numeric or negative responses.
-- Show standalone importance and performance distributions in addition to paired gaps.
+- Exclude skipped and hidden answers.
+- Keep missing, `na`, not sure, prefer not, and not applicable distinct from negative answers.
 - Calculate each respondent's importance-performance gap first, then average paired gaps.
-- Keep synthetic and browser-submitted source counts unmistakably separate in Test mode.
-- Load only v6 records into the v6 core results dashboard.
-- Never combine voluntary follow-up denominators with all core respondents without explicit labeling.
-- Join future follow-up results to the core through `respondentId` and `coreResponseId`.
-- Do not use the continuation token as an analytics field.
+- Preserve standalone importance and performance distributions.
+- Load only v6 records into the v6 core dashboard.
 
-Raw JSON exports the loaded records. The summary CSV includes source category, stable question and item IDs, labels, values, answered count, applicable count, skipped count, not-applicable count, filtered count, and calculation notes. Open text remains in raw JSON and Viewer Voices; the summary CSV reports answered counts.
+Test data behavior:
 
-The current follow-up hub provides linked JSON export for test review. Protected aggregate and qualitative follow-up results and follow-up CSV remain later work.
+- The default results view combines 25 synthetic core responses with valid v6 browser-submitted core responses.
+- It combines 60 synthetic v2 follow-up module responses with valid v2 browser-submitted follow-up responses.
+- Synthetic and browser sources remain visibly labeled and separately counted.
+- Older-schema browser records remain excluded and are not silently reinterpreted.
 
-## 9. Production checklist
+Follow-up analytics rules:
+
+- Follow-up results use module-specific, self-selected denominators.
+- Core filters apply through linked core response IDs.
+- Every follow-up question displays answered, skipped, and module counts.
+- Children follow-up responses must link only to eligible core respondents.
+- Follow-up percentages must not be described as percentages of all core respondents unless explicitly calculated and labeled that way.
+
+Results sections:
+
+1. Decision Brief, interpretation rules pending
+2. Audience & Access
+3. Programming Priorities
+4. Performance & Opportunities
+5. Viewer Voices
+6. All Data & Export
+
+Exports:
+
+- combined raw JSON containing core and follow-up records
+- core summary CSV
+- follow-up summary CSV with stable stored values, labels, module n, answered/skipped counts, linkage fields, and schema versions
+
+## 10. Production checklist
 
 Before public release:
 
 - switch the authoritative mode to production
-- disable blank navigation
-- confirm required/optional policy
-- verify station, channel, PBS.org, PBS App, and Passport facts
-- connect the approved Supabase database
-- replace combined test data with Supabase-only responses
-- make continuation links work across devices
-- define token expiration, revocation, and withdrawal handling
+- disable blank test navigation
+- remove synthetic and browser test data as live sources
+- connect and approve Supabase response storage
 - protect core and follow-up results
-- complete the Decision Brief interpretation rules
-- build aggregate and qualitative follow-up results and CSV exports
-- publish privacy, linkage, retention, and withdrawal information
-- implement optional server-side email delivery separately from answer records
-- prevent synthetic data from becoming the live source
-- copy the official logo into the production asset set rather than relying on an external raw-file URL
-- complete phone/desktop, portrait/landscape, keyboard, screen-reader, focus, reduced-motion, routing, draft, submission, continuation-link, follow-up, results, import, and export QA
+- make continuation links work across devices
+- define token expiration, revocation, response editing, withdrawal, and retention
+- publish final privacy and linkage language
+- implement optional email delivery in a separate protected contact system
+- verify current WNMU channel and PBS service wording against governing sources
+- copy the logo into the application asset set
+- complete desktop, phone portrait/landscape, keyboard, screen-reader, focus, reduced-motion, routing, draft, submission, linkage, filters, import, JSON, and CSV QA
