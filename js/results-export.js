@@ -2,12 +2,18 @@
 
   function exportRaw() {
     if (!loadedResponses.length) return window.alert("Load some responses first.");
-    storage.downloadJson(`wnmu-viewer-responses-${dateStamp()}.json`, loadedResponses);
+    storage.downloadJson(`wnmu-viewer-results-bundle-${dateStamp()}.json`, {
+      exportedAt: new Date().toISOString(),
+      coreSchemaVersion: config.schemaVersion,
+      followUpSchemaVersion: config.followUp.schemaVersion,
+      coreResponses: loadedResponses,
+      followUpResponses: loadedFollowUpResponses
+    });
   }
 
   function exportSummary() {
     const responses = filteredResponses();
-    if (!responses.length) return window.alert("No responses match the current filters.");
+    if (!responses.length) return window.alert("No core responses match the current filters.");
     const rows = [["section", "question_id", "item_id", "label", "value", "answered_n", "applicable_n", "skipped_n", "not_applicable_n", "filtered_n", "schema_note"]];
 
     const sourceCounts = responseSourceCounts(responses);
@@ -66,7 +72,60 @@
       ]);
     });
 
-    downloadText(`wnmu-viewer-summary-${dateStamp()}.csv`, rows.map((row) => row.map(csvCell).join(",")).join("\n"), "text/csv");
+    downloadText(`wnmu-viewer-core-summary-${dateStamp()}.csv`, rows.map((row) => row.map(csvCell).join(",")).join("\n"), "text/csv");
+  }
+
+  function exportFollowUpSummary() {
+    const responses = filteredFollowUpResponses();
+    if (!responses.length) return window.alert("No follow-up responses are linked to the current core filters.");
+    const rows = [[
+      "module_id", "module_label", "question_id", "item_id", "item_label", "stored_value",
+      "count", "module_n", "answered_n", "skipped_n", "linked_core_response_ids",
+      "core_schema_version", "follow_up_schema_version", "schema_note"
+    ]];
+
+    followUps.modules.forEach((module) => {
+      const moduleResponses = responses.filter((response) => response.moduleId === module.id);
+      rows.push([
+        module.id, module.title, "module_submission", "submitted", "Submitted module", "submitted",
+        moduleResponses.length, moduleResponses.length, moduleResponses.length, 0,
+        uniqueCoreIds(moduleResponses).join(";"), config.schemaVersion, config.followUp.schemaVersion,
+        "Voluntary self-selected module denominator"
+      ]);
+
+      module.pages.flatMap((page) => page.questions).forEach((question) => {
+        const coverage = followUpQuestionCoverage(question, moduleResponses);
+        if (question.type === "textarea") {
+          rows.push([
+            module.id, module.title, question.id, "answered_count", question.label, "answered_count",
+            coverage.answered, moduleResponses.length, coverage.answered, coverage.skipped,
+            uniqueCoreIds(coverage.answeredResponses).join(";"), config.schemaVersion, config.followUp.schemaVersion,
+            "Full text is available in raw JSON and Viewer Voices"
+          ]);
+          return;
+        }
+
+        const options = question.options || [];
+        options.forEach((option) => {
+          const matching = coverage.answeredResponses.filter((response) => {
+            const value = response.answers?.[question.id];
+            return Array.isArray(value) ? value.includes(option.value) : String(value) === String(option.value);
+          });
+          rows.push([
+            module.id, module.title, question.id, option.value, option.label, option.value,
+            matching.length, moduleResponses.length, coverage.answered, coverage.skipped,
+            uniqueCoreIds(matching).join(";"), config.schemaVersion, config.followUp.schemaVersion,
+            "Percent denominator is respondents who submitted this module and answered this question"
+          ]);
+        });
+      });
+    });
+
+    downloadText(`wnmu-viewer-follow-up-summary-${dateStamp()}.csv`, rows.map((row) => row.map(csvCell).join(",")).join("\n"), "text/csv");
+  }
+
+  function uniqueCoreIds(responses) {
+    return Array.from(new Set(responses.map((response) => response.coreResponseId).filter(Boolean)));
   }
 
   function allQuestions() {
