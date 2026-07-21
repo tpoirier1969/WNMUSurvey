@@ -24,17 +24,11 @@
   }
 
   function followUpModuleSectionMarkup(module, questions, moduleResponses) {
-    const sourceCounts = followUpSourceCounts(moduleResponses);
-    const sourceText = [
-      sourceCounts.synthetic ? `${sourceCounts.synthetic} synthetic` : "",
-      sourceCounts.browser_submitted ? `${sourceCounts.browser_submitted} browser-submitted` : "",
-      sourceCounts.other ? `${sourceCounts.other} imported or other` : ""
-    ].filter(Boolean).join(" + ");
     return `
       <section class="result-section followup-module-results" data-followup-module="${escapeAttr(module.id)}">
         <p class="eyebrow">Optional follow-up · ${escapeHtml(module.title)}</p>
         <h2>${escapeHtml(module.title)}</h2>
-        <details class="denominator-note"><summary>How percentages are calculated</summary><p>Voluntary, self-selected module population: ${moduleResponses.length} respondents${sourceText ? ` · ${escapeHtml(sourceText)}` : ""}. Each question uses only those who answered it.</p></details>
+        <details class="denominator-note"><summary>How percentages are calculated</summary><p>${moduleResponses.length} people completed this optional module. Each question uses only those who answered it.</p></details>
         <div class="all-data-grid">${questions.map((question) =>
           `<article class="all-data-card" data-followup-question-result="${escapeAttr(question.id)}">${followUpQuestionResultMarkup(question, moduleResponses, true)}</article>`
         ).join("")}</div>

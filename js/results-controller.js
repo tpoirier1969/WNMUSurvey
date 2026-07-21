@@ -9,7 +9,6 @@
   let loadedResponses = [];
   let loadedFollowUpResponses = [];
   let loadedContactRequests = [];
-  let dataSourceLabel = "No responses loaded";
   let excludedBrowserResponses = 0;
   let excludedBrowserFollowUpResponses = 0;
   let excludedBrowserResponseDetails = [];
@@ -130,7 +129,6 @@
     loadedResponses = [...demoCore, ...browserCore];
     loadedFollowUpResponses = [...makeDemoFollowUpData(demoCore), ...browserFollowUps];
     loadedContactRequests = storage.getContactRequests().filter(isContactRequestLike);
-    dataSourceLabel = "combined test responses";
     resetAndRender();
   }
 
@@ -146,7 +144,6 @@
     excludedBrowserFollowUpResponses = excludedBrowserFollowUpResponseDetails.length;
     loadedContactRequests = storage.getContactRequests().filter(isContactRequestLike);
 
-    dataSourceLabel = "submitted browser responses";
     resetAndRender();
   }
 
@@ -171,7 +168,6 @@
       excludedBrowserResponseDetails = [];
       excludedBrowserFollowUpResponseDetails = [];
       loadedContactRequests = [];
-      dataSourceLabel = `imported file: ${file.name}`;
       resetAndRender();
     } catch (error) {
       window.alert(`Could not load that JSON file. ${error.message}`);
@@ -365,12 +361,6 @@
   }
 
   function dataStatusText(filteredCount) {
-    const coreCounts = responseSourceCounts();
-    const followUpCounts = followUpSourceCounts();
-    const coreParts = [];
-    if (coreCounts.synthetic) coreParts.push(`${coreCounts.synthetic} synthetic`);
-    if (coreCounts.browser_submitted) coreParts.push(`${coreCounts.browser_submitted} browser-submitted`);
-    if (coreCounts.other) coreParts.push(`${coreCounts.other} imported or other`);
     const excludedCore = excludedBrowserResponses
       ? ` ${excludedBrowserResponses} browser core record${excludedBrowserResponses === 1 ? " was" : "s were"} excluded; see the diagnostic below.`
       : "";
@@ -378,13 +368,9 @@
       ? ` ${excludedBrowserFollowUpResponses} browser follow-up record${excludedBrowserFollowUpResponses === 1 ? " was" : "s were"} excluded; see the diagnostic below.`
       : "";
     if (els.followUpDataStatus) {
-      const parts = [];
-      if (followUpCounts.synthetic) parts.push(`${followUpCounts.synthetic} synthetic`);
-      if (followUpCounts.browser_submitted) parts.push(`${followUpCounts.browser_submitted} browser-submitted`);
-      if (followUpCounts.other) parts.push(`${followUpCounts.other} imported or other`);
-      els.followUpDataStatus.textContent = `${loadedFollowUpResponses.length} follow-up module responses loaded${parts.length ? ` (${parts.join(" + ")})` : ""}.${excludedFollowUp}`;
+      els.followUpDataStatus.textContent = `${loadedFollowUpResponses.length} follow-up module responses loaded.${excludedFollowUp}`;
     }
-    return `${loadedResponses.length} core responses loaded from ${dataSourceLabel}${coreParts.length ? ` (${coreParts.join(" + ")})` : ""}; ${filteredCount} match current filters.${excludedCore}`;
+    return `${loadedResponses.length} questionnaire responses loaded; ${filteredCount} match current filters.${excludedCore}`;
   }
 
   function wireResultTabs() {

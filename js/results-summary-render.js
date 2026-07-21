@@ -42,15 +42,8 @@
     const methodAnswered = responses.filter((response) => Array.isArray(response.routeProfile?.viewing_methods));
     const onlineMethods = ["wnmu_livestream", "pbs_app", "pbs_org", "pbs_passport", "youtube_tv", "youtube"];
     const online = methodAnswered.filter((response) => response.routeProfile.viewing_methods.some((method) => onlineMethods.includes(method))).length;
-    const sourceCounts = responseSourceCounts(responses);
-    const sourceNote = [
-      sourceCounts.synthetic ? `${sourceCounts.synthetic} synthetic` : "",
-      sourceCounts.browser_submitted ? `${sourceCounts.browser_submitted} browser-submitted` : "",
-      sourceCounts.other ? `${sourceCounts.other} imported or other` : ""
-    ].filter(Boolean).join(" + ");
-
     els.metricResponses.textContent = responses.length;
-    els.metricResponsesNote.textContent = sourceNote || `${loadedResponses.length} total loaded.`;
+    els.metricResponsesNote.textContent = "Updates with the filters above.";
     els.metricCurrent.textContent = percent(current, viewerAnswered.length);
     els.metricOnline.textContent = percent(online, methodAnswered.length);
   }

@@ -6,7 +6,7 @@ This repository contains the five-stage WNMU-TV core viewer questionnaire, five 
 
 - core schema: `wnmu-viewer-questionnaire-v6`
 - follow-up schema: `wnmu-viewer-follow-ups-v2`
-- build: `6.3.4-test`
+- build: `6.3.5-test`
 - release date: 2026-07-21
 - mode: Test
 - campaign: `viewer-questionnaire-2026`

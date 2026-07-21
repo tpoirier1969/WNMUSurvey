@@ -10,20 +10,15 @@
   }
 
   function renderDecisionContext(coreResponses, followUpResponses) {
-    const coreCounts = responseSourceCounts(coreResponses);
-    const followUpCounts = followUpSourceCounts(followUpResponses);
     const modulesCompleted = new Set(followUpResponses.map((response) => response.moduleId)).size;
     const linkedPeople = new Set(followUpResponses.map((response) => response.respondentId || response.coreResponseId)).size;
-    const testWarning = config.mode === "test"
-      ? `<div class="decision-test-warning"><strong>TEST DATA — NOT RESEARCH FINDINGS</strong><span>This view includes synthetic and/or local browser records so the interpretation rules can be tested. Do not use it to make station decisions.</span></div>`
-      : "";
 
     if (els.decisionBriefStatus) {
-      els.decisionBriefStatus.innerHTML = `${testWarning}<p>The current filtered evidence base contains <strong>${coreResponses.length}</strong> core responses: ${coreCounts.synthetic} synthetic, ${coreCounts.browser_submitted} browser-submitted, and ${coreCounts.other} imported or other.</p><p>Every finding below states its own answered or paired denominator. Filters change both the evidence and the findings.</p>`;
+      els.decisionBriefStatus.innerHTML = `<p><strong>${coreResponses.length}</strong> questionnaire responses are included in this view.</p><p>Filters update the findings below.</p>`;
     }
     if (els.followUpDecisionStatus) {
       els.followUpDecisionStatus.innerHTML = followUpResponses.length
-        ? `<p>Optional follow-up evidence contains <strong>${followUpResponses.length}</strong> submitted modules from <strong>${linkedPeople}</strong> linked respondents across <strong>${modulesCompleted}</strong> modules: ${followUpCounts.synthetic} synthetic, ${followUpCounts.browser_submitted} browser-submitted, and ${followUpCounts.other} imported or other.</p><p><strong>Guardrail:</strong> every follow-up finding describes a voluntary, self-selected module population. It is not a percentage of all core respondents.</p>`
+        ? `<p><strong>${linkedPeople}</strong> respondents completed <strong>${followUpResponses.length}</strong> optional follow-ups across <strong>${modulesCompleted}</strong> modules.</p>`
         : `<p>No optional follow-up responses are linked to the currently filtered core respondents.</p>`;
     }
   }
@@ -216,7 +211,7 @@
       ["local-programming", "local_subjects", "Regional subject development", "Use the leading subject as one candidate for development, acquisition, or partnership research."],
       ["programming-ideas", "regional_music_performance_interest", "Regional music-performance concept", "Use the leading selection to shape a concept test, not as approval to produce a series."],
       ["online-viewing", "online_primary_service", "Primary online service", "Focus promotion and support on the service people use most."],
-      ["children-education", "children_learning_goals", "Children's learning priorities", "Use the leading learning goal to guide a resource or programming prototype with families and educators."],
+      ["children-education", "children_learning_goals", "Children's learning priorities", "Use the leading learning goal to guide resources and programming for families and educators."],
       ["communication", "schedule_format", "Schedule and program information", "Use the leading format as a candidate communication product to test with this module's participants."]
     ];
     const findings = specs.map(([moduleId, questionId, context, option]) =>
@@ -242,7 +237,6 @@
     const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
     if (!top) return null;
     const labels = Object.fromEntries((found.question.options || []).map((item) => [String(item.value), item.label]));
-    const sourceCounts = followUpSourceCounts(moduleResponses);
     return {
       priority: 0,
       eyebrow: `Optional follow-up · ${module.title}`,
@@ -250,7 +244,7 @@
       evidence: `${top[1]} of ${coverage.answered} people who answered this question selected this option (${percent(top[1], coverage.answered)}; answered n=${coverage.answered}, skipped n=${coverage.skipped}, module n=${coverage.moduleRespondents}).`,
       implication: "This was the most common answer in this optional follow-up.",
       options: [option, "Compare it with core filters and related open comments before deciding what to do."],
-      caution: `Voluntary, self-selected module population; not a percentage of all core respondents. Module sources: ${sourceCounts.synthetic} synthetic, ${sourceCounts.browser_submitted} browser-submitted, ${sourceCounts.other} imported or other.${config.mode === "test" ? " TEST DATA — not for station decisions." : ""}${found.question.type === "checkbox" ? " Respondents could select more than one option." : ""}`
+      caution: found.question.type === "checkbox" ? "Respondents could select more than one option." : ""
     };
   }
 
@@ -261,11 +255,7 @@
   }
 
   function coreFindingCaution(responses, specific) {
-    const counts = responseSourceCounts(responses);
-    const sourceCaution = counts.synthetic
-      ? ` TEST DATA includes ${counts.synthetic} synthetic core record${counts.synthetic === 1 ? "" : "s"}; this is not a research conclusion.`
-      : " Questionnaire respondents are self-selected and are not automatically representative of the full WNMU-TV audience.";
-    return `${specific}${sourceCaution}`;
+    return specific;
   }
 
   function decisionFindingMarkup(finding) {
@@ -276,7 +266,7 @@
         <div><dt>Evidence</dt><dd>${escapeHtml(finding.evidence)}</dd></div>
         <div><dt>What it means</dt><dd>${escapeHtml(finding.implication)}</dd></div>
         <div><dt>What WNMU-TV could do</dt><dd><ul>${finding.options.map((option) => `<li>${escapeHtml(option)}</li>`).join("")}</ul></dd></div>
-        <div class="decision-caution"><dt>Caution</dt><dd>${escapeHtml(finding.caution)}</dd></div>
+        ${finding.caution ? `<div class="decision-note"><dt>Note</dt><dd>${escapeHtml(finding.caution)}</dd></div>` : ""}
       </dl>
     </article>`;
   }

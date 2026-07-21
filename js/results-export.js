@@ -19,7 +19,7 @@
     const sourceCounts = responseSourceCounts(responses);
     Object.entries(sourceCounts).forEach(([source, count]) => rows.push([
       "Data source", "response_source", source, humanize(source), count, responses.length, responses.length, 0, 0, responses.length,
-      "Response source categories remain separate in test mode"
+      "Response source categories remain separate"
     ]));
 
     allQuestions().forEach((question) => {

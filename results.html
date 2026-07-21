@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Local results preview for the WNMU-TV viewer questionnaire." />
+  <meta name="description" content="WNMU-TV viewer questionnaire results." />
   <meta name="theme-color" content="#12344a" />
-  <title>WNMU-TV Questionnaire Results Preview</title>
-  <link rel="stylesheet" href="css/styles.css?v=6.3.4-test" />
-  <link rel="stylesheet" href="css/gap-summary.css?v=6.3.4-test" />
-  <link rel="stylesheet" href="css/channel-results.css?v=6.3.4-test" />
-  <link rel="stylesheet" href="css/results-sections.css?v=6.3.4-test" />
-  <link rel="stylesheet" href="css/phone-layout.css?v=6.3.4-test" />
+  <title>WNMU-TV Questionnaire Results</title>
+  <link rel="stylesheet" href="css/styles.css?v=6.3.5-test" />
+  <link rel="stylesheet" href="css/gap-summary.css?v=6.3.5-test" />
+  <link rel="stylesheet" href="css/channel-results.css?v=6.3.5-test" />
+  <link rel="stylesheet" href="css/results-sections.css?v=6.3.5-test" />
+  <link rel="stylesheet" href="css/phone-layout.css?v=6.3.5-test" />
 </head>
 <body>
   <a class="skip-link" href="#resultsApp">Skip to results</a>
@@ -28,7 +28,7 @@
   <main>
     <section class="results-hero admin-results-hero">
       <div class="container">
-        <p class="eyebrow">Results preview · local test</p>
+        <p class="eyebrow">Questionnaire results</p>
         <h1>WNMU-TV viewer questionnaire results</h1>
         <div class="hero-response-summary" aria-live="polite">
           <p><strong id="heroCoreResponses">0</strong> questionnaire responses in view</p>
@@ -54,7 +54,7 @@
           </div>
         </details>
 
-        <div id="emptyState" class="empty-state"><h2>No response data loaded</h2><p>Reload the combined test responses or import an exported JSON file.</p></div>
+        <div id="emptyState" class="empty-state"><h2>No response data loaded</h2><p>Reload the results or import an exported JSON file.</p></div>
 
         <div id="analysisContent" hidden>
           <div id="resultsSections" class="results-section-tabs" role="tablist" aria-label="Questionnaire result sections">
@@ -81,7 +81,6 @@
                   <li>No finding is shown without its answered, paired, or module denominator.</li>
                   <li>Core findings require at least five usable answers for the stated measure.</li>
                   <li>Optional follow-up findings always identify the voluntary, self-selected module population.</li>
-                  <li>Synthetic records remain labeled as test data and are not research conclusions.</li>
                   <li>Practical responses are presented as options to investigate, not automatic directives.</li>
                   <li>Filters recalculate the findings; small filtered groups may produce no finding.</li>
                 </ul>
@@ -204,15 +203,15 @@
           <section id="resultsAllData" class="results-panel" role="tabpanel" data-results-panel="all-data" hidden aria-labelledby="allDataHeading">
             <div class="results-panel-heading"><p class="eyebrow">All Data &amp; Export</p><h2 id="allDataHeading">Every core and follow-up question with honest denominators</h2><p>Core questions show answered, skipped, and not-applicable counts. Follow-up questions show module respondents, answered, and skipped counts.</p></div>
             <details class="result-controls utility-panel">
-              <summary>Test data, diagnostics, and exports</summary>
+              <summary>Data tools and exports</summary>
               <div class="utility-panel-body">
-                <button class="button primary" id="reloadTestData" type="button">Reload combined test responses</button>
+                <button class="button primary" id="reloadTestData" type="button">Reload results</button>
                 <label class="button secondary file-button">Import response JSON<input id="jsonUpload" type="file" accept="application/json,.json" /></label>
                 <button class="button quiet" id="exportRaw" type="button">Export loaded JSON</button>
                 <button class="button quiet" id="exportSummary" type="button">Export core summary CSV</button>
                 <button class="button quiet" id="exportFollowUpSummary" type="button">Export follow-up summary CSV</button>
-                <button class="button quiet danger-button" id="clearLocal" type="button">Clear submitted browser responses</button>
-                <span class="data-status" id="dataStatus">Loading combined test responses…</span>
+                <button class="button quiet danger-button" id="clearLocal" type="button">Clear saved responses</button>
+                <span class="data-status" id="dataStatus">Loading responses…</span>
                 <span class="data-status" id="followUpDataStatus"></span>
                 <div id="excludedRecordDiagnostics" class="excluded-record-diagnostics" hidden></div>
               </div>
@@ -226,17 +225,17 @@
     </section>
   </main>
 
-  <footer class="site-footer"><div class="container footer-grid"><div><strong>Local prototype</strong><p>No external database is connected.</p></div><div><strong>Combined test data</strong><p>Synthetic and browser-submitted records remain visibly distinguishable.</p></div><div><strong>Future deployment</strong><p>Production will use only approved Supabase responses.</p></div></div></footer>
+  <footer class="site-footer"><div class="container footer-grid"><div><strong>WNMU-TV</strong><p>Public television for Michigan's Upper Peninsula.</p></div><div><strong>Questionnaire results</strong><p>Explore audience responses, priorities, and feedback.</p></div><div><strong>Questions?</strong><p>Contact WNMU-TV for more information about this questionnaire.</p></div></div></footer>
 
-  <script src="js/config.js?v=6.3.4-test"></script>
-  <script src="js/questions.js?v=6.3.4-test"></script>
-  <script src="js/follow-up-local.js?v=6.3.4-test"></script>
-  <script src="js/follow-up-programming.js?v=6.3.4-test"></script>
-  <script src="js/follow-up-online.js?v=6.3.4-test"></script>
-  <script src="js/follow-up-children.js?v=6.3.4-test"></script>
-  <script src="js/follow-up-communication.js?v=6.3.4-test"></script>
-  <script src="js/follow-up-definitions.js?v=6.3.4-test"></script>
-  <script src="js/storage.js?v=6.3.4-test"></script>
-  <script src="js/results.js?v=6.3.4-test"></script>
+  <script src="js/config.js?v=6.3.5-test"></script>
+  <script src="js/questions.js?v=6.3.5-test"></script>
+  <script src="js/follow-up-local.js?v=6.3.5-test"></script>
+  <script src="js/follow-up-programming.js?v=6.3.5-test"></script>
+  <script src="js/follow-up-online.js?v=6.3.5-test"></script>
+  <script src="js/follow-up-children.js?v=6.3.5-test"></script>
+  <script src="js/follow-up-communication.js?v=6.3.5-test"></script>
+  <script src="js/follow-up-definitions.js?v=6.3.5-test"></script>
+  <script src="js/storage.js?v=6.3.5-test"></script>
+  <script src="js/results.js?v=6.3.5-test"></script>
 </body>
 </html>

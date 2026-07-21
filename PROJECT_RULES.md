@@ -328,6 +328,8 @@ Test mode may:
 - use synthetic responses
 - leave the results page open for local review
 
+The working interface must read like the implemented end-user product. Do not place test-data warnings, prototype notices, deployment disclaimers, source-category labels, or speculative reliability language in the viewer-facing questionnaire or primary results presentation. Test mode and synthetic-source metadata remain explicit in configuration, records, exports, and internal documentation.
+
 Production mode must:
 
 - restore intended routing
@@ -562,7 +564,7 @@ Every generated finding must:
 - state the answered, paired, routed, or module denominator used
 - distinguish core evidence from optional follow-up evidence
 - identify optional follow-up populations as voluntary and self-selected
-- keep synthetic test evidence unmistakably labeled and unsuitable for station decisions
+- preserve response-source metadata in records and exports without adding test-data warnings to the primary results presentation
 - avoid broad audience claims from small or nonrepresentative samples
 - present practical responses as options to investigate, not automatic directives
 - recalculate when audience filters change
