@@ -15,6 +15,11 @@ function makeDemoData() {
     ["pbs_app", "youtube"], ["antenna"], ["cable_satellite", "youtube_tv"], ["antenna", "pbs_passport"], ["pbs_org"],
     ["antenna"], ["cable_satellite"], ["antenna"], ["youtube_tv"], ["not_watched"]
   ];
+  const watchPreferences = ["scheduled", "on_demand", "recorded", "depends", "livestream", "scheduled", "on_demand", "depends", "recorded", "on_demand", "scheduled", "livestream", "depends", "on_demand", "recorded", "short_clips", "scheduled", "recorded", "on_demand", "depends", "scheduled", "recorded", "depends", "on_demand", "none"];
+  const localFormatOptions = ["documentaries", "news_magazine", "interviews", "roundtables", "outdoor", "arts", "events", "short_online"];
+  const onlineImprovementOptions = ["clear_how_where", "local_access", "search", "notifications", "help", "passport_clear"];
+  const learningOptions = ["on_air", "tv_guide", "printed", "web", "pbs_app", "email", "facebook", "instagram", "youtube", "radio", "text_push"];
+  const mlcWatchers = new Set([4, 8, 16, 20]);
 
   return viewers.map((viewer, index) => {
     const methods = methodSets[index];
@@ -45,7 +50,17 @@ function makeDemoData() {
         : methods.includes("youtube_tv") ? ["wnmu_13_1"] : undefined;
     const watched = viewer === "never"
       ? undefined
-      : ["wnmu_13_1", ...(childrenRoles[index] !== "neither" ? ["pbs_kids_13_2"] : []), ...(index % 3 ? [] : ["wnmu_plus_13_3"])];
+      : ["wnmu_13_1", ...(childrenRoles[index] !== "neither" ? ["pbs_kids_13_2"] : []), ...(index % 3 ? [] : ["wnmu_plus_13_3"]), ...(mlcWatchers.has(index) ? ["mlc_13_4"] : [])];
+    const stationAwareness = index < 17 ? "local_pbs" : index < 21 ? "station_not_pbs" : index < 24 ? "name_only" : "not_heard";
+    const localFormats = uniqueChoices(localFormatOptions, index, 3, 2);
+    const onlineImprovements = index === 24 ? ["nothing"] : uniqueChoices(onlineImprovementOptions, index, 3, 2);
+    const learnPreferred = uniqueChoices(learningOptions, index, 3, 3);
+    const kidsUse = childrenRoles[index] === "neither"
+      ? undefined
+      : index % 3 === 0 ? ["broadcast", "pbs_kids_app", "classroom"]
+        : index % 3 === 1 ? ["broadcast", "pbs_app_web"]
+          : ["pbs_kids_app", "youtube", "classroom"];
+    const nonviewer = ["former", "never", "unsure"].includes(viewer);
 
     return {
       responseId: `synthetic-${String(index + 1).padStart(2, "0")}`,
@@ -62,21 +77,40 @@ function makeDemoData() {
         age_range: ages[index],
         county_region: counties[index],
         community_type: communities[index],
-        internet_streaming_quality: communities[index] === "rural" && index % 3 === 0 ? "unreliable" : index % 5 === 0 ? "works_well" : "adequate",
+        internet_streaming_quality: communities[index] === "rural" && index % 3 === 0 ? "unreliable" : index % 5 === 0 ? "works_well" : index % 7 === 0 ? "slow" : "adequate",
+        station_awareness: stationAwareness,
         channel_awareness: aware,
         channels_received: received,
+        online_awareness: ["wnmu_site", ...(index % 2 === 0 ? ["pbs_app"] : ["pbs_org"]), ...(index % 4 === 0 ? ["pbs_passport"] : []), ...(index % 6 === 0 ? ["social"] : [])],
         channels_watched: watched,
-        online_awareness: ["wnmu_site", ...(index % 2 === 0 ? ["pbs_app"] : ["pbs_org"]), ...(index % 4 === 0 ? ["pbs_passport"] : [])],
+        watch_preference: watchPreferences[index],
         program_category_interest: interest,
+        valued_programs: index % 7 === 0 ? "Local history, Great Lakes documentaries, and long-form PBS programs." : index % 9 === 0 ? "Music performances and regional documentaries have been especially memorable." : "",
+        kids_use: kidsUse,
         program_category_priorities: top,
+        local_formats: localFormats,
+        online_improvements: onlineImprovements,
+        learn_preferred: learnPreferred,
+        kids_needs: childrenRoles[index] !== "neither" && index % 2 === 0 ? "More short classroom-ready clips and programs about Upper Peninsula nature and history." : "",
         station_role_importance: importance,
         station_role_performance: isViewer ? performance : undefined,
-        valued_programs: index % 7 === 0 ? "Local history, Great Lakes documentaries, and long-form PBS programs." : "",
-        final_feedback: index % 6 === 0 ? "The station is trusted, but Upper Peninsula programs should be easier to find and promoted more clearly." : "",
-        nonviewer_return: !isViewer ? "A clearer schedule and more visible Upper Peninsula programs would help." : ""
+        reflects_me: isViewer ? ["well", "somewhat", "very_well", "somewhat", "little"][index % 5] : undefined,
+        trust_station: isViewer ? ["great", "quite", "quite", "some", "great"][index % 5] : undefined,
+        nonviewer_reasons: nonviewer ? (viewer === "never" ? ["unaware", "channel", "other_services"] : ["schedule", "content", "past_change"]) : undefined,
+        nonviewer_return: nonviewer ? "A clearer schedule and more visible Upper Peninsula programs would help." : "",
+        final_feedback: index % 6 === 0 ? "The station is trusted, but Upper Peninsula programs should be easier to find and promoted more clearly." : index % 11 === 0 ? "Keep the strong national PBS programs and add more visible regional music and performance programming." : ""
       }
     };
   });
+}
+
+function uniqueChoices(options, index, count, step) {
+  const values = [];
+  for (let offset = 0; values.length < count && offset < options.length * 2; offset += 1) {
+    const value = options[(index + offset * step) % options.length];
+    if (!values.includes(value)) values.push(value);
+  }
+  return values;
 }
 
 function average(values) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0; }
