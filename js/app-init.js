@@ -132,16 +132,6 @@
     refreshCompletedStages(state);
     updateHubStatuses();
     renderCompletionPanel(response);
-
-    if (response.isTestPreview) {
-      const eyebrow = els.completePanel?.querySelector(".eyebrow");
-      const explanation = els.completePanel?.querySelector("h2 + p");
-      if (eyebrow) eyebrow.textContent = "Test Thank You preview";
-      if (explanation) {
-        explanation.textContent = "This is a test-only preview. A sample linked record was created in this browser so the Thank You page and follow-up questionnaires can be tested without completing the main questionnaire. It is excluded from current-schema questionnaire results.";
-      }
-    }
-
     showPanel("complete");
   }
 
