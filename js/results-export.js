@@ -8,20 +8,27 @@
   function exportSummary() {
     const responses = filteredResponses();
     if (!responses.length) return window.alert("No responses match the current filters.");
-    const rows = [["section", "question_id", "item_id", "label", "value", "answered_n", "filtered_n", "schema_note"]];
+    const rows = [["section", "question_id", "item_id", "label", "value", "answered_n", "applicable_n", "skipped_n", "not_applicable_n", "filtered_n", "schema_note"]];
+
+    const sourceCounts = responseSourceCounts(responses);
+    Object.entries(sourceCounts).forEach(([source, count]) => rows.push([
+      "Data source", "response_source", source, humanize(source), count, responses.length, responses.length, 0, 0, responses.length,
+      "Response source categories remain separate in test mode"
+    ]));
 
     allQuestions().forEach((question) => {
+      const coverage = questionCoverage(question, responses);
       const getter = (response) => question.store === "profile"
         ? response.routeProfile?.[question.id]
         : response.answers?.[question.id];
 
       if (question.type === "radio" || question.type === "select" || question.type === "scale") {
-        addCountRows(rows, responses, stageTitleForQuestion(question.id), question.id, getter, false);
+        addCountRows(rows, responses, stageTitleForQuestion(question.id), question, getter, false, coverage);
         return;
       }
 
       if (question.type === "checkbox") {
-        addCountRows(rows, responses, stageTitleForQuestion(question.id), question.id, getter, true);
+        addCountRows(rows, responses, stageTitleForQuestion(question.id), question, getter, true, coverage);
         return;
       }
 
@@ -34,7 +41,7 @@
           if (values.length) {
             rows.push([
               stageTitleForQuestion(question.id), question.id, row.id, row.label, average(values).toFixed(3),
-              values.length, responses.length, "Numeric average; nonnumeric and missing ratings excluded"
+              values.length, coverage.applicable, coverage.skipped, coverage.notApplicable, responses.length, "Numeric average; nonnumeric and missing ratings excluded"
             ]);
           }
         });
@@ -45,7 +52,7 @@
         const answered = responses.filter((response) => typeof getter(response) === "string" && getter(response).trim());
         rows.push([
           stageTitleForQuestion(question.id), question.id, "answered_count", question.label, answered.length,
-          answered.length, responses.length, "Full text is available in raw JSON and the open-response view"
+          answered.length, coverage.applicable, coverage.skipped, coverage.notApplicable, responses.length, "Full text is available in raw JSON and Viewer Voices"
         ]);
       }
     });
@@ -55,7 +62,7 @@
       if (!stats) return;
       rows.push([
         "Expectation gap", `${survey.gapPairs.importanceQuestion}/${survey.gapPairs.performanceQuestion}`, row.id, row.label,
-        stats.gapAverage.toFixed(3), stats.count, responses.length, "Paired respondents only"
+        stats.gapAverage.toFixed(3), stats.count, stats.count, 0, 0, responses.length, "Paired respondents only"
       ]);
     });
 
@@ -71,12 +78,12 @@
     return stage?.title || "Questionnaire";
   }
 
-  function addCountRows(rows, responses, section, questionId, getter, arrayValue) {
-    const answered = responses.filter((response) => arrayValue ? Array.isArray(getter(response)) && getter(response).length : hasValue(getter(response)));
+  function addCountRows(rows, responses, section, question, getter, arrayValue, coverage) {
+    const answered = responses.filter((response) => questionAppliesToResponse(question, response) && (arrayValue ? Array.isArray(getter(response)) && getter(response).length : hasValue(getter(response))));
     const counts = arrayValue ? countArray(answered, getter) : countSingle(answered, getter);
-    const labels = labelMap(questionId);
+    const labels = labelMap(question.id);
     Object.entries(counts).forEach(([value, count]) => rows.push([
-      section, questionId, value, labels[value] || humanize(value), count, answered.length, responses.length,
+      section, question.id, value, labels[value] || humanize(value), count, answered.length, coverage.applicable, coverage.skipped, coverage.notApplicable, responses.length,
       "Denominator is respondents who answered this question"
     ]));
   }
@@ -94,6 +101,7 @@
     if (question.optionsFromMatrix) {
       return (findQuestion(question.optionsFromMatrix).rows || []).map((row) => ({ value: row.id, label: row.label }));
     }
+    if (question.scale && survey.scales?.[question.scale]) return survey.scales[question.scale];
     return [];
   }
 
@@ -118,7 +126,6 @@
   }
 
   function barMarkup(label, value, max, displayValue) {
-    const width = max ? Math.max(3, Math.min(100, (value / max) * 100)) : 0;
+    const width = !value ? 0 : max ? Math.max(3, Math.min(100, (value / max) * 100)) : 0;
     return `<div class="bar-item"><span class="bar-label">${escapeHtml(label)}</span><span class="bar-track"><span style="width:${width.toFixed(1)}%"></span></span><span class="bar-value">${escapeHtml(displayValue)}</span></div>`;
   }
-
