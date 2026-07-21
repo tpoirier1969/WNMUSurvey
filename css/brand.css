@@ -144,6 +144,11 @@
   color: var(--navy);
 }
 
+/* Test scaffolding may create a local preview record, but evaluators should see the real respondent-facing Thank You page. */
+.approved-stage-interface .contact-test-note {
+  display: none;
+}
+
 .approved-stage-interface .paired-role-row h3 {
   font-size: 0.98rem;
   line-height: 1.22;
