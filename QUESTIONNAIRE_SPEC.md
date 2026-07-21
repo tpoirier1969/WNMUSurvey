@@ -3,8 +3,8 @@
 ## 1. Release contract
 
 - Schema: `wnmu-viewer-questionnaire-v6`
-- Build: `6.1.2-test`
-- Release date: 2026-07-20
+- Build: `6.1.3-test`
+- Release date: 2026-07-21
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
 - Survey part: `core`
@@ -12,7 +12,7 @@
 - Target core time: approximately 6–8 minutes
 - Follow-up schema: `wnmu-viewer-follow-ups-v1`
 
-This remains a clean pre-production revision. No Supabase database or production responses exist. Prototype responses do not count as research data.
+This remains a pre-production revision. No Supabase database or production responses exist. Prototype and synthetic responses do not count as research data.
 
 ## 2. Landing page and branding
 
@@ -47,11 +47,12 @@ Hidden answers may remain in a draft so they can reappear if routing changes, bu
 ## 4. Rating scales and presentation
 
 - Interest: `1` Not interested, `2` Slightly, `3` Moderately, `4` Very, `5` Extremely, `na` Not sure
-- Shared importance/performance scale: `1` Very low, `2` Low, `3` Moderate, `4` High, `5` Very high, `na` Unable to rate
+- Importance: `1` Not important, `2` Slightly important, `3` Moderately important, `4` Very important, `5` Essential, `na` Not sure
+- Performance: `1` Poor, `2` Weak, `3` Adequate, `4` Good, `5` Excellent, `na` Not familiar enough to rate
 
 `na` and missing answers are excluded from numeric averages.
 
-Rating pages use one scale key before the first rated item. Each item appears as a compact flat row with 1–5 and the unable-to-rate option. Importance and performance use the same user-facing scale and share one role row when both apply. The role statements in Priorities and Performance use slightly larger type than other compact labels so they remain visually prominent without increasing the section footprint. The layout must not create horizontal page scrolling.
+Rating pages use one scale key before the first rated item. Each item appears as a compact flat row. Importance and performance share one role row when both apply. The controls wrap when necessary to protect phone readability and must not create horizontal page scrolling.
 
 ## 5. Active core questionnaire
 
@@ -128,12 +129,12 @@ The online list excludes more full episodes, larger local archive, and device co
 
 ### Stage 5 — How We're Doing
 
-Importance and performance appear together in a compact flat list. One shared key appears before the first role: `1` Very low through `5` Very high, plus Unable to rate. Each role contains the role statement, an **Importance** control, and, when applicable, a **Performance** control. The controls appear side by side on wider screens and wrap when necessary to protect phone readability. Performance is hidden after a respondent explicitly identifies as a former or never viewer. When Stage 5 is opened before viewer status has been answered, performance remains visible provisionally.
+Importance and performance appear together in a compact flat list. Performance is hidden after a respondent explicitly identifies as a former or never viewer. When Stage 5 is opened before viewer status has been answered, performance remains visible provisionally.
 
 | ID | Wording / values | Required | Routing / analytics |
 |---|---|---:|---|
-| `station_role_importance` | Importance of nine station roles | No | All; paired gap analysis |
-| `station_role_performance` | Performance on the same roles | No | Hidden for explicitly never/former viewers; paired gap analysis |
+| `station_role_importance` | Importance of nine station roles | No | All; independent distribution and paired gap analysis |
+| `station_role_performance` | Performance on the same roles | No | Hidden for explicitly never/former viewers; independent distribution and paired gap analysis |
 | `reflects_me` | How well WNMU-TV reflects people like the respondent | No | Hidden for never/former |
 | `trust_station` | Trust in WNMU-TV programming and information | No | Hidden for never/former |
 | `nonviewer_reasons` | Reasons for not watching more often | No | Former, never, unsure |
@@ -166,24 +167,30 @@ After successful core submission, the thank-you screen offers five working test-
 
 Each module has two pages and eight optional questions. The detailed question IDs, values, purposes, and analytics are maintained in `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`.
 
-The core thank-you page creates a random private continuation token and offers:
+The core thank-you page creates a random private continuation token and offers direct module links, a copyable private hub link, an option to open the respondent's email application with the link, and **I'm done now**.
 
-- direct private links to each eligible module
-- a copyable private link to the follow-up hub
-- an option to open the respondent's own email application with the link
-- **I'm done now**
+The test-only landing-page shortcut may create an internal non-v6 preview response when no completed v6 response exists. That record is excluded from v6 results. Follow-up drafts and responses use the same pseudonymous `respondentId` and submitted `coreResponseId`. The continuation token remains in a separate access record and URL fragment.
 
-The test-only landing-page shortcut may create an internal non-v6 preview response when no completed v6 response exists. That record is excluded from v6 results. The Thank You page always uses the same respondent-facing wording and controls, without preview labels, test limitations, or test-response controls.
+Current test limitation: without Supabase or another approved database, the private link works later only in the browser where the core questionnaire was submitted. Follow-up respondents are self-selected and must be reported with their own denominators.
 
-The follow-up hub states that the core questionnaire is complete and does not ask the respondent to repeat it. It displays a limited summary of linked core information and shows each module as Not started, Saved for later, or Completed.
+## 7. Results system
 
-Follow-up drafts and responses use the same pseudonymous `respondentId` and the submitted `coreResponseId`. The continuation token is stored in a separate access record and appears in the URL fragment rather than in the ordinary query string or answer record.
+The core results dashboard uses six top-level sections:
 
-Current test limitation: without Supabase or another approved database, the private link works later only in the browser where the core questionnaire was submitted. Production must store the token mapping server-side so the same link can work across devices.
+1. **Decision Brief** — interpretation foundation in build 6.1.3; final findings, implications, options, and cautions remain later work
+2. **Audience & Access** — audience relationship, awareness, internet, methods, channels, online awareness, communication, children’s use, age, and geography
+3. **Programming Priorities** — category interest, forced priorities, and local/regional formats
+4. **Performance & Opportunities** — independent importance and performance results, paired gaps, reflection, trust, and non-viewer barriers
+5. **Viewer Voices** — original comments grouped by the question that prompted them
+6. **All Data & Export** — all 28 core questions with answered, skipped, not-applicable, and filtered counts
 
-Follow-up respondents are self-selected and must be reported with their own denominators.
+In Test mode, the default dataset is the 25 synthetic v6 records plus every valid current-schema browser-submitted response. Synthetic and browser-submitted source counts remain visibly separate. Older, preview, or non-v6 browser records are excluded and their exclusion count is shown. Importing JSON temporarily replaces the loaded dataset until the combined test data is reloaded.
 
-## 7. Storage and analytics
+The synthetic dataset exercises all 28 core questions and includes several respondents who watch Michigan Learning Channel. Production will remove synthetic and browser aggregation and load only approved Supabase responses.
+
+The online-method headline counts WNMU livestream, PBS App, PBS.org, Passport, YouTube TV, and YouTube as online methods. `pbs_app` and `pbs_org` remain separate stored values.
+
+## 8. Storage, exports, and analytics
 
 Core drafts and responses record schema/build/mode, respondent ID, campaign, survey part, timestamps, route profile, answers, visible question IDs, and completed stages. Core answer records contain no name or email address.
 
@@ -201,19 +208,23 @@ Follow-up storage keys:
 
 Analytics rules:
 
-- Use only respondents who answered each question as its denominator.
-- Exclude skipped and hidden answers.
+- Use only respondents who answered each question as its percentage denominator.
+- Display applicable, answered, skipped, and not-applicable counts where results are reviewed.
+- Exclude skipped and hidden answers from answer distributions.
 - Keep `na`, unable-to-rate, not sure, and prefer not distinct from numeric or negative responses.
+- Show standalone importance and performance distributions in addition to paired gaps.
 - Calculate each respondent's importance-performance gap first, then average paired gaps.
-- Keep synthetic responses visibly marked and separate from real responses.
+- Keep synthetic and browser-submitted source counts unmistakably separate in Test mode.
 - Load only v6 records into the v6 core results dashboard.
 - Never combine voluntary follow-up denominators with all core respondents without explicit labeling.
 - Join future follow-up results to the core through `respondentId` and `coreResponseId`.
 - Do not use the continuation token as an analytics field.
 
-The current follow-up hub provides linked JSON export for test review. Protected aggregate and qualitative follow-up results remain production work.
+Raw JSON exports the loaded records. The summary CSV includes source category, stable question and item IDs, labels, values, answered count, applicable count, skipped count, not-applicable count, filtered count, and calculation notes. Open text remains in raw JSON and Viewer Voices; the summary CSV reports answered counts.
 
-## 8. Production checklist
+The current follow-up hub provides linked JSON export for test review. Protected aggregate and qualitative follow-up results and follow-up CSV remain later work.
+
+## 9. Production checklist
 
 Before public release:
 
@@ -221,10 +232,12 @@ Before public release:
 - disable blank navigation
 - confirm required/optional policy
 - verify station, channel, PBS.org, PBS App, and Passport facts
-- connect the approved database
+- connect the approved Supabase database
+- replace combined test data with Supabase-only responses
 - make continuation links work across devices
 - define token expiration, revocation, and withdrawal handling
 - protect core and follow-up results
+- complete the Decision Brief interpretation rules
 - build aggregate and qualitative follow-up results and CSV exports
 - publish privacy, linkage, retention, and withdrawal information
 - implement optional server-side email delivery separately from answer records
