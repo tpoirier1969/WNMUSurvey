@@ -45,20 +45,3 @@
       ? rows.map((row) => `<article class="gap-role-item"><strong>${escapeHtml(row.label)}</strong><div class="gap-role-metrics"><span>Importance <b>${row.importanceAverage.toFixed(2)}</b></span><span>Delivery <b>${row.performanceAverage.toFixed(2)}</b></span><span class="gap-value">Gap <b>${formatSigned(row.gapAverage)}</b></span><span>n=${row.count}</span></div></article>`).join("")
       : `<div class="gap-bucket-empty">${escapeHtml(emptyMessage)}</div>`;
   }
-
-  function renderComments(responses) {
-    const commentQuestions = [
-      ["valued_programs", "Valued programs"],
-      ["kids_needs", "Children and educator needs"],
-      ["nonviewer_return", "What could win them back"],
-      ["final_feedback", "Final feedback"]
-    ];
-    const comments = responses.flatMap((response) => commentQuestions.flatMap(([id, label]) => {
-      const value = response.answers?.[id];
-      return typeof value === "string" && value.trim() ? [{ label, text: value.trim() }] : [];
-    }));
-    els.commentList.innerHTML = comments.length
-      ? comments.map((comment) => `<article class="comment-card"><strong>${escapeHtml(comment.label)}</strong><p>${escapeHtml(comment.text)}</p></article>`).join("")
-      : '<div class="empty-state">No open comments in this filtered view.</div>';
-  }
-
