@@ -109,22 +109,11 @@
   function showLatestTestThankYou() {
     if (config.mode !== "test") return;
 
-    const response = storage.getResponses()
+    let response = storage.getResponses()
       .filter((item) => item.status === "submitted" && item.schemaVersion === config.schemaVersion)
       .sort((a, b) => String(b.submittedAt || b.createdAt || "").localeCompare(String(a.submittedAt || a.createdAt || "")))[0];
 
-    if (!response) {
-      showPanel("hub");
-      const instruction = document.querySelector(".welcome-instruction");
-      if (instruction) {
-        instruction.textContent = "Submit at least one test response before using the Thank You page shortcut.";
-        instruction.setAttribute("role", "status");
-        instruction.setAttribute("tabindex", "-1");
-        instruction.focus({ preventScroll: true });
-        instruction.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "center" });
-      }
-      return;
-    }
+    if (!response) response = getOrCreateThankYouPreviewResponse();
 
     state = {
       ...blankState(),
@@ -143,7 +132,66 @@
     refreshCompletedStages(state);
     updateHubStatuses();
     renderCompletionPanel(response);
+
+    if (response.isTestPreview) {
+      const eyebrow = els.completePanel?.querySelector(".eyebrow");
+      const explanation = els.completePanel?.querySelector("h2 + p");
+      if (eyebrow) eyebrow.textContent = "Test Thank You preview";
+      if (explanation) {
+        explanation.textContent = "This is a test-only preview. A sample linked record was created in this browser so the Thank You page and follow-up questionnaires can be tested without completing the main questionnaire. It is excluded from current-schema questionnaire results.";
+      }
+    }
+
     showPanel("complete");
+  }
+
+  function getOrCreateThankYouPreviewResponse() {
+    const responses = storage.getResponses();
+    const existing = responses
+      .filter((item) => item.isTestPreview && item.previewForSchema === config.schemaVersion)
+      .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
+    if (existing) return existing;
+
+    const now = new Date().toISOString();
+    const randomPart = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const responseId = `thank-you-preview-${randomPart}`;
+    const preview = {
+      responseId,
+      id: responseId,
+      respondentId: storage.getRespondentId(),
+      schemaVersion: `${config.schemaVersion}-thank-you-preview`,
+      surveyVersion: `${config.schemaVersion}-thank-you-preview`,
+      previewForSchema: config.schemaVersion,
+      isTestPreview: true,
+      buildVersion: config.buildVersion,
+      releaseDate: config.releaseDate,
+      mode: config.mode,
+      campaign: config.campaign,
+      surveyPart: config.surveyPart,
+      source: "local-browser-test-thank-you-preview",
+      status: "submitted",
+      startedAt: now,
+      submittedAt: now,
+      createdAt: now,
+      routeProfile: {
+        children_role: "both",
+        viewer_status: "current",
+        viewing_methods: ["antenna", "pbs_app"]
+      },
+      answers: {
+        program_category_priorities: [
+          "regional_documentaries",
+          "local_news_public_affairs",
+          "environment_nature"
+        ]
+      },
+      visibleQuestionIds: [],
+      completedStageIds: survey.stages.map((stage) => stage.id),
+      followUpOffered: Boolean(config.followUp?.enabled)
+    };
+
+    storage.replaceResponses([...responses, preview]);
+    return preview;
   }
 
   function showPanel(name) {
