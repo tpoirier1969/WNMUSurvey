@@ -12,7 +12,8 @@
    * app.js reads it. This file owns the visible sound control and the richer
    * stage sounds after DOMContentLoaded.
    */
-  let soundEnabled = storage.getSoundEnabled();
+  const isLayoutPreview = document.documentElement.classList.contains("landing-layout-preview");
+  let soundEnabled = isLayoutPreview ? false : storage.getSoundEnabled();
   storage.setSoundEnabled(false);
 
   document.addEventListener("DOMContentLoaded", init);
@@ -37,13 +38,13 @@
       card.addEventListener("pointerdown", (event) => {
         if (event.button !== 0) return;
         lastStageSoundAt = performance.now();
-        playSound("open");
+        if (!isLayoutPreview) playSound("open");
       });
 
       card.addEventListener("click", (event) => {
         if (event.detail === 0 && performance.now() - lastStageSoundAt > 250) {
           lastStageSoundAt = performance.now();
-          playSound("open");
+          if (!isLayoutPreview) playSound("open");
         }
 
         if (pressLocked && !bypassPress) {
@@ -119,8 +120,10 @@
       window.setTimeout(refresh, 0);
     });
 
-    wireCompletionSound(document.getElementById("completeStage"));
-    wireCompletionSound(document.getElementById("submitSurvey"));
+    if (!isLayoutPreview) {
+      wireCompletionSound(document.getElementById("completeStage"));
+      wireCompletionSound(document.getElementById("submitSurvey"));
+    }
 
     /*
      * app.js initializes after this DOMContentLoaded listener. Replace the
@@ -132,6 +135,11 @@
 
     function setupSoundControl() {
       const legacyToggle = document.getElementById("soundToggle");
+      if (isLayoutPreview) {
+        legacyToggle?.remove();
+        storage.setSoundEnabled(false);
+        return;
+      }
       if (!legacyToggle) {
         storage.setSoundEnabled(soundEnabled);
         return;
