@@ -592,3 +592,21 @@ Requirements:
 - remove linked test contact records when submitted browser test responses are cleared
 
 The local Test version is not an approved production contact system. Public release requires protected server-side contact storage, access controls, retention and deletion rules, and final respondent-facing privacy language.
+
+---
+
+## 24. Standalone rebuild boundary
+
+The clean questionnaire rebuild lives in `questionnaire-rebuild/` inside this repository. It is a separate application, not an override, patch, or alternate entry point for the root questionnaire.
+
+Hard isolation requirements:
+
+- the root questionnaire remains the working public survey until Tod explicitly approves replacement
+- the rebuild must not import, load, or reference runtime files from the repository root or another app folder
+- the rebuild must contain its own HTML, CSS, JavaScript, configuration, storage implementation, and copied approved assets
+- the rebuild must use storage keys that cannot collide with the root questionnaire
+- the root `index.html` must not redirect to or automatically load the rebuild
+- unfinished rebuild work must not be linked from the respondent-facing root questionnaire
+- changes to the rebuild must not be implemented by adding patch or override files; correct the rebuild's canonical file
+
+The initial rebuild scope is the five-stage core questionnaire. Results, follow-up questionnaires, and optional contact handling remain outside this app until Tod explicitly authorizes rebuilding them. The v6 question IDs, meanings, displayed labels, stored values, scales, routing, and required/optional rules must remain equivalent to the canonical core specification unless Tod approves a questionnaire change.

@@ -304,3 +304,19 @@ Before public release:
 - verify current WNMU channel and PBS service wording against governing sources
 - copy the logo into the application asset set
 - complete desktop, phone portrait/landscape, keyboard, screen-reader, focus, reduced-motion, routing, draft, submission, linkage, filters, import, JSON, and CSV QA
+
+## 11. Standalone rebuild implementation
+
+The independent core-questionnaire rebuild is located at `questionnaire-rebuild/`.
+
+- Rebuild version: `rebuild-0.1.0`
+- Schema: `wnmu-viewer-questionnaire-v6`
+- Scope: the same 28 core questions across the same five stages
+- Question contract: IDs, labels, stored values, scales, required status, and routing match this specification
+- Runtime boundary: no CSS, JavaScript, configuration, storage, or image files are loaded from the root questionnaire
+- Rebuild draft key: `wnmuStandaloneRebuildDraft:v6`
+- Rebuild response key: `wnmuStandaloneRebuildResponses:v1`
+- Rebuild respondent key: `wnmuStandaloneRebuildRespondentId:v1`
+- Results, optional follow-ups, and contact records are not part of the initial rebuild scope
+
+The rebuild remains an unlinked review application. Its presence on the same GitHub Pages site does not make it private; anyone with the direct folder URL may open it. It must not replace the root questionnaire until its full visual, interaction, storage, routing, and responsive QA is complete and Tod explicitly approves the replacement.

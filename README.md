@@ -157,6 +157,16 @@ Configuration and storage:
 - `js/config.js`: mode, versions, campaign, follow-up schema, and storage keys
 - `js/storage.js`: core, follow-up, separate contact, and Test Thank You preview storage; pseudonymous IDs; continuation records
 
+Standalone questionnaire rebuild:
+
+- `questionnaire-rebuild/index.html`: independent review entry point
+- `questionnaire-rebuild/styles.css`: complete rebuild presentation and responsive layout
+- `questionnaire-rebuild/config.js`: rebuild-only mode, version, and storage keys
+- `questionnaire-rebuild/questions.js`: canonical v6 core questionnaire content for the rebuild
+- `questionnaire-rebuild/storage.js`: rebuild-only draft and response storage
+- `questionnaire-rebuild/app.js`: rendering, routing, navigation, stage completion, save/resume, and submission
+- `questionnaire-rebuild/assets/`: copied approved assets; no root runtime dependencies
+
 Core questionnaire:
 
 - `js/questions-foundation.js`
