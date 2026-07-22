@@ -83,16 +83,23 @@
 /* Roomy desktop landing layout. */
 @media (min-width: 901px) {
   .approved-stage-interface .survey-frame[data-view="hub"] {
+    display: flow-root;
+    height: auto;
     min-height: 0;
+    padding-bottom: 0;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
+    position: static;
+    display: block;
+    height: auto;
     min-height: 0;
     padding: 126px 28px 30px;
+    overflow: visible;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
-    position: relative;
+    position: static;
     inset: auto;
     margin: 34px 14px 0;
   }
@@ -117,16 +124,23 @@
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .survey-frame-footer {
-    position: relative;
+    position: static;
+    margin-top: 22px;
   }
 }
 
 /* Compact desktop: common office monitors and short laptop displays. */
 @media (min-width: 901px) and (max-width: 1400px),
        (min-width: 901px) and (max-height: 850px) {
-  .approved-stage-interface .survey-frame {
+  .approved-stage-interface .survey-frame:not([data-view="hub"]) {
     width: min(calc(100% - 20px), 1320px);
     min-height: calc(100vh - 16px);
+    margin: 8px auto;
+    border-radius: 20px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] {
+    width: min(calc(100% - 20px), 1320px);
     margin: 8px auto;
     border-radius: 20px;
   }
@@ -232,6 +246,12 @@
   .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
   .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
     margin-top: 26px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .survey-frame-footer {
+    min-height: 56px;
+    margin-top: 18px;
+    padding: 10px 22px;
   }
 }
 
