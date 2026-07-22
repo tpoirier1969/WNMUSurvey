@@ -1487,15 +1487,15 @@
 @media (min-width: 901px) {
   .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "brand sound"
-      "welcome welcome"
-      "stages stages"
-      "resume resume"
-      "submit submit"
-      "facts facts"
-      "footer footer";
+      "brand"
+      "welcome"
+      "stages"
+      "resume"
+      "submit"
+      "facts"
+      "footer";
     gap: 18px 24px;
     min-height: 0;
     padding: 22px 28px 0;
@@ -1505,12 +1505,6 @@
     position: static;
     grid-area: brand;
     align-self: center;
-  }
-
-  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .sound-toggle {
-    position: static;
-    grid-area: sound;
-    align-self: start;
   }
 
   .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
@@ -1557,9 +1551,21 @@
   .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .resume-block {
     position: static;
     grid-area: resume;
-    width: min(880px, 100%);
+    width: min(720px, 100%);
     margin: 0 auto;
+    gap: 14px;
+    padding: 12px 14px;
     transform: none;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .resume-block .button-row {
+    gap: 8px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .resume-block .button {
+    min-height: 44px;
+    padding: 9px 13px;
+    font-size: 0.9rem;
   }
 
   .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
@@ -1593,11 +1599,6 @@
 
   .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .brand-logo {
     width: 150px;
-  }
-
-  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .sound-toggle {
-    min-height: 46px;
-    padding: 8px 13px;
   }
 
   .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-copy {
@@ -1649,6 +1650,102 @@
 
   .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts {
     padding: 13px 26px;
+  }
+}
+
+/* The revised preview is silent and does not repeat draft-save status above
+   questionnaire content. The live restored layout remains unchanged. */
+.landing-layout-preview .approved-stage-interface .sound-toggle,
+.landing-layout-preview .approved-stage-interface .questionnaire-toolbar #saveStatus {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "brand"
+      "welcome"
+      "stages"
+      "resume"
+      "facts"
+      "questionnaire"
+      "complete"
+      "footer";
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-copy {
+    padding-top: 10px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+    padding-inline: 0;
+    overflow-x: visible;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
+    width: auto;
+    height: 142px;
+    min-width: 0;
+    flex: none;
+    padding: 9px 4px 10px;
+    --card-radius: 23px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-icon {
+    width: 43px;
+    height: 43px;
+    margin-bottom: 6px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-number {
+    width: 21px;
+    height: 21px;
+    margin-bottom: 4px;
+    font-size: 0.66rem;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-card strong {
+    min-height: 25px;
+    font-size: clamp(0.52rem, 1.7vw, 0.66rem);
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-status {
+    font-size: 0.58rem;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .resume-block {
+    gap: 10px;
+    margin-block: 4px 8px;
+    padding: 11px 12px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .resume-block .button-row {
+    display: flex;
+    gap: 7px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .resume-block .button {
+    width: auto;
+    min-height: 42px;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
+    width: 78px;
+    flex: 0 0 78px;
   }
 }
 
