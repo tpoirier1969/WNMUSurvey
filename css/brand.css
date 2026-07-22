@@ -72,211 +72,24 @@
   font-weight: 760;
 }
 
-.approved-stage-interface .hub-support-panel {
-  display: contents;
-}
-
-.approved-stage-interface .survey-frame:not([data-view="hub"]) .hub-support-panel {
-  display: none;
-}
-
-/* Roomy desktop landing layout. */
+/* The fuller landing introduction needs its own measured vertical space. */
 @media (min-width: 901px) {
-  .approved-stage-interface .survey-frame[data-view="hub"] {
-    display: flow-root;
-    height: auto;
-    min-height: 0;
-    padding-bottom: 0;
-  }
-
   .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
-    position: static;
-    display: block;
-    height: auto;
-    min-height: 0;
-    padding: 126px 28px 30px;
-    overflow: visible;
+    min-height: 980px;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
-    position: static;
-    inset: auto;
-    margin: 34px 14px 0;
-    transition: none;
+    top: 400px;
   }
 
-  /*
-   * The landing layout must be stable on first paint. The shared stage styles
-   * animate their desktop-to-working-view size changes, but those same
-   * transitions also animate while the landing overrides settle after load.
-   * Keep the tactile button feedback; do not animate landing geometry.
-   */
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
-    transition:
-      box-shadow 0.16s ease,
-      filter 0.16s ease,
-      transform 0.12s ease;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-icon,
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-number,
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card strong,
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-divider,
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-status,
-  .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel,
-  .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts,
-  .approved-stage-interface .survey-frame[data-view="hub"] .survey-frame-footer {
-    transition: none;
+  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .welcome-panel,
+  .approved-stage-interface .survey-frame[data-view="hub"]:has(.submit-ready-panel:not([hidden])) .welcome-panel {
+    min-height: 1180px;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
   .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
-    position: relative;
-    inset: auto;
-    width: min(880px, calc(100% - 28px));
-    margin: 32px auto 0;
-    transform: none;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts {
-    position: relative;
-    inset: auto;
-    display: flex;
-    width: max-content;
-    max-width: 100%;
-    margin: 30px auto 0;
-    transform: none;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .survey-frame-footer {
-    position: static;
-    margin-top: 22px;
-  }
-}
-
-/* Compact desktop: common office monitors and short laptop displays. */
-@media (min-width: 901px) and (max-width: 1400px),
-       (min-width: 901px) and (max-height: 850px) {
-  .approved-stage-interface .survey-frame:not([data-view="hub"]) {
-    width: min(calc(100% - 20px), 1320px);
-    min-height: calc(100vh - 16px);
-    margin: 8px auto;
-    border-radius: 20px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] {
-    width: min(calc(100% - 20px), 1320px);
-    margin: 8px auto;
-    border-radius: 20px;
-  }
-
-  .approved-stage-interface .brand-block {
-    top: 16px;
-    left: 24px;
-  }
-
-  .approved-stage-interface .brand-logo {
-    width: min(150px, 34vw);
-  }
-
-  .approved-stage-interface .brand-block .wordmark-sub {
-    font-size: 0.9rem;
-  }
-
-  .approved-stage-interface .sound-toggle {
-    top: 17px;
-    right: 22px;
-    min-height: 46px;
-    padding: 8px 14px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
-    min-height: 0;
-    padding: 96px 24px 24px;
-  }
-
-  .approved-stage-interface .welcome-panel h1 {
-    margin-bottom: 8px;
-    font-size: clamp(2.15rem, 3.5vw, 3rem);
-  }
-
-  .approved-stage-interface .welcome-panel .lead {
-    max-width: 960px;
-    font-size: clamp(0.96rem, 1.2vw, 1.08rem);
-    line-height: 1.38;
-  }
-
-  .approved-stage-interface .welcome-instruction {
-    margin-top: 6px;
-    font-size: 0.88rem;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
-    margin: 26px 4px 0;
-    gap: clamp(10px, 1.5vw, 20px);
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
-    --card-radius: 32px;
-    height: 226px;
-    padding: 17px 12px 15px;
-    border-width: 2px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-icon {
-    width: 62px;
-    height: 62px;
-    margin-bottom: 10px;
-    border-width: 2px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-number {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 7px;
-    font-size: 0.96rem;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card strong {
-    min-height: 36px;
-    font-size: clamp(0.88rem, 1.25vw, 1.08rem);
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-divider {
-    margin-bottom: 9px;
-    border-top-width: 2px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .stage-status {
-    font-size: 0.88rem;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts {
-    margin-top: 24px;
-    gap: 20px;
-    padding: 11px 22px;
-    border-radius: 17px;
-  }
-
-  .approved-stage-interface .survey-fact {
-    gap: 9px;
-    font-size: 0.9rem;
-  }
-
-  .approved-stage-interface .survey-fact svg {
-    width: 23px;
-    height: 23px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
-  .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
-    margin-top: 26px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"] .survey-frame-footer {
-    min-height: 56px;
-    margin-top: 18px;
-    padding: 10px 22px;
+    top: 780px;
   }
 }
 
