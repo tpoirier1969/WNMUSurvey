@@ -102,6 +102,31 @@
     position: static;
     inset: auto;
     margin: 34px 14px 0;
+    transition: none;
+  }
+
+  /*
+   * The landing layout must be stable on first paint. The shared stage styles
+   * animate their desktop-to-working-view size changes, but those same
+   * transitions also animate while the landing overrides settle after load.
+   * Keep the tactile button feedback; do not animate landing geometry.
+   */
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
+    transition:
+      box-shadow 0.16s ease,
+      filter 0.16s ease,
+      transform 0.12s ease;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-icon,
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-number,
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card strong,
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-divider,
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-status,
+  .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel,
+  .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts,
+  .approved-stage-interface .survey-frame[data-view="hub"] .survey-frame-footer {
+    transition: none;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
