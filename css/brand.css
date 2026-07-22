@@ -72,24 +72,145 @@
   font-weight: 760;
 }
 
-/* The fuller landing introduction needs its own measured vertical space. */
+/* Roomy desktop landing layout. */
 @media (min-width: 901px) {
   .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
-    min-height: 980px;
+    min-height: 830px;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
-    top: 400px;
+    top: 286px;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .welcome-panel,
   .approved-stage-interface .survey-frame[data-view="hub"]:has(.submit-ready-panel:not([hidden])) .welcome-panel {
-    min-height: 1180px;
+    min-height: 1010px;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
   .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
-    top: 780px;
+    top: 650px;
+  }
+}
+
+/* Compact desktop: common office monitors and short laptop displays. */
+@media (min-width: 901px) and (max-width: 1400px),
+       (min-width: 901px) and (max-height: 850px) {
+  .approved-stage-interface .survey-frame {
+    width: min(calc(100% - 20px), 1320px);
+    min-height: calc(100vh - 16px);
+    margin: 8px auto;
+    border-radius: 20px;
+  }
+
+  .approved-stage-interface .brand-block {
+    top: 16px;
+    left: 24px;
+  }
+
+  .approved-stage-interface .brand-logo {
+    width: min(150px, 34vw);
+  }
+
+  .approved-stage-interface .brand-block .wordmark-sub {
+    font-size: 0.9rem;
+  }
+
+  .approved-stage-interface .sound-toggle {
+    top: 17px;
+    right: 22px;
+    min-height: 46px;
+    padding: 8px 14px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
+    min-height: max(700px, calc(100vh - 16px));
+    padding: 96px 24px 102px;
+  }
+
+  .approved-stage-interface .welcome-panel h1 {
+    margin-bottom: 8px;
+    font-size: clamp(2.15rem, 3.5vw, 3rem);
+  }
+
+  .approved-stage-interface .welcome-panel .lead {
+    max-width: 960px;
+    font-size: clamp(0.96rem, 1.2vw, 1.08rem);
+    line-height: 1.38;
+  }
+
+  .approved-stage-interface .welcome-instruction {
+    margin-top: 6px;
+    font-size: 0.88rem;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
+    top: 218px;
+    right: 28px;
+    left: 28px;
+    gap: clamp(10px, 1.5vw, 20px);
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
+    --card-radius: 32px;
+    height: 226px;
+    padding: 17px 12px 15px;
+    border-width: 2px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-icon {
+    width: 62px;
+    height: 62px;
+    margin-bottom: 10px;
+    border-width: 2px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-number {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 7px;
+    font-size: 0.96rem;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-card strong {
+    min-height: 36px;
+    font-size: clamp(0.88rem, 1.25vw, 1.08rem);
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-divider {
+    margin-bottom: 9px;
+    border-top-width: 2px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .stage-status {
+    font-size: 0.88rem;
+  }
+
+  .approved-stage-interface .survey-facts {
+    bottom: 68px;
+    gap: 20px;
+    padding: 11px 22px;
+    border-radius: 17px;
+  }
+
+  .approved-stage-interface .survey-fact {
+    gap: 9px;
+    font-size: 0.9rem;
+  }
+
+  .approved-stage-interface .survey-fact svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .welcome-panel,
+  .approved-stage-interface .survey-frame[data-view="hub"]:has(.submit-ready-panel:not([hidden])) .welcome-panel {
+    min-height: max(860px, calc(100vh - 16px));
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
+  .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
+    top: 500px;
   }
 }
 

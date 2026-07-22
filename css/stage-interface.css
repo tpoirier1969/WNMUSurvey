@@ -146,7 +146,7 @@
   isolation: isolate;
   display: flex;
   min-width: 0;
-  height: 338px;
+  height: 286px;
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
@@ -883,13 +883,13 @@
   }
 
   .approved-stage-interface .welcome-panel {
-    min-height: 850px;
-    padding: 145px 28px 135px;
+    min-height: 820px;
+    padding: 126px 28px 118px;
   }
 
   .approved-stage-interface .stage-hub {
     position: absolute;
-    top: 292px;
+    top: 276px;
     right: 42px;
     left: 42px;
   }
@@ -897,7 +897,7 @@
   .approved-stage-interface .survey-facts {
     position: absolute;
     right: 50%;
-    bottom: 105px;
+    bottom: 88px;
     transform: translateX(50%);
   }
 
