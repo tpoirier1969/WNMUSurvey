@@ -1480,6 +1480,178 @@
   }
 }
 
+/* Temporary approval preview for the consolidated landing-page layout.
+   Major landing elements stay in document flow; JavaScript controls content,
+   never geometry. Remove the preview qualifier when this replaces the legacy
+   desktop hub rules. */
+@media (min-width: 901px) {
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand sound"
+      "welcome welcome"
+      "stages stages"
+      "resume resume"
+      "submit submit"
+      "facts facts"
+      "footer footer";
+    gap: 18px 24px;
+    min-height: 0;
+    padding: 22px 28px 0;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .brand-block {
+    position: static;
+    grid-area: brand;
+    align-self: center;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .sound-toggle {
+    position: static;
+    grid-area: sound;
+    align-self: start;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
+    display: contents;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-copy {
+    grid-area: welcome;
+    padding: 2px 28px 0;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel h1 {
+    margin-bottom: 10px;
+    font-size: clamp(2.45rem, 3.5vw, 3.5rem);
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel .lead {
+    max-width: 980px;
+    font-size: clamp(1rem, 1.25vw, 1.15rem);
+    line-height: 1.45;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
+    position: static;
+    grid-area: stages;
+    gap: clamp(14px, 1.8vw, 26px);
+    margin: 2px 14px 0;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
+    height: 250px;
+    padding: 18px 14px 17px;
+    --card-radius: 36px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-icon {
+    width: 78px;
+    height: 78px;
+    margin-bottom: 12px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .resume-block {
+    position: static;
+    grid-area: resume;
+    width: min(880px, 100%);
+    margin: 0 auto;
+    transform: none;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
+    grid-area: submit;
+    width: min(880px, 100%);
+    margin: 0 auto;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts {
+    position: static;
+    grid-area: facts;
+    justify-self: center;
+    margin: 0 0 2px;
+    transform: none;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .survey-frame-footer {
+    position: static;
+    grid-area: footer;
+    margin: 0 -28px;
+    border-radius: 0 0 24px 24px;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1400px),
+       (min-width: 901px) and (max-height: 850px) {
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] {
+    gap: 12px 20px;
+    padding-top: 16px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .brand-logo {
+    width: 150px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .sound-toggle {
+    min-height: 46px;
+    padding: 8px 13px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-copy {
+    padding-top: 0;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel h1 {
+    margin-bottom: 7px;
+    font-size: clamp(2.2rem, 3vw, 3rem);
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel .lead {
+    max-width: 920px;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .welcome-instruction {
+    margin-top: 7px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-card {
+    height: 218px;
+    padding: 14px 11px 14px;
+    --card-radius: 32px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-icon {
+    width: 66px;
+    height: 66px;
+    margin-bottom: 8px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-number {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 7px;
+    font-size: 0.92rem;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-card strong {
+    min-height: 38px;
+    font-size: clamp(0.86rem, 1.25vw, 1.05rem);
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .stage-divider {
+    margin-bottom: 9px;
+  }
+
+  .landing-layout-preview .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts {
+    padding: 13px 26px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .approved-stage-interface .stage-hub,
   .approved-stage-interface .stage-card,

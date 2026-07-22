@@ -180,6 +180,8 @@ Do not allow permanent chains of files that modify or override earlier files aft
 
 New files must represent a real, durable architectural responsibility. Do not create a new file merely to avoid editing the correct canonical file.
 
+Hard rule for repairs: fix, consolidate, or replace faulty code in its original canonical file. Do not create a patch, override, helper, or replacement file merely to fix an existing problem. Create a file only when it is necessary for a genuinely new responsibility, such as an explicitly authorized standalone preview entry point. Any temporary preview selectors must be removed when the approved repair becomes canonical.
+
 Examples of temporary patch patterns that must not become permanent architecture:
 
 - a second questionnaire file that mutates the first
