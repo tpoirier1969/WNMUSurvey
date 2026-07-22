@@ -309,7 +309,7 @@ Before public release:
 
 The independent core-questionnaire rebuild is located at `questionnaire-rebuild/`.
 
-- Rebuild version: `rebuild-0.1.0`
+- Rebuild version: `rebuild-0.1.1`
 - Schema: `wnmu-viewer-questionnaire-v6`
 - Scope: the same 28 core questions across the same five stages
 - Question contract: IDs, labels, stored values, scales, required status, and routing match this specification

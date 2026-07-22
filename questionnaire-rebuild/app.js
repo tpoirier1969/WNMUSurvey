@@ -129,6 +129,11 @@
   }
 
   function updateHubPanels() {
+    if (app.dataset.view !== "hub") {
+      resumeBlock.hidden = true;
+      submitReadyPanel.hidden = true;
+      return;
+    }
     const allComplete = survey.stages.every((stage) => state.completedStageIds.has(stage.id));
     resumeBlock.hidden = !state.hasDraft;
     submitReadyPanel.hidden = !allComplete;

@@ -3,7 +3,7 @@
 
   window.WNMU_REBUILD_CONFIG = Object.freeze({
     schemaVersion: "wnmu-viewer-questionnaire-v6",
-    buildVersion: "rebuild-0.1.0",
+    buildVersion: "rebuild-0.1.1",
     releaseDate: "2026-07-22",
     mode: "test",
     campaign: "viewer-questionnaire-2026",
