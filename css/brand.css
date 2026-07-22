@@ -145,7 +145,10 @@
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
-    top: 218px;
+    /* Keep the cards below the complete welcome copy when it wraps on
+       lower-resolution desktop displays. The compact layout has enough
+       unused space below the cards; do not reclaim it by overlapping text. */
+    top: 292px;
     right: 28px;
     left: 28px;
     gap: clamp(10px, 1.5vw, 20px);
@@ -210,7 +213,7 @@
 
   .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
   .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
-    top: 500px;
+    top: 566px;
   }
 }
 
