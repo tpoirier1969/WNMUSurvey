@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/questionnaire-revision.css" />
   <link rel="stylesheet" href="css/phone-layout.css" />
-  <link rel="stylesheet" href="css/stage-interface.css?v=6.3.7" />
-  <link rel="stylesheet" href="css/brand.css?v=6.3.7" />
+  <link rel="stylesheet" href="css/stage-interface.css?v=6.3.8" />
+  <link rel="stylesheet" href="css/brand.css?v=6.3.8" />
 </head>
 <body class="public-survey-page approved-stage-interface">
   <a class="skip-link" href="#stageHub">Skip to questionnaire stages</a>
@@ -29,7 +29,66 @@
         <p class="lead">WNMU-TV is committed to earning your support by understanding and responding to viewers’ needs. This questionnaire begins an ongoing process to learn how you see the station, what you value, and how WNMU-TV should change to meet viewers where they are and where their viewing habits are going. Your answers will help guide what comes next.</p>
         <p class="welcome-instruction">Choose any stage to begin. You may complete them in any order.</p>
       </div>
+    </section>
 
+    <nav id="stageHub" class="stage-hub" aria-label="Questionnaire stages">
+        <button class="stage-card stage-blue" type="button" data-stage-id="about_you" data-status="not_started" style="--stage-progress:0%;">
+          <span class="stage-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="11" /><path d="M15 52c1-12 8-18 17-18s16 6 17 18z" /></svg>
+          </span>
+          <span class="stage-number">1</span>
+          <strong>About You</strong>
+          <span class="stage-divider" aria-hidden="true"></span>
+          <span class="stage-status">Not started</span>
+          <span class="stage-gray-sweep" aria-hidden="true"></span>
+        </button>
+
+        <button class="stage-card stage-green" type="button" data-stage-id="wnmu_you" data-status="not_started" style="--stage-progress:0%;">
+          <span class="stage-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M32 52 13 33C2 20 18 8 32 22 46 8 62 20 51 33z" /></svg>
+          </span>
+          <span class="stage-number">2</span>
+          <strong>WNMU &amp; You</strong>
+          <span class="stage-divider" aria-hidden="true"></span>
+          <span class="stage-status">Not started</span>
+          <span class="stage-gray-sweep" aria-hidden="true"></span>
+        </button>
+
+        <button class="stage-card stage-orange" type="button" data-stage-id="what_watch" data-status="not_started" style="--stage-progress:0%;">
+          <span class="stage-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><rect x="11" y="18" width="42" height="32" rx="6" /><path d="m24 10 8 8 8-8" /><circle cx="45" cy="27" r="2" /><circle cx="45" cy="36" r="2" /></svg>
+          </span>
+          <span class="stage-number">3</span>
+          <strong>What You Watch</strong>
+          <span class="stage-divider" aria-hidden="true"></span>
+          <span class="stage-status">Not started</span>
+          <span class="stage-gray-sweep" aria-hidden="true"></span>
+        </button>
+
+        <button class="stage-card stage-purple" type="button" data-stage-id="what_want" data-status="not_started" style="--stage-progress:0%;">
+          <span class="stage-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="m32 8 7 15 17 2-12 12 3 17-15-8-15 8 3-17L8 25l17-2z" /></svg>
+          </span>
+          <span class="stage-number">4</span>
+          <strong>What You Want</strong>
+          <span class="stage-divider" aria-hidden="true"></span>
+          <span class="stage-status">Not started</span>
+          <span class="stage-gray-sweep" aria-hidden="true"></span>
+        </button>
+
+        <button class="stage-card stage-teal" type="button" data-stage-id="how_doing" data-status="not_started" style="--stage-progress:0%;">
+          <span class="stage-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M24 52H13V28h11z" /><path d="M24 30 34 12c3-5 8-2 7 3l-2 10h10c5 0 7 4 5 8l-6 15c-1 3-4 4-7 4H24z" /></svg>
+          </span>
+          <span class="stage-number">5</span>
+          <strong>How We’re Doing</strong>
+          <span class="stage-divider" aria-hidden="true"></span>
+          <span class="stage-status">Not started</span>
+          <span class="stage-gray-sweep" aria-hidden="true"></span>
+        </button>
+    </nav>
+
+    <section class="hub-support-panel app-panel" aria-label="Saved questionnaire details">
       <div id="resumeBlock" class="resume-block" hidden>
         <div>
           <strong>Your answers are saved.</strong>
@@ -53,63 +112,6 @@
         </span>
       </div>
     </section>
-
-    <nav id="stageHub" class="stage-hub" aria-label="Questionnaire stages">
-      <button class="stage-card stage-blue" type="button" data-stage-id="about_you" data-status="not_started" style="--stage-progress:0%;">
-        <span class="stage-icon" aria-hidden="true">
-          <svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="11" /><path d="M15 52c1-12 8-18 17-18s16 6 17 18z" /></svg>
-        </span>
-        <span class="stage-number">1</span>
-        <strong>About You</strong>
-        <span class="stage-divider" aria-hidden="true"></span>
-        <span class="stage-status">Not started</span>
-        <span class="stage-gray-sweep" aria-hidden="true"></span>
-      </button>
-
-      <button class="stage-card stage-green" type="button" data-stage-id="wnmu_you" data-status="not_started" style="--stage-progress:0%;">
-        <span class="stage-icon" aria-hidden="true">
-          <svg viewBox="0 0 64 64"><path d="M32 52 13 33C2 20 18 8 32 22 46 8 62 20 51 33z" /></svg>
-        </span>
-        <span class="stage-number">2</span>
-        <strong>WNMU &amp; You</strong>
-        <span class="stage-divider" aria-hidden="true"></span>
-        <span class="stage-status">Not started</span>
-        <span class="stage-gray-sweep" aria-hidden="true"></span>
-      </button>
-
-      <button class="stage-card stage-orange" type="button" data-stage-id="what_watch" data-status="not_started" style="--stage-progress:0%;">
-        <span class="stage-icon" aria-hidden="true">
-          <svg viewBox="0 0 64 64"><rect x="11" y="18" width="42" height="32" rx="6" /><path d="m24 10 8 8 8-8" /><circle cx="45" cy="27" r="2" /><circle cx="45" cy="36" r="2" /></svg>
-        </span>
-        <span class="stage-number">3</span>
-        <strong>What You Watch</strong>
-        <span class="stage-divider" aria-hidden="true"></span>
-        <span class="stage-status">Not started</span>
-        <span class="stage-gray-sweep" aria-hidden="true"></span>
-      </button>
-
-      <button class="stage-card stage-purple" type="button" data-stage-id="what_want" data-status="not_started" style="--stage-progress:0%;">
-        <span class="stage-icon" aria-hidden="true">
-          <svg viewBox="0 0 64 64"><path d="m32 8 7 15 17 2-12 12 3 17-15-8-15 8 3-17L8 25l17-2z" /></svg>
-        </span>
-        <span class="stage-number">4</span>
-        <strong>What You Want</strong>
-        <span class="stage-divider" aria-hidden="true"></span>
-        <span class="stage-status">Not started</span>
-        <span class="stage-gray-sweep" aria-hidden="true"></span>
-      </button>
-
-      <button class="stage-card stage-teal" type="button" data-stage-id="how_doing" data-status="not_started" style="--stage-progress:0%;">
-        <span class="stage-icon" aria-hidden="true">
-          <svg viewBox="0 0 64 64"><path d="M24 52H13V28h11z" /><path d="M24 30 34 12c3-5 8-2 7 3l-2 10h10c5 0 7 4 5 8l-6 15c-1 3-4 4-7 4H24z" /></svg>
-        </span>
-        <span class="stage-number">5</span>
-        <strong>How We’re Doing</strong>
-        <span class="stage-divider" aria-hidden="true"></span>
-        <span class="stage-status">Not started</span>
-        <span class="stage-gray-sweep" aria-hidden="true"></span>
-      </button>
-    </nav>
 
     <section id="questionnairePanel" class="app-panel questionnaire-panel" hidden>
       <div class="questionnaire-toolbar">
@@ -149,7 +151,7 @@
     </section>
 
     <footer class="survey-frame-footer">
-      <div class="build-status"><span id="versionLabel">v6.3.7</span></div>
+      <div class="build-status"><span id="versionLabel">v6.3.8</span></div>
       <div class="footer-links">
         <button class="footer-link" type="button" data-dialog-open="aboutSurveyDialog">
           <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="10" /><path d="M14 12v7" /><circle cx="14" cy="8.5" r="1" /></svg>

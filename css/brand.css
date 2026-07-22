@@ -72,24 +72,52 @@
   font-weight: 760;
 }
 
+.approved-stage-interface .hub-support-panel {
+  display: contents;
+}
+
+.approved-stage-interface .survey-frame:not([data-view="hub"]) .hub-support-panel {
+  display: none;
+}
+
 /* Roomy desktop landing layout. */
 @media (min-width: 901px) {
+  .approved-stage-interface .survey-frame[data-view="hub"] {
+    min-height: 0;
+  }
+
   .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
-    min-height: 830px;
+    min-height: 0;
+    padding: 126px 28px 30px;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
-    top: 286px;
-  }
-
-  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .welcome-panel,
-  .approved-stage-interface .survey-frame[data-view="hub"]:has(.submit-ready-panel:not([hidden])) .welcome-panel {
-    min-height: 1010px;
+    position: relative;
+    inset: auto;
+    margin: 34px 14px 0;
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
   .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
-    top: 650px;
+    position: relative;
+    inset: auto;
+    width: min(880px, calc(100% - 28px));
+    margin: 32px auto 0;
+    transform: none;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    margin: 30px auto 0;
+    transform: none;
+  }
+
+  .approved-stage-interface .survey-frame[data-view="hub"] .survey-frame-footer {
+    position: relative;
   }
 }
 
@@ -124,8 +152,8 @@
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .welcome-panel {
-    min-height: max(700px, calc(100vh - 16px));
-    padding: 96px 24px 102px;
+    min-height: 0;
+    padding: 96px 24px 24px;
   }
 
   .approved-stage-interface .welcome-panel h1 {
@@ -145,12 +173,7 @@
   }
 
   .approved-stage-interface .survey-frame[data-view="hub"] .stage-hub {
-    /* Keep the cards below the complete welcome copy when it wraps on
-       lower-resolution desktop displays. The compact layout has enough
-       unused space below the cards; do not reclaim it by overlapping text. */
-    top: 292px;
-    right: 28px;
-    left: 28px;
+    margin: 26px 4px 0;
     gap: clamp(10px, 1.5vw, 20px);
   }
 
@@ -189,8 +212,8 @@
     font-size: 0.88rem;
   }
 
-  .approved-stage-interface .survey-facts {
-    bottom: 68px;
+  .approved-stage-interface .survey-frame[data-view="hub"] .survey-facts {
+    margin-top: 24px;
     gap: 20px;
     padding: 11px 22px;
     border-radius: 17px;
@@ -206,14 +229,9 @@
     height: 23px;
   }
 
-  .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .welcome-panel,
-  .approved-stage-interface .survey-frame[data-view="hub"]:has(.submit-ready-panel:not([hidden])) .welcome-panel {
-    min-height: max(860px, calc(100vh - 16px));
-  }
-
   .approved-stage-interface .survey-frame[data-view="hub"][data-has-resume="true"] .resume-block,
   .approved-stage-interface .survey-frame[data-view="hub"] .submit-ready-panel {
-    top: 566px;
+    margin-top: 26px;
   }
 }
 
