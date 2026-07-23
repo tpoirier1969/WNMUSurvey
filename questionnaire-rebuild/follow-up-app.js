@@ -8,10 +8,10 @@
   if (!config || !coreSurvey || !followUps || !storage) throw new Error("Follow-up questionnaire scripts loaded in the wrong order.");
 
   const moduleSummaries = Object.freeze({
-    "local-programming": "Regional stories, voices, and production priorities.",
-    "programming-ideas": "Program subjects, formats, and new ideas.",
-    "online-viewing": "PBS App, Passport, devices, and online access.",
-    "children-education": "Children's viewing, learning needs, and resources.",
+    "local-programming": "Regional subjects, voices, geographic priorities, and ideas.",
+    "programming-ideas": "Program subjects, qualities, lengths, and new ideas.",
+    "online-viewing": "WNMU online viewing, Passport, and viewer support.",
+    "children-education": "Children's learning needs, regional topics, and resources.",
     communication: "Schedules, reminders, and finding programs."
   });
 
@@ -82,6 +82,15 @@
       const allowed = module.eligibility?.coreChildrenRoleIn;
       return !allowed || allowed.includes(coreResponse.routeProfile?.children_role);
     });
+  }
+
+  function questionIsApplicable(question) {
+    const allowed = question.when?.coreChildrenRoleIn;
+    return !allowed || allowed.includes(coreResponse.routeProfile?.children_role);
+  }
+
+  function applicableQuestions(page) {
+    return page.questions.filter(questionIsApplicable);
   }
 
   function showAccessError(message) {
@@ -179,6 +188,7 @@
 
   function renderModulePage() {
     const page = currentModule.pages[currentPageIndex];
+    const questions = applicableQuestions(page);
     document.title = `${currentModule.title} | WNMU-TV Follow-up`;
     els.followUpModuleTitle.textContent = currentModule.title;
     els.followUpModuleIntro.textContent = currentModule.intro;
@@ -191,7 +201,7 @@
     els.followUpPagePosition.textContent = `Page ${currentPageIndex + 1} of ${currentModule.pages.length}`;
     els.followUpProgressBar.style.width = `${((currentPageIndex + 1) / currentModule.pages.length) * 100}%`;
     els.followUpModuleError.textContent = "";
-    els.followUpQuestions.innerHTML = page.questions.map((question, index) => renderQuestion(question, index + 1)).join("");
+    els.followUpQuestions.innerHTML = questions.map((question, index) => renderQuestion(question, index + 1)).join("");
     els.followUpPrevious.disabled = currentPageIndex === 0;
     els.followUpNext.hidden = currentPageIndex === currentModule.pages.length - 1;
     els.followUpSubmit.hidden = currentPageIndex !== currentModule.pages.length - 1;
@@ -201,7 +211,7 @@
     if (page.context?.type !== "core_priorities") return "";
     const priorities = selectedCorePriorities();
     if (!priorities.length) return `<section class="question-card followup-question-card followup-context-card"><p class="eyebrow">From your main questionnaire</p><h3>No programming priorities were selected.</h3><p>The following questions ask what subjects, formats, and ideas matter most to you.</p></section>`;
-    return `<section class="question-card followup-question-card followup-context-card"><p class="eyebrow">From your main questionnaire</p><h3>These are the topics you chose as priorities.</h3><ul>${priorities.map((option) => `<li>${escapeHtml(option.label)}</li>`).join("")}</ul><p>The following questions ask for more detail about them.</p></section>`;
+    return `<section class="question-card followup-question-card followup-context-card"><p class="eyebrow">From your main questionnaire</p><h3>Your television and online priorities</h3><ul>${priorities.map((option) => `<li>${escapeHtml(option.label)}</li>`).join("")}</ul><p>The following questions ask for more detail.</p></section>`;
   }
 
   function renderQuestion(question, number) {
@@ -263,7 +273,12 @@
   function saveDraftNow() {
     clearTimeout(saveTimer);
     saveTimer = 0;
-    if (currentModule) storage.saveFollowUpDraft(access, currentModule.id, { answers: clone(answers), currentPageIndex, startedAt });
+    if (currentModule) storage.saveFollowUpDraft(access, currentModule.id, { answers: applicableAnswerCopy(), currentPageIndex, startedAt });
+  }
+
+  function applicableAnswerCopy() {
+    const ids = new Set(currentModule.pages.flatMap((page) => applicableQuestions(page)).map((question) => question.id));
+    return Object.fromEntries(Object.entries(answers).filter(([id, value]) => ids.has(id) && hasValue(value)));
   }
 
   function saveAndExit() {
@@ -273,7 +288,7 @@
 
   function submitModule() {
     clearTimeout(saveTimer);
-    storage.saveFollowUpResponse(access, currentModule.id, { answers: clone(answers), startedAt });
+    storage.saveFollowUpResponse(access, currentModule.id, { answers: applicableAnswerCopy(), startedAt });
     els.followUpCompleteTitle.textContent = `${currentModule.title} submitted`;
     els.followUpCompleteMessage.textContent = "This follow-up is linked to your completed main questionnaire. Choose another topic or return later with your private link.";
     showOnly("complete");
@@ -281,12 +296,15 @@
   }
 
   function selectedCorePriorities() {
-    const selected = coreResponse.answers?.program_category_priorities || [];
     const questions = coreSurvey.stages.flatMap((stage) => stage.pages.flatMap((page) => page.questions));
-    const priorityQuestion = questions.find((item) => item.id === "program_category_priorities");
-    const matrix = priorityQuestion?.optionsFromMatrix ? questions.find((item) => item.id === priorityQuestion.optionsFromMatrix) : null;
-    const options = priorityQuestion?.options || (matrix?.rows || []).map((row) => ({ value: row.id, label: row.label }));
-    return options.filter((option) => selected.includes(option.value));
+    const seen = new Set();
+    return ["television_program_priorities", "online_program_priorities"].flatMap((id) => {
+      const selected = coreResponse.answers?.[id] || [];
+      const priorityQuestion = questions.find((item) => item.id === id);
+      const matrix = priorityQuestion?.optionsFromMatrix ? questions.find((item) => item.id === priorityQuestion.optionsFromMatrix) : null;
+      const options = priorityQuestion?.options || (matrix?.rows || []).map((row) => ({ value: row.id, label: row.label }));
+      return options.filter((option) => selected.includes(option.value) && !seen.has(option.value) && seen.add(option.value));
+    });
   }
 
   function coreOptionLabel(questionId, value) {
@@ -322,6 +340,10 @@
     scrollTo({ top: 0, behavior: smooth && !matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ? "smooth" : "auto" });
   }
 
+  function hasValue(value) {
+    if (Array.isArray(value)) return value.length > 0;
+    return value !== undefined && value !== null && value !== "";
+  }
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
   function escapeHtml(value) { return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#039;"); }
   function escapeAttr(value) { return escapeHtml(value); }
