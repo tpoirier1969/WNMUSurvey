@@ -99,6 +99,11 @@
         <span aria-hidden="true">·</span>
         <button class="footer-link" type="button" data-dialog-open="privacyDialog">Privacy</button>
       </div>
+      <nav class="test-navigation-links" aria-label="Test navigation">
+        <a class="footer-link" id="thankYouPreviewLink" href="#thank-you">View Thank You</a>
+        <span aria-hidden="true">·</span>
+        <a class="footer-link" id="resultsLink" href="../results.html" target="_blank" rel="noopener" aria-label="View results (opens in a new tab)">View results</a>
+      </nav>
     </footer>
   </main>
 
@@ -117,5 +122,43 @@
   <script src="questions.js"></script>
   <script src="storage.js"></script>
   <script src="app.js?r=86b4847"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      const config = window.WNMU_REBUILD_CONFIG;
+      const testLinks = document.querySelector(".test-navigation-links");
+      const thankYouLink = document.getElementById("thankYouPreviewLink");
+      const newResponse = document.getElementById("newResponse");
+
+      if (testLinks) testLinks.hidden = config?.mode !== "test";
+      if (config?.mode !== "test") return;
+
+      function showThankYouPreview(event) {
+        event?.preventDefault();
+        const surveyApp = document.getElementById("surveyApp");
+        const completePanel = document.getElementById("completePanel");
+        if (!surveyApp || !completePanel) return;
+
+        surveyApp.dataset.view = "complete";
+        ["welcomePanel", "resumeBlock", "submitReadyPanel", "questionnairePanel"].forEach((id) => {
+          const panel = document.getElementById(id);
+          if (panel) panel.hidden = true;
+        });
+        const surveyFacts = surveyApp.querySelector(".survey-facts");
+        if (surveyFacts) surveyFacts.hidden = true;
+        completePanel.hidden = false;
+        completePanel.querySelector("h2")?.focus({ preventScroll: true });
+        window.history.replaceState(null, "", "#thank-you");
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }
+
+      thankYouLink?.addEventListener("click", showThankYouPreview);
+      newResponse?.addEventListener("click", () => {
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      });
+      if (window.location.hash === "#thank-you") showThankYouPreview();
+    })();
+  </script>
 </body>
 </html>
