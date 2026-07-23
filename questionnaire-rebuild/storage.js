@@ -11,16 +11,13 @@
       return fallback;
     }
   }
-
   function makeId(prefix) {
     const value = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
     return `${prefix}-${value}`;
   }
-
-  function makeToken() {
-    return `${makeId("continue")}${makeId("private")}`.replace(/[^a-zA-Z0-9]/g, "");
-  }
-
+  function makeToken() { return `${makeId("continue")}${makeId("private")}`.replace(/[^a-zA-Z0-9]/g, ""); }
+  function getArray(key) { const value = parse(localStorage.getItem(key), []); return Array.isArray(value) ? value : []; }
+  function getObject(key) { const value = parse(localStorage.getItem(key), {}); return value && typeof value === "object" && !Array.isArray(value) ? value : {}; }
   function getRespondentId() {
     let id = localStorage.getItem(config.storageKeys.respondentId);
     if (!id) {
@@ -29,17 +26,6 @@
     }
     return id;
   }
-
-  function getArray(key) {
-    const value = parse(localStorage.getItem(key), []);
-    return Array.isArray(value) ? value : [];
-  }
-
-  function getObject(key) {
-    const value = parse(localStorage.getItem(key), {});
-    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
-  }
-
   function normalizeRouteProfile(profile) {
     const source = profile || {};
     return {
@@ -58,11 +44,7 @@
       const draft = parse(localStorage.getItem(config.storageKeys.draft), null);
       return draft?.schemaVersion === config.schemaVersion ? draft : null;
     },
-
-    loadDraft() {
-      return this.getDraft();
-    },
-
+    loadDraft() { return this.getDraft(); },
     saveDraft(draft) {
       const payload = {
         schemaVersion: config.schemaVersion,
@@ -84,28 +66,19 @@
       localStorage.setItem(config.storageKeys.draft, JSON.stringify(payload));
       return payload;
     },
+    clearDraft() { localStorage.removeItem(config.storageKeys.draft); },
 
-    clearDraft() {
-      localStorage.removeItem(config.storageKeys.draft);
-    },
-
-    getResponses() {
-      return getArray(config.storageKeys.responses).filter((response) => !response?.isTestPreview);
-    },
-
+    getResponses() { return getArray(config.storageKeys.responses).filter((response) => !response?.isTestPreview); },
     getResponse(responseId) {
       const submitted = this.getResponses().find((response) => response.responseId === responseId || response.id === responseId);
       if (submitted) return submitted;
       const preview = this.getTestThankYouPreview();
       return preview && (preview.responseId === responseId || preview.id === responseId) ? preview : null;
     },
-
     getLatestResponse() {
-      return this.getResponses()
-        .filter((response) => response.status === "submitted")
+      return this.getResponses().filter((response) => response.status === "submitted")
         .sort((a, b) => String(b.submittedAt || b.createdAt || "").localeCompare(String(a.submittedAt || a.createdAt || "")))[0] || null;
     },
-
     submit(payload) {
       const now = new Date().toISOString();
       const responseId = makeId("response");
@@ -137,15 +110,11 @@
       return response;
     },
 
-    getTestThankYouPreview() {
-      return parse(localStorage.getItem(config.storageKeys.thankYouPreview), null);
-    },
-
+    getTestThankYouPreview() { return parse(localStorage.getItem(config.storageKeys.thankYouPreview), null); },
     saveTestThankYouPreview(preview) {
       localStorage.setItem(config.storageKeys.thankYouPreview, JSON.stringify(preview));
       return preview;
     },
-
     getOrCreateTestThankYouPreview() {
       const existing = this.getTestThankYouPreview();
       if (existing?.previewForSchema === config.schemaVersion) return existing;
@@ -171,25 +140,21 @@
         createdAt: now,
         routeProfile: {
           children_role: "both",
-          viewer_status: "current",
+          viewer_status: "regular",
           viewing_methods: ["antenna", "pbs_app"]
         },
         answers: {
-          program_category_priorities: ["regional_documentaries", "local_news_public_affairs", "environment_nature"]
+          television_program_priorities: ["regional_documentaries", "local_news_public_affairs"],
+          online_program_priorities: ["environment_nature", "regional_documentaries"]
         },
         completedStageIds: ["about_you", "wnmu_you", "what_watch", "what_want", "how_doing"],
         followUpOffered: true
       });
     },
 
-    getFollowUpAccessRecords() {
-      return getArray(config.storageKeys.followUpAccess);
-    },
-
+    getFollowUpAccessRecords() { return getArray(config.storageKeys.followUpAccess); },
     getOrCreateFollowUpAccess(coreResponse) {
-      if (!coreResponse?.respondentId || !coreResponse?.responseId) {
-        throw new Error("A submitted core response is required before creating a follow-up link.");
-      }
+      if (!coreResponse?.respondentId || !coreResponse?.responseId) throw new Error("A submitted core response is required before creating a follow-up link.");
       const records = this.getFollowUpAccessRecords();
       let record = records.find((item) => item.respondentId === coreResponse.respondentId && item.coreResponseId === coreResponse.responseId);
       if (record) return record;
@@ -208,23 +173,14 @@
       localStorage.setItem(config.storageKeys.followUpAccess, JSON.stringify(records));
       return record;
     },
-
-    resolveFollowUpAccess(token) {
-      if (!token) return null;
-      return this.getFollowUpAccessRecords().find((record) => record.token === token) || null;
-    },
-
+    resolveFollowUpAccess(token) { return token ? this.getFollowUpAccessRecords().find((record) => record.token === token) || null : null; },
     getLatestFollowUpAccess() {
       const respondentId = getRespondentId();
-      return this.getFollowUpAccessRecords()
-        .filter((record) => record.respondentId === respondentId)
+      return this.getFollowUpAccessRecords().filter((record) => record.respondentId === respondentId)
         .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0] || null;
     },
 
-    loadFollowUpDraft(accessId, moduleId) {
-      return getObject(config.storageKeys.followUpDrafts)[`${accessId}:${moduleId}`] || null;
-    },
-
+    loadFollowUpDraft(accessId, moduleId) { return getObject(config.storageKeys.followUpDrafts)[`${accessId}:${moduleId}`] || null; },
     saveFollowUpDraft(access, moduleId, payload) {
       const drafts = getObject(config.storageKeys.followUpDrafts);
       const key = `${access.accessId}:${moduleId}`;
@@ -243,22 +199,18 @@
       localStorage.setItem(config.storageKeys.followUpDrafts, JSON.stringify(drafts));
       return drafts[key];
     },
-
     clearFollowUpDraft(accessId, moduleId) {
       const drafts = getObject(config.storageKeys.followUpDrafts);
       delete drafts[`${accessId}:${moduleId}`];
       localStorage.setItem(config.storageKeys.followUpDrafts, JSON.stringify(drafts));
     },
-
     getFollowUpResponses(includePreviews = false) {
       const responses = getArray(config.storageKeys.followUpResponses);
       return includePreviews ? responses : responses.filter((response) => !response?.isTestPreview);
     },
-
     getFollowUpResponse(accessId, moduleId) {
       return this.getFollowUpResponses(true).find((response) => response.accessId === accessId && response.moduleId === moduleId) || null;
     },
-
     saveFollowUpResponse(access, moduleId, payload) {
       const responses = this.getFollowUpResponses(true);
       const now = new Date().toISOString();
