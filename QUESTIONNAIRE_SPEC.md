@@ -4,7 +4,7 @@
 
 - Core schema: `wnmu-viewer-questionnaire-v7`
 - Follow-up schema: `wnmu-viewer-follow-ups-v3`
-- Rebuild interface: `rebuild-0.3.0`
+- Rebuild interface: `rebuild-0.3.1`
 - Release date: 2026-07-23
 - Mode: Test
 - Campaign: `viewer-questionnaire-2026`
@@ -23,6 +23,7 @@ The rebuild remains a pre-production browser-storage prototype. Version 7 create
 5. Upper Peninsula, Great Lakes, Michigan, and northern Wisconsin programming are measured separately because geographic subject interest and service-area interest are not interchangeable.
 6. Household-only children's respondents do not receive institutional-setting or educator-resource questions.
 7. Low-frequency viewers who watched once or twice receive the same barrier and re-engagement questions as former, never, and unsure viewers.
+8. Current television and online category-use questions allow up to eight selections from the 17-category list. Priority questions remain limited to five. Rating matrices show the full response meanings once in a response key and use compact labels beside each radio control.
 
 ## 3. Required questions and routing controllers
 
@@ -56,7 +57,7 @@ Hidden draft answers may remain temporarily but are excluded from submitted answ
 
 ## 4. Scales
 
-Interest: 1 Not interested; 2 Slightly interested; 3 Moderately interested; 4 Very interested; 5 Extremely interested; `na` Not sure.
+Interest: 1 Not interested; 2 Slightly interested; 3 Moderately interested; 4 Very interested; 5 Extremely interested; `na` Not sure. The interface uses NI, SI, MI, VI, EI, and NS beside each radio control and defines them once in the response key.
 
 Importance: 1 Not important; 2 Slightly important; 3 Moderately important; 4 Very important; 5 Essential; `na` Not sure.
 
@@ -117,8 +118,8 @@ The stage introduction explains that television and online viewing are asked sep
 |---|---|---|---:|---|
 | `channels_watched` | WNMU-TV channels watched | Checkbox | No | Hidden for never-viewers |
 | `watch_preference` | Scheduled, recorded, on-demand, livestream, clips, or variable preference | Radio | No | All |
-| `television_categories_watched` | Up to five categories watched most often on WNMU-TV television channels | Checkbox max 5 | No | Television-method respondents |
-| `online_categories_watched` | Up to five categories watched most often online | Checkbox max 5 | No | Online-method respondents |
+| `television_categories_watched` | Up to eight categories watched most often on WNMU-TV television channels | Checkbox max 8 | No | Television-method respondents |
+| `online_categories_watched` | Up to eight categories watched most often online | Checkbox max 8 | No | Online-method respondents |
 | `television_program_interest` | Potential interest in each category on WNMU-TV television channels | Matrix | No | Television-method respondents |
 | `online_program_interest` | Potential interest in each category WNMU-TV makes available online | Matrix | No | Online-method respondents |
 | `valued_programs` | Valuable or memorable programs | Text | No | All |
