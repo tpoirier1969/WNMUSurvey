@@ -3,7 +3,7 @@
 
   const config = Object.freeze({
     schemaVersion: "wnmu-viewer-questionnaire-v7",
-    buildVersion: "rebuild-0.3.0",
+    buildVersion: "rebuild-0.3.1",
     releaseDate: "2026-07-23",
     mode: "test",
     modeLabel: "Test Mode",
