@@ -6,123 +6,22 @@
   <meta name="description" content="Optional WNMU-TV follow-up questionnaires linked to a completed viewer questionnaire." />
   <meta name="theme-color" content="#17345f" />
   <title>WNMU-TV Follow-up Questionnaires</title>
-  <link rel="stylesheet" href="styles.css?v=rebuild-0.2.1" />
-  <link rel="stylesheet" href="follow-up.css?v=rebuild-0.2.1" />
+  <link rel="stylesheet" href="styles.css?v=rebuild-0.3.0" />
+  <link rel="stylesheet" href="follow-up.css?v=rebuild-0.3.0" />
 </head>
 <body class="followup-page">
   <a class="skip-link" href="#followUpMain">Skip to follow-up questionnaires</a>
-
   <main id="followUpMain" class="followup-shell">
-    <header class="followup-header">
-      <a class="followup-brand" href="index.html" aria-label="WNMU-TV Viewer Questionnaire home">
-        <img class="brand-logo" src="assets/WNMU-TV_Logo_2-Line.png" alt="WNMU-TV PBS" />
-        <span>Viewer Follow-up Questionnaires</span>
-      </a>
-      <div class="button-row">
-        <a class="button quiet" href="index.html">Main questionnaire</a>
-        <a class="button quiet" href="results.html">Results</a>
-      </div>
-    </header>
-
-    <section id="followUpAccessError" class="followup-panel followup-access-error" hidden>
-      <p class="eyebrow">Private follow-up link</p>
-      <h1>We could not connect this page to your main questionnaire.</h1>
-      <p id="followUpAccessErrorText"></p>
-      <div class="button-row"><a class="button primary" href="index.html">Return to the main questionnaire</a></div>
-    </section>
-
+    <header class="followup-header"><a class="followup-brand" href="index.html" aria-label="WNMU-TV Viewer Questionnaire home"><img class="brand-logo" src="assets/WNMU-TV_Logo_2-Line.png" alt="WNMU-TV PBS" /><span>Viewer Follow-up Questionnaires</span></a><div class="button-row"><a class="button quiet" href="index.html">Main questionnaire</a><a class="button quiet" href="results.html">Results</a></div></header>
+    <section id="followUpAccessError" class="followup-panel followup-access-error" hidden><p class="eyebrow">Private follow-up link</p><h1>We could not connect this page to your main questionnaire.</h1><p id="followUpAccessErrorText"></p><div class="button-row"><a class="button primary" href="index.html">Return to the main questionnaire</a></div></section>
     <section id="followUpHub" class="followup-hub" hidden>
-      <div class="followup-panel followup-hero">
-        <p class="eyebrow">Optional follow-ups</p>
-        <h1>Choose an optional follow-up.</h1>
-        <p class="lead">Complete one topic, several, or none. Your main questionnaire is already submitted.</p>
-
-        <div id="linkedCoreSummary" class="linked-core-summary" aria-live="polite"></div>
-
-        <div class="continuation-panel">
-          <div>
-            <h2>Save a return link</h2>
-            <p>Use it to continue later.</p>
-            <p class="test-limitation"><strong>Test mode:</strong> the link works only in this browser.</p>
-          </div>
-          <div class="continuation-controls">
-            <input id="continuationLink" class="text-control" type="text" readonly />
-            <div class="button-row">
-              <button class="button secondary" id="copyContinuationLink" type="button">Copy link</button>
-              <a class="button quiet" id="emailContinuationLink" href="#">Email link</a>
-            </div>
-            <p id="continuationStatus" class="question-message" aria-live="polite"></p>
-          </div>
-        </div>
-      </div>
-
-      <section aria-labelledby="followUpTopicsTitle">
-        <div class="followup-section-heading">
-          <div><p class="eyebrow">Choose a topic</p><h2 id="followUpTopicsTitle">Optional questionnaires</h2></div>
-          <p>All questions are optional.</p>
-        </div>
-        <div id="followUpModuleGrid" class="followup-module-grid"></div>
-      </section>
-
-      <details class="followup-test-tools">
-        <summary>Test tools</summary>
-        <p id="followUpTestResponseCount"></p>
-        <button class="button quiet" id="downloadFollowUpResponses" type="button">Download linked follow-up responses</button>
-      </details>
+      <div class="followup-panel followup-hero"><p class="eyebrow">Optional follow-ups</p><h1>Choose an optional follow-up.</h1><p class="lead">Complete one topic, several, or none. Your main questionnaire is already submitted.</p><div id="linkedCoreSummary" class="linked-core-summary" aria-live="polite"></div><div class="continuation-panel"><div><h2>Save a return link</h2><p>Use it to continue later.</p><p class="test-limitation"><strong>Test mode:</strong> the link works only in this browser.</p></div><div class="continuation-controls"><input id="continuationLink" class="text-control" type="text" readonly /><div class="button-row"><button class="button secondary" id="copyContinuationLink" type="button">Copy link</button><a class="button quiet" id="emailContinuationLink" href="#">Email link</a></div><p id="continuationStatus" class="question-message" aria-live="polite"></p></div></div></div>
+      <section aria-labelledby="followUpTopicsTitle"><div class="followup-section-heading"><div><p class="eyebrow">Choose a topic</p><h2 id="followUpTopicsTitle">Optional questionnaires</h2></div><p>All questions are optional.</p></div><div id="followUpModuleGrid" class="followup-module-grid"></div></section>
+      <details class="followup-test-tools"><summary>Test tools</summary><p id="followUpTestResponseCount"></p><button class="button quiet" id="downloadFollowUpResponses" type="button">Download linked follow-up responses</button></details>
     </section>
-
-    <section id="followUpQuestionnaire" class="followup-panel followup-questionnaire" hidden>
-      <div class="followup-toolbar">
-        <button class="text-button" type="button" data-followup-hub>← All follow-up topics</button>
-        <span id="followUpPagePosition"></span>
-      </div>
-
-      <div class="progress-wrap" aria-label="Follow-up questionnaire progress">
-        <div class="progress-track"><span id="followUpProgressBar"></span></div>
-      </div>
-
-      <header class="followup-module-heading">
-        <p class="eyebrow">Optional follow-up</p>
-        <h1 id="followUpModuleTitle"></h1>
-        <p id="followUpModuleIntro"></p>
-        <h2 id="followUpPageTitle"></h2>
-        <p id="followUpPageIntro" class="followup-page-intro" hidden></p>
-      </header>
-
-      <div id="followUpPageContext" class="followup-page-context" hidden></div>
-
-      <form novalidate>
-        <div id="followUpQuestions" class="question-stack"></div>
-        <p id="followUpModuleError" class="form-error" aria-live="assertive"></p>
-
-        <div class="followup-actions">
-          <button class="button quiet" id="followUpSaveExit" type="button">Save and return to topics</button>
-          <div class="button-row">
-            <button class="button secondary" id="followUpPrevious" type="button">Previous</button>
-            <button class="button primary" id="followUpNext" type="button">Next</button>
-            <button class="button primary" id="followUpSubmit" type="button" hidden>Submit this follow-up</button>
-          </div>
-        </div>
-      </form>
-    </section>
-
-    <section id="followUpComplete" class="followup-panel followup-complete" hidden>
-      <div class="completion-mark" aria-hidden="true">✓</div>
-      <p class="eyebrow">Follow-up submitted</p>
-      <h1 id="followUpCompleteTitle">Thank you.</h1>
-      <p id="followUpCompleteMessage"></p>
-      <div class="button-row centered">
-        <button class="button primary" id="followUpCompleteHub" type="button">Choose another topic</button>
-        <a class="button quiet" href="index.html">Return to the main questionnaire</a>
-      </div>
-    </section>
+    <section id="followUpQuestionnaire" class="followup-panel followup-questionnaire" hidden><div class="followup-toolbar"><button class="text-button" type="button" data-followup-hub>← All follow-up topics</button><span id="followUpPagePosition"></span></div><div class="progress-wrap" aria-label="Follow-up questionnaire progress"><div class="progress-track"><span id="followUpProgressBar"></span></div></div><header class="followup-module-heading"><p class="eyebrow">Optional follow-up</p><h1 id="followUpModuleTitle"></h1><p id="followUpModuleIntro"></p><h2 id="followUpPageTitle"></h2><p id="followUpPageIntro" class="followup-page-intro" hidden></p></header><div id="followUpPageContext" class="followup-page-context" hidden></div><form novalidate><div id="followUpQuestions" class="question-stack"></div><p id="followUpModuleError" class="form-error" aria-live="assertive"></p><div class="followup-actions"><button class="button quiet" id="followUpSaveExit" type="button">Save and return to topics</button><div class="button-row"><button class="button secondary" id="followUpPrevious" type="button">Previous</button><button class="button primary" id="followUpNext" type="button">Next</button><button class="button primary" id="followUpSubmit" type="button" hidden>Submit this follow-up</button></div></div></form></section>
+    <section id="followUpComplete" class="followup-panel followup-complete" hidden><div class="completion-mark" aria-hidden="true">✓</div><p class="eyebrow">Follow-up submitted</p><h1 id="followUpCompleteTitle">Thank you.</h1><p id="followUpCompleteMessage"></p><div class="button-row centered"><button class="button primary" id="followUpCompleteHub" type="button">Choose another topic</button><a class="button quiet" href="index.html">Return to the main questionnaire</a></div></section>
   </main>
-
-  <script src="config.js?v=rebuild-0.2.1"></script>
-  <script src="questions.js?v=rebuild-0.2.1"></script>
-  <script>window.WNMU_SURVEY = window.WNMU_REBUILD_SURVEY;</script>
-  <script src="storage.js?v=rebuild-0.2.1"></script>
-  <script src="follow-up-definitions.js?v=rebuild-0.2.1"></script>
-  <script src="follow-up-app.js?v=rebuild-0.2.1"></script>
+  <script src="config.js?v=rebuild-0.3.0"></script><script src="questions.js?v=rebuild-0.3.0"></script><script>window.WNMU_SURVEY = window.WNMU_REBUILD_SURVEY;</script><script src="storage.js?v=rebuild-0.3.0"></script><script src="follow-up-definitions.js?v=rebuild-0.3.0"></script><script src="follow-up-app.js?v=rebuild-0.3.0"></script>
 </body>
 </html>
