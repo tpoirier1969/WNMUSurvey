@@ -63,7 +63,7 @@ The current rebuild renderer displays questions by stage and module rather than 
 
 | Module | IDs | Denominator note |
 |---|---|---|
-| Local and regional programming | `local_subjects`, `local_voices`, `up_programming_importance`, `great_lakes_programming_importance`, `michigan_programming_importance`, `northern_wisconsin_programming_importance`, `local_program_idea` | Submitted local module; answered question n |
+| Local and regional programming | `regional_program_interest`, `local_voices`, `up_programming_importance`, `great_lakes_programming_importance`, `michigan_programming_importance`, `northern_wisconsin_programming_importance`, `local_program_idea` | Submitted local module; answered question n |
 | Programming interests and ideas | `specific_program_subjects`, `program_characteristics`, `program_length_preferences`, `new_vs_familiar`, `special_programming_interest`, `program_development_ideas` | Submitted programming module; answered question n |
 | Online viewing | `online_primary_service`, `online_frequency`, `passport_status`, `wnmu_online_appeal`, `online_help_formats`, `online_comments` | Submitted online module; answered question n |
 | Children and education | `children_age_groups`, `children_settings`, `children_learning_goals`, `children_local_importance`, `children_local_topics`, `educator_resources`, `children_access_barriers`, `children_comments` | Submitted eligible module; `children_settings` and `educator_resources` apply only to educator/both roles |
@@ -79,6 +79,7 @@ Core retired in v7:
 
 Follow-up retired in v3:
 
+- `local_subjects`
 - `local_areas`
 - `local_formats_followup`
 - `original_up_production_importance`
