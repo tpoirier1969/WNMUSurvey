@@ -3,7 +3,7 @@
 
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = "thank-you.css?v=rebuild-0.2.1";
+  stylesheet.href = "thank-you.css?v=rebuild-0.2.2";
   document.head.append(stylesheet);
 
   const config = window.WNMU_REBUILD_CONFIG;
