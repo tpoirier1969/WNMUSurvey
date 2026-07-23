@@ -7,6 +7,14 @@
   const storage = window.WNMUStorage;
   if (!config || !coreSurvey || !followUps || !storage) throw new Error("Follow-up questionnaire scripts loaded in the wrong order.");
 
+  const moduleSummaries = Object.freeze({
+    "local-programming": "Regional stories, voices, and production priorities.",
+    "programming-ideas": "Program subjects, formats, and new ideas.",
+    "online-viewing": "PBS App, Passport, devices, and online access.",
+    "children-education": "Children's viewing, learning needs, and resources.",
+    communication: "Schedules, reminders, and finding programs."
+  });
+
   const els = {};
   let access = null;
   let coreResponse = null;
@@ -102,7 +110,7 @@
     const submitted = coreResponse.submittedAt ? new Date(coreResponse.submittedAt).toLocaleString() : "an earlier session";
     const status = coreOptionLabel("viewer_status", coreResponse.routeProfile?.viewer_status) || "Viewer status not answered";
     const priorities = selectedCorePriorities().map((option) => option.label);
-    els.linkedCoreSummary.innerHTML = `<strong>Your main questionnaire is complete.</strong><span>Submitted ${escapeHtml(submitted)}</span><span>${escapeHtml(status)}</span><span>${escapeHtml(priorities.length ? priorities.join(", ") : "No programming priorities were selected")}</span><p>These follow-up answers are connected to that response through a random pseudonymous respondent ID. You will not be asked to repeat the main questionnaire.</p>`;
+    els.linkedCoreSummary.innerHTML = `<strong>Main questionnaire complete</strong><span>Submitted ${escapeHtml(submitted)}</span><span>${escapeHtml(status)}</span><span>${escapeHtml(priorities.length ? priorities.join(", ") : "No programming priorities selected")}</span><p>Follow-ups stay linked without using your name or email.</p>`;
   }
 
   function renderContinuationActions() {
@@ -120,8 +128,9 @@
       const completed = submitted.some((response) => response.accessId === access.accessId && response.moduleId === module.id && response.followUpSchemaVersion === followUps.schemaVersion);
       const draft = storage.loadFollowUpDraft(access.accessId, module.id);
       const status = completed ? "Completed" : draft ? "Saved for later" : "Not started";
-      const action = completed ? "Review answers" : draft ? "Continue" : "Begin";
-      return `<article class="followup-module-card" data-status="${escapeAttr(status.toLowerCase().replace(/\s+/g, "-"))}"><div><p class="followup-module-status">${status}</p><h2>${escapeHtml(module.title)}</h2><p>${escapeHtml(module.intro)}</p></div><div class="followup-module-card-footer"><span>${escapeHtml(module.time)}</span><button class="button secondary" type="button" data-module-id="${escapeAttr(module.id)}">${action}</button></div></article>`;
+      const action = completed ? "Review" : draft ? "Continue" : "Begin";
+      const summary = moduleSummaries[module.id] || module.intro;
+      return `<article class="followup-module-card" data-status="${escapeAttr(status.toLowerCase().replace(/\s+/g, "-"))}"><div><p class="followup-module-status">${status}</p><h2>${escapeHtml(module.title)}</h2><p>${escapeHtml(summary)}</p></div><div class="followup-module-card-footer"><span>${escapeHtml(module.time)}</span><button class="button secondary" type="button" data-module-id="${escapeAttr(module.id)}">${action}</button></div></article>`;
     }).join("");
   }
 
@@ -134,11 +143,11 @@
     const url = continuationUrl();
     try {
       await navigator.clipboard.writeText(url);
-      els.continuationStatus.textContent = "Private follow-up link copied.";
+      els.continuationStatus.textContent = "Private link copied.";
     } catch (error) {
       els.continuationLink.focus();
       els.continuationLink.select();
-      els.continuationStatus.textContent = "Select and copy the private link shown above.";
+      els.continuationStatus.textContent = "Select and copy the link above.";
     }
   }
 
@@ -266,7 +275,7 @@
     clearTimeout(saveTimer);
     storage.saveFollowUpResponse(access, currentModule.id, { answers: clone(answers), startedAt });
     els.followUpCompleteTitle.textContent = `${currentModule.title} submitted`;
-    els.followUpCompleteMessage.textContent = "Your main questionnaire remains complete, and this follow-up response has been linked to it. You may choose another topic now or return later using your private link.";
+    els.followUpCompleteMessage.textContent = "This follow-up is linked to your completed main questionnaire. Choose another topic or return later with your private link.";
     showOnly("complete");
     scrollToTop();
   }
