@@ -31,6 +31,10 @@
   line-height: 1.1;
 }
 
+.completion-header h2[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
 .completion-summary {
   max-width: 720px;
   margin: 6px auto 0;
