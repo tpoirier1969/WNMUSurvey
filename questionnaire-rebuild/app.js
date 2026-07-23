@@ -335,7 +335,7 @@
       input.checked = String(state.answers[question.id]?.[rowId] ?? "") === String(option.value);
       const text = document.createElement("span");
       text.textContent = option.shortLabel || option.label;
-      label.append(input, text);
+      label.append(text, input);
       group.append(label);
     });
     return group;
@@ -345,7 +345,7 @@
     const key = document.createElement("div");
     key.className = "rating-scale-key";
     const strong = document.createElement("strong");
-    strong.textContent = title || question.label;
+    strong.textContent = title || "Response key";
     key.append(strong);
     (survey.scales[question.scale] || []).forEach((option) => {
       const item = document.createElement("span");
