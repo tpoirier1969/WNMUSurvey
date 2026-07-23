@@ -17,6 +17,19 @@ The rebuild is not complete if it contains only the five-stage core questionnair
 
 The active follow-up schema remains `wnmu-viewer-follow-ups-v2`, with 40 live question IDs, eight in each module. The canonical question meanings and stored values remain governed by the root `QUESTIONNAIRE_SPEC.md` and `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`.
 
+## Shared layout contract
+
+The main questionnaire sets the visual scale for the entire rebuild. The Thank You, follow-up, and results pages must use the same responsive frame and panel constraints:
+
+- outer frame no wider than 1,316 pixels
+- primary content panel no wider than 1,160 pixels
+- compact 20–22 pixel desktop panel padding
+- 44-pixel minimum interactive controls
+- the same 900-pixel and 680-pixel responsive breakpoints used by the main survey
+- no horizontal scrolling, overlapping controls, or oversized secondary-page headings
+
+Secondary pages may contain more data, but they must not introduce a larger visual scale than the questionnaire.
+
 ## Canonical rebuild files
 
 - `index.html`, `app.js`, `questions.js`: core questionnaire
