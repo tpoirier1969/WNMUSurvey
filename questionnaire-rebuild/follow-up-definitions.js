@@ -21,8 +21,8 @@
             intro: "Think about the Upper Peninsula, Great Lakes region, Michigan, and nearby communities.",
             questions: [
               {
-                id: "local_subjects", type: "checkbox", max: 5,
-                label: "Which local or regional subjects should receive the most attention? Choose up to five.",
+                id: "regional_program_interest", type: "checkbox", max: 5,
+                label: "Which types of local or regional programming would you be most interested in watching? Choose up to five.",
                 options: [
                   ["history_heritage", "History and heritage"],
                   ["current_issues", "Current issues and public affairs"],
