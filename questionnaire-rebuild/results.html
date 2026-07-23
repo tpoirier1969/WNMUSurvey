@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="WNMU-TV rebuild questionnaire and follow-up results." />
+  <meta name="theme-color" content="#17345f" />
+  <title>WNMU-TV Questionnaire Results</title>
+  <link rel="stylesheet" href="styles.css?v=rebuild-0.2.0" />
+  <link rel="stylesheet" href="results.css?v=rebuild-0.2.0" />
+</head>
+<body class="results-page">
+  <a class="skip-link" href="#resultsMain">Skip to results</a>
+  <header class="results-header">
+    <a class="results-brand" href="index.html">
+      <img src="assets/WNMU-TV_Logo_2-Line.png" alt="WNMU-TV PBS" />
+      <span>Questionnaire Results</span>
+    </a>
+    <nav class="button-row" aria-label="Results navigation">
+      <a class="button quiet" href="index.html">Questionnaire</a>
+      <a class="button quiet" href="follow-up.html">Follow-ups</a>
+    </nav>
+  </header>
+
+  <main id="resultsMain" class="results-shell">
+    <section class="results-hero">
+      <p class="eyebrow">Rebuild test results</p>
+      <h1>Main questionnaire and linked follow-ups</h1>
+      <p>This dashboard reads only the isolated rebuild storage in this browser. Preview records are excluded.</p>
+      <div class="results-metrics" aria-live="polite">
+        <article><strong id="coreResponseCount">0</strong><span>Main responses</span></article>
+        <article><strong id="followUpRespondentCount">0</strong><span>Follow-up respondents</span></article>
+        <article><strong id="followUpModuleCount">0</strong><span>Submitted modules</span></article>
+      </div>
+    </section>
+
+    <section id="filters" class="results-panel filters-panel" aria-labelledby="filtersTitle">
+      <div><p class="eyebrow">Filter linked records</p><h2 id="filtersTitle">Results in view</h2></div>
+      <div class="filter-grid">
+        <label>Viewer relationship<select id="viewerStatusFilter"><option value="">All</option></select></label>
+        <label>Children role<select id="childrenRoleFilter"><option value="">All</option></select></label>
+        <label>County or area<select id="countyFilter"><option value="">All</option></select></label>
+      </div>
+      <div class="button-row">
+        <button class="button secondary" id="clearFilters" type="button">Clear filters</button>
+        <button class="button primary" id="downloadResults" type="button">Download linked JSON</button>
+      </div>
+    </section>
+
+    <section class="results-panel" aria-labelledby="moduleCompletionTitle">
+      <p class="eyebrow">Participation</p>
+      <h2 id="moduleCompletionTitle">Optional follow-up completion</h2>
+      <div id="moduleCompletionGrid" class="module-completion-grid"></div>
+    </section>
+
+    <section class="results-panel" aria-labelledby="coreResultsTitle">
+      <p class="eyebrow">Main questionnaire</p>
+      <h2 id="coreResultsTitle">Core results</h2>
+      <div id="coreResults" class="results-sections"></div>
+    </section>
+
+    <section class="results-panel" aria-labelledby="followUpResultsTitle">
+      <p class="eyebrow">Linked optional questionnaires</p>
+      <h2 id="followUpResultsTitle">Follow-up results</h2>
+      <p class="denominator-note">Each follow-up percentage uses submitted responses to that module or answered responses to that question. It is not a percentage of all main-questionnaire respondents.</p>
+      <div id="followUpResults" class="results-sections"></div>
+    </section>
+  </main>
+
+  <script src="config.js?v=rebuild-0.2.0"></script>
+  <script src="questions.js?v=rebuild-0.2.0"></script>
+  <script>window.WNMU_SURVEY = window.WNMU_REBUILD_SURVEY;</script>
+  <script src="storage.js?v=rebuild-0.2.0"></script>
+  <script src="follow-up-definitions.js?v=rebuild-0.2.0"></script>
+  <script src="results.js?v=rebuild-0.2.0"></script>
+</body>
+</html>
