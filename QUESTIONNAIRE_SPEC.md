@@ -307,16 +307,27 @@ Before public release:
 
 ## 11. Standalone rebuild implementation
 
-The independent core-questionnaire rebuild is located at `questionnaire-rebuild/`.
+The independent questionnaire rebuild is located at `questionnaire-rebuild/`.
 
-- Rebuild version: `rebuild-0.1.1`
-- Schema: `wnmu-viewer-questionnaire-v6`
-- Scope: the same 28 core questions across the same five stages
-- Question contract: IDs, labels, stored values, scales, required status, and routing match this specification
+- Rebuild version: `rebuild-0.2.0`
+- Core schema: `wnmu-viewer-questionnaire-v6`
+- Follow-up schema: `wnmu-viewer-follow-ups-v2`
+- Core scope: the same 28 core questions across the same five stages
+- Required application scope: core questionnaire, successful submission, full Thank You experience, five optional follow-up modules, private continuation links, pseudonymous core/follow-up linkage, separate follow-up drafts and submissions, and rebuild-native linked results
+- Question contract: core and follow-up IDs, labels, stored values, scales, required status, selection limits, eligibility, and routing match this specification and `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`
 - Runtime boundary: no CSS, JavaScript, configuration, storage, or image files are loaded from the root questionnaire
-- Rebuild draft key: `wnmuStandaloneRebuildDraft:v6`
-- Rebuild response key: `wnmuStandaloneRebuildResponses:v1`
-- Rebuild respondent key: `wnmuStandaloneRebuildRespondentId:v1`
-- Results, optional follow-ups, and contact records are not part of the initial rebuild scope
+- Results boundary: rebuild results read only rebuild storage and exclude Thank You preview records
+- Children's follow-up eligibility: only submitted core responses with `children_role` equal to `household`, `educator`, or `both`
+- Contact handling: optional contact requests remain outside the rebuild until separately authorized and implemented with appropriate privacy separation
 
-The rebuild remains an unlinked review application. Its presence on the same GitHub Pages site does not make it private; anyone with the direct folder URL may open it. It must not replace the root questionnaire until its full visual, interaction, storage, routing, and responsive QA is complete and Tod explicitly approves the replacement.
+Rebuild storage keys:
+
+- core draft: `wnmuStandaloneRebuildDraft:v6`
+- core responses: `wnmuStandaloneRebuildResponses:v1`
+- respondent ID: `wnmuStandaloneRebuildRespondentId:v1`
+- Test Thank You preview: `wnmuStandaloneRebuildThankYouPreview:v1`
+- follow-up access records: `wnmuStandaloneRebuildFollowUpAccess:v1`
+- follow-up drafts: `wnmuStandaloneRebuildFollowUpDrafts:v2`
+- follow-up responses: `wnmuStandaloneRebuildFollowUpResponses:v2`
+
+The rebuild remains a test application using browser local storage. Private continuation links work only in the same browser and origin until approved server-side token resolution and protected response storage are connected. Its presence on the same GitHub Pages site does not make it private; anyone with the direct folder URL may open it. It must not replace the root questionnaire until its full visual, interaction, storage, routing, follow-up, results, and responsive QA is complete and Tod explicitly approves the replacement.
