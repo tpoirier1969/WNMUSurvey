@@ -3,7 +3,7 @@
 
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = "thank-you.css?v=rebuild-0.2.2";
+  stylesheet.href = "thank-you.css?v=rebuild-0.3.0";
   document.head.append(stylesheet);
 
   const config = window.WNMU_REBUILD_CONFIG;
@@ -16,15 +16,14 @@
   if (!config || !storage || !followUps || !app || !completePanel) return;
 
   const moduleSummaries = Object.freeze({
-    "local-programming": "Regional stories, voices, and production priorities.",
-    "programming-ideas": "Program subjects, formats, and new ideas.",
-    "online-viewing": "PBS App, Passport, devices, and online access.",
-    "children-education": "Children's viewing, learning needs, and resources.",
+    "local-programming": "Regional subjects, voices, geographic priorities, and ideas.",
+    "programming-ideas": "Program subjects, qualities, lengths, and new ideas.",
+    "online-viewing": "WNMU online viewing, Passport, and viewer support.",
+    "children-education": "Children's learning needs, regional topics, and resources.",
     communication: "Schedules, reminders, and finding programs."
   });
 
   let activeResponseId = null;
-
   if (testLinks) testLinks.hidden = config.mode !== "test";
   previewLink?.addEventListener("click", showPreview);
 
@@ -89,8 +88,7 @@
     const access = storage.getOrCreateFollowUpAccess(response);
     const privateUrl = followUpUrl(access);
     const submitted = storage.getFollowUpResponses(true);
-    const modules = eligibleModules(response);
-    const moduleCards = modules.map((module) => {
+    const moduleCards = eligibleModules(response).map((module) => {
       const completed = submitted.some((item) => item.accessId === access.accessId && item.moduleId === module.id && item.followUpSchemaVersion === followUps.schemaVersion);
       const draft = storage.loadFollowUpDraft(access.accessId, module.id);
       const status = completed ? "Completed" : draft ? "Saved for later" : "Optional";
