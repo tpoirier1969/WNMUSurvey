@@ -30,7 +30,7 @@ Purpose: Learn which regional subjects, voices, geographic areas, and ideas matt
 
 | ID | Measure | Type |
 |---|---|---|
-| `local_subjects` | Up to five regional subject priorities, including a distinct regional music and live-performance option | Checkbox |
+| `regional_program_interest` | Up to five types of regional programming the respondent would be interested in watching, including a distinct regional music and live-performance option | Checkbox |
 | `local_voices` | Voices and experiences needing greater representation | Checkbox |
 | `up_programming_importance` | Importance of Upper Peninsula programming | Radio 1–5 + not sure |
 | `great_lakes_programming_importance` | Importance of Great Lakes regional programming | Radio 1–5 + not sure |
@@ -42,6 +42,7 @@ Regional music is phrased neutrally as one subject among many. It is not present
 
 Retired from v2:
 
+- `local_subjects`, replaced by the new interest-focused `regional_program_interest`; the old priority meaning is not reused
 - `local_areas`
 - `local_formats_followup`
 - `original_up_production_importance`
