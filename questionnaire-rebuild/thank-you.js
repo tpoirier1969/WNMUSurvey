@@ -3,7 +3,7 @@
 
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = "thank-you.css?v=rebuild-0.2.0";
+  stylesheet.href = "thank-you.css?v=rebuild-0.2.1";
   document.head.append(stylesheet);
 
   const config = window.WNMU_REBUILD_CONFIG;
@@ -14,6 +14,14 @@
   const previewLink = document.getElementById("thankYouPreviewLink");
   const testLinks = document.querySelector(".test-navigation-links");
   if (!config || !storage || !followUps || !app || !completePanel) return;
+
+  const moduleSummaries = Object.freeze({
+    "local-programming": "Regional stories, voices, and production priorities.",
+    "programming-ideas": "Program subjects, formats, and new ideas.",
+    "online-viewing": "PBS App, Passport, devices, and online access.",
+    "children-education": "Children's viewing, learning needs, and resources.",
+    communication: "Schedules, reminders, and finding programs."
+  });
 
   let activeResponseId = null;
 
@@ -86,11 +94,12 @@
       const completed = submitted.some((item) => item.accessId === access.accessId && item.moduleId === module.id && item.followUpSchemaVersion === followUps.schemaVersion);
       const draft = storage.loadFollowUpDraft(access.accessId, module.id);
       const status = completed ? "Completed" : draft ? "Saved for later" : "Optional";
-      const action = completed ? "Review answers" : draft ? "Continue" : "Begin";
+      const action = completed ? "Review" : draft ? "Continue" : "Begin";
+      const summary = moduleSummaries[module.id] || module.intro;
       return `<article class="thank-you-module" data-status="${escapeAttr(status.toLowerCase().replace(/\s+/g, "-"))}">
         <p class="thank-you-module-status">${escapeHtml(status)}</p>
         <h3>${escapeHtml(module.title)}</h3>
-        <p>${escapeHtml(module.intro)}</p>
+        <p>${escapeHtml(summary)}</p>
         <div class="thank-you-module-footer"><span>${escapeHtml(module.time)}</span><a class="button secondary" href="${escapeAttr(followUpUrl(access, module.id))}">${action}</a></div>
       </article>`;
     }).join("");
@@ -99,21 +108,23 @@
     const body = encodeURIComponent(`Use this private link to return to the optional WNMU-TV follow-up questionnaires:\n\n${privateUrl}`);
 
     completePanel.innerHTML = `
-      <div class="completion-mark" aria-hidden="true">✓</div>
-      <p class="eyebrow">Questionnaire submitted</p>
-      <h2 tabindex="-1">Thank you for helping WNMU-TV better understand its viewers and communities.</h2>
-      <p>Your main questionnaire is complete. The optional topics below let you add detail without repeating any of your main answers.</p>
+      <header class="completion-header">
+        <div class="completion-mark" aria-hidden="true">✓</div>
+        <p class="eyebrow">Questionnaire submitted</p>
+        <h2 tabindex="-1">Thank you. Your response has been recorded.</h2>
+        <p class="completion-summary">You may stop here or choose an optional follow-up below.</p>
+      </header>
       <section class="completion-followups" aria-labelledby="followUpOfferTitle">
         <div class="completion-followup-heading">
-          <div><p class="eyebrow">Optional next step</p><h3 id="followUpOfferTitle">Would you like to tell us more?</h3></div>
-          <p>Choose one topic, several, or none. Each submitted follow-up is linked to this response with a random pseudonymous respondent ID.</p>
+          <div><p class="eyebrow">Optional</p><h3 id="followUpOfferTitle">Follow-up topics</h3></div>
+          <p>Choose any topic. Your main questionnaire stays complete.</p>
         </div>
         <div class="thank-you-module-grid">${moduleCards}</div>
         <div class="completion-private-link">
-          <div><strong>Save your private return link</strong><p>You can return to these optional questionnaires later without taking the main questionnaire again.</p></div>
+          <div><strong>Save a return link</strong><p>Continue later in this browser. Follow-ups stay linked without using your name or email.</p></div>
           <div class="button-row">
-            <a class="button primary" href="${escapeAttr(privateUrl)}">View all follow-up topics</a>
-            <button class="button secondary" id="copyFollowUpLink" type="button" data-url="${escapeAttr(privateUrl)}">Copy private link</button>
+            <a class="button primary" href="${escapeAttr(privateUrl)}">All topics</a>
+            <button class="button secondary" id="copyFollowUpLink" type="button" data-url="${escapeAttr(privateUrl)}">Copy link</button>
             <a class="button quiet" href="mailto:?subject=${subject}&body=${body}">Email link</a>
           </div>
           <p id="copyFollowUpStatus" class="question-message" aria-live="polite"></p>
@@ -121,7 +132,7 @@
       </section>
       <div class="button-row centered completion-bottom-actions">
         <a class="button secondary" href="results.html">View results</a>
-        <a class="button quiet" href="index.html">Return to questionnaire home</a>
+        <a class="button quiet" href="index.html">Questionnaire home</a>
       </div>
       <span class="sr-only">Response ${escapeHtml(response.responseId)}</span>`;
 
@@ -132,7 +143,7 @@
     const status = document.getElementById("copyFollowUpStatus");
     try {
       await navigator.clipboard.writeText(url);
-      if (status) status.textContent = "Private follow-up link copied.";
+      if (status) status.textContent = "Private link copied.";
     } catch (error) {
       if (status) status.textContent = `Copy this private link: ${url}`;
     }
