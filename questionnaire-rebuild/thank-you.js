@@ -1,6 +1,11 @@
 (function () {
   "use strict";
 
+  const stylesheet = document.createElement("link");
+  stylesheet.rel = "stylesheet";
+  stylesheet.href = "thank-you.css?v=rebuild-0.2.0";
+  document.head.append(stylesheet);
+
   const config = window.WNMU_REBUILD_CONFIG;
   const storage = window.WNMU_REBUILD_STORAGE;
   const followUps = window.WNMU_FOLLOW_UPS;
