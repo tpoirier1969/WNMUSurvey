@@ -2,12 +2,12 @@
   "use strict";
 
   const interestScale = [
-    { value: 1, label: "Not interested" },
-    { value: 2, label: "Slightly interested" },
-    { value: 3, label: "Moderately interested" },
-    { value: 4, label: "Very interested" },
-    { value: 5, label: "Extremely interested" },
-    { value: "na", label: "Not sure" }
+    { value: 1, label: "Not interested", shortLabel: "NI" },
+    { value: 2, label: "Slightly interested", shortLabel: "SI" },
+    { value: 3, label: "Moderately interested", shortLabel: "MI" },
+    { value: 4, label: "Very interested", shortLabel: "VI" },
+    { value: 5, label: "Extremely interested", shortLabel: "EI" },
+    { value: "na", label: "Not sure", shortLabel: "NS" }
   ];
   const importanceScale = [
     { value: 1, label: "Not important", shortLabel: "1" },
@@ -100,8 +100,8 @@
           { id: "watching_habits", title: "Your viewing habits", questions: [
             { id: "channels_watched", type: "checkbox", when: { viewerStatusNotIn: ["never"] }, exclusiveValues: ["none","not_sure"], label: "Which WNMU-TV channels do you watch, even occasionally?", options: [["wnmu_13_1","WNMU-TV (13.1)"],["pbs_kids_13_2","PBS KIDS 24/7 (13.2)"],["wnmu_plus_13_3","WNMU-TV Plus (13.3)"],["mlc_13_4","Michigan Learning Channel (13.4)"],["none","I do not watch any of these channels"],["not_sure","I am not sure which channel I watch"]].map(([value,label])=>({value,label})) },
             { id: "watch_preference", type: "radio", label: "When you find a program that interests you, how do you generally prefer to watch it?", options: [["scheduled","At the scheduled broadcast time"],["recorded","Recorded and watched later"],["on_demand","Streamed on demand"],["livestream","Through a livestream"],["short_clips","As short clips or highlights"],["depends","It depends on the program"],["none","No strong preference"]].map(([value,label])=>({value,label})) },
-            { id: "television_categories_watched", type: "checkbox", max: 5, when: { hasAnyMethod: televisionMethods }, label: "During the past 12 months, which types of programming have you watched most often on WNMU-TV television channels? Choose up to five.", options: categoryOptions },
-            { id: "online_categories_watched", type: "checkbox", max: 5, when: { hasAnyMethod: onlineMethods }, label: "During the past 12 months, which types of WNMU-TV or PBS programming have you watched most often online? Choose up to five.", help: "Include online services where WNMU-TV programming is available, such as the WNMU-TV livestream or website, PBS App, Passport, PBS.org, or YouTube.", options: categoryOptions }
+            { id: "television_categories_watched", type: "checkbox", max: 8, when: { hasAnyMethod: televisionMethods }, label: "During the past 12 months, which types of programming have you watched most often on WNMU-TV television channels? Choose up to eight.", options: categoryOptions },
+            { id: "online_categories_watched", type: "checkbox", max: 8, when: { hasAnyMethod: onlineMethods }, label: "During the past 12 months, which types of WNMU-TV or PBS programming have you watched most often online? Choose up to eight.", help: "Include online services where WNMU-TV programming is available, such as the WNMU-TV livestream or website, PBS App, Passport, PBS.org, or YouTube.", options: categoryOptions }
           ]},
           { id: "watching_interests", title: "Programming that interests you", questions: [
             { id: "television_program_interest", type: "matrix", scale: "interest", when: { hasAnyMethod: televisionMethods }, label: "Whether or not you currently watch them, how interested would you be in seeing each type of programming on WNMU-TV television channels?", rows: categories },
