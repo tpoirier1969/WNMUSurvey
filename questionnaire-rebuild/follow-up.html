@@ -6,8 +6,8 @@
   <meta name="description" content="Optional WNMU-TV follow-up questionnaires linked to a completed viewer questionnaire." />
   <meta name="theme-color" content="#17345f" />
   <title>WNMU-TV Follow-up Questionnaires</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="follow-up.css" />
+  <link rel="stylesheet" href="styles.css?v=rebuild-0.2.1" />
+  <link rel="stylesheet" href="follow-up.css?v=rebuild-0.2.1" />
 </head>
 <body class="followup-page">
   <a class="skip-link" href="#followUpMain">Skip to follow-up questionnaires</a>
@@ -33,22 +33,22 @@
 
     <section id="followUpHub" class="followup-hub" hidden>
       <div class="followup-panel followup-hero">
-        <p class="eyebrow">Optional WNMU-TV follow-ups</p>
-        <h1>Tell us more about the topics that matter to you.</h1>
-        <p class="lead">Choose one topic, several topics, or none. Each questionnaire is separate, and your completed main questionnaire stays complete.</p>
+        <p class="eyebrow">Optional follow-ups</p>
+        <h1>Choose an optional follow-up.</h1>
+        <p class="lead">Complete one topic, several, or none. Your main questionnaire is already submitted.</p>
 
         <div id="linkedCoreSummary" class="linked-core-summary" aria-live="polite"></div>
 
         <div class="continuation-panel">
           <div>
-            <h2>Save your private return link</h2>
-            <p>Use this link to return later without repeating the main questionnaire.</p>
-            <p class="test-limitation"><strong>Test-mode limitation:</strong> until the database is connected, this link works only in this browser.</p>
+            <h2>Save a return link</h2>
+            <p>Use it to continue later.</p>
+            <p class="test-limitation"><strong>Test mode:</strong> the link works only in this browser.</p>
           </div>
           <div class="continuation-controls">
             <input id="continuationLink" class="text-control" type="text" readonly />
             <div class="button-row">
-              <button class="button secondary" id="copyContinuationLink" type="button">Copy private link</button>
+              <button class="button secondary" id="copyContinuationLink" type="button">Copy link</button>
               <a class="button quiet" id="emailContinuationLink" href="#">Email link</a>
             </div>
             <p id="continuationStatus" class="question-message" aria-live="polite"></p>
@@ -59,7 +59,7 @@
       <section aria-labelledby="followUpTopicsTitle">
         <div class="followup-section-heading">
           <div><p class="eyebrow">Choose a topic</p><h2 id="followUpTopicsTitle">Optional questionnaires</h2></div>
-          <p>All questions are optional. Saved drafts may be continued later with your private link.</p>
+          <p>All questions are optional.</p>
         </div>
         <div id="followUpModuleGrid" class="followup-module-grid"></div>
       </section>
@@ -118,11 +118,11 @@
     </section>
   </main>
 
-  <script src="config.js?v=rebuild-0.2.0"></script>
-  <script src="questions.js?v=rebuild-0.2.0"></script>
+  <script src="config.js?v=rebuild-0.2.1"></script>
+  <script src="questions.js?v=rebuild-0.2.1"></script>
   <script>window.WNMU_SURVEY = window.WNMU_REBUILD_SURVEY;</script>
-  <script src="storage.js?v=rebuild-0.2.0"></script>
-  <script src="follow-up-definitions.js?v=rebuild-0.2.0"></script>
-  <script src="follow-up-app.js?v=rebuild-0.2.0"></script>
+  <script src="storage.js?v=rebuild-0.2.1"></script>
+  <script src="follow-up-definitions.js?v=rebuild-0.2.1"></script>
+  <script src="follow-up-app.js?v=rebuild-0.2.1"></script>
 </body>
 </html>
