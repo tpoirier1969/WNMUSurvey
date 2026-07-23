@@ -6,7 +6,7 @@
   <meta name="description" content="WNMU-TV viewer questionnaire about viewing habits, programming interests, and community needs." />
   <meta name="theme-color" content="#17345f" />
   <title>WNMU-TV Viewer Questionnaire</title>
-  <link rel="stylesheet" href="styles.css?v=rebuild-0.2.1" />
+  <link rel="stylesheet" href="styles.css?v=rebuild-0.3.0" />
 </head>
 <body>
   <a class="skip-link" href="#stageHub">Skip to questionnaire stages</a>
@@ -24,105 +24,39 @@
     </section>
 
     <nav id="stageHub" class="stage-hub" aria-label="Questionnaire stages" tabindex="-1">
-      <button class="stage-card stage-blue" type="button" data-stage-id="about_you" data-status="not_started" style="--stage-progress: 0%">
-        <span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="11"/><path d="M15 52c1-12 8-18 17-18s16 6 17 18z"/></svg></span>
-        <span class="stage-number">1</span><strong>About You</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span>
-      </button>
-      <button class="stage-card stage-green" type="button" data-stage-id="wnmu_you" data-status="not_started" style="--stage-progress: 0%">
-        <span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 52 13 33C2 20 18 8 32 22 46 8 62 20 51 33z"/></svg></span>
-        <span class="stage-number">2</span><strong>WNMU &amp; You</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span>
-      </button>
-      <button class="stage-card stage-orange" type="button" data-stage-id="what_watch" data-status="not_started" style="--stage-progress: 0%">
-        <span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="11" y="18" width="42" height="32" rx="6"/><path d="m24 10 8 8 8-8"/><circle cx="45" cy="27" r="2"/><circle cx="45" cy="36" r="2"/></svg></span>
-        <span class="stage-number">3</span><strong>What You Watch</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span>
-      </button>
-      <button class="stage-card stage-purple" type="button" data-stage-id="what_want" data-status="not_started" style="--stage-progress: 0%">
-        <span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="m32 8 7 15 17 2-12 12 3 17-15-8-15 8 3-17L8 25l17-2z"/></svg></span>
-        <span class="stage-number">4</span><strong>What You Want</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span>
-      </button>
-      <button class="stage-card stage-teal" type="button" data-stage-id="how_doing" data-status="not_started" style="--stage-progress: 0%">
-        <span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M24 52H13V28h11z"/><path d="M24 30 34 12c3-5 8-2 7 3l-2 10h10c5 0 7 4 5 8l-6 15c-1 3-4 4-7 4H24z"/></svg></span>
-        <span class="stage-number">5</span><strong>How We’re Doing</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span>
-      </button>
+      <button class="stage-card stage-blue" type="button" data-stage-id="about_you" data-status="not_started" style="--stage-progress: 0%"><span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="11"/><path d="M15 52c1-12 8-18 17-18s16 6 17 18z"/></svg></span><span class="stage-number">1</span><strong>About You</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span></button>
+      <button class="stage-card stage-green" type="button" data-stage-id="wnmu_you" data-status="not_started" style="--stage-progress: 0%"><span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 52 13 33C2 20 18 8 32 22 46 8 62 20 51 33z"/></svg></span><span class="stage-number">2</span><strong>WNMU &amp; You</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span></button>
+      <button class="stage-card stage-orange" type="button" data-stage-id="what_watch" data-status="not_started" style="--stage-progress: 0%"><span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="11" y="18" width="42" height="32" rx="6"/><path d="m24 10 8 8 8-8"/><circle cx="45" cy="27" r="2"/><circle cx="45" cy="36" r="2"/></svg></span><span class="stage-number">3</span><strong>What You Watch</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span></button>
+      <button class="stage-card stage-purple" type="button" data-stage-id="what_want" data-status="not_started" style="--stage-progress: 0%"><span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="m32 8 7 15 17 2-12 12 3 17-15-8-15 8 3-17L8 25l17-2z"/></svg></span><span class="stage-number">4</span><strong>What You Want</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span></button>
+      <button class="stage-card stage-teal" type="button" data-stage-id="how_doing" data-status="not_started" style="--stage-progress: 0%"><span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M24 52H13V28h11z"/><path d="M24 30 34 12c3-5 8-2 7 3l-2 10h10c5 0 7 4 5 8l-6 15c-1 3-4 4-7 4H24z"/></svg></span><span class="stage-number">5</span><strong>How We’re Doing</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span></button>
     </nav>
 
-    <section id="resumeBlock" class="resume-block" hidden>
-      <div><strong>Your answers are saved.</strong><p id="resumeDetails"></p></div>
-      <div class="button-row">
-        <button class="button primary" id="resumeSurvey" type="button">Continue where I left off</button>
-        <button class="button quiet" id="discardDraft" type="button">Start over</button>
-      </div>
-    </section>
+    <section id="resumeBlock" class="resume-block" hidden><div><strong>Your answers are saved.</strong><p id="resumeDetails"></p></div><div class="button-row"><button class="button primary" id="resumeSurvey" type="button">Continue where I left off</button><button class="button quiet" id="discardDraft" type="button">Start over</button></div></section>
+    <section id="submitReadyPanel" class="submit-ready-panel" hidden><div><strong>All five stages are complete.</strong><p>You can review any stage or submit your questionnaire.</p></div><button class="button primary" id="submitFromHub" type="button">Submit questionnaire</button></section>
 
-    <section id="submitReadyPanel" class="submit-ready-panel" hidden>
-      <div><strong>All five stages are complete.</strong><p>You can review any stage or submit your questionnaire.</p></div>
-      <button class="button primary" id="submitFromHub" type="button">Submit questionnaire</button>
-    </section>
-
-    <div class="survey-facts" aria-label="Questionnaire details">
-      <span class="survey-fact"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11"/><path d="M16 9v7l5 3"/></svg><strong>Takes about 6–8 minutes</strong></span>
-      <span class="fact-divider" aria-hidden="true"></span>
-      <span class="survey-fact"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M24 11a9 9 0 0 0-15-2l-2 2"/><path d="M7 6v5h5"/><path d="M8 21a9 9 0 0 0 15 2l2-2"/><path d="M25 26v-5h-5"/></svg><span>You can save and return anytime.</span></span>
-    </div>
+    <div class="survey-facts" aria-label="Questionnaire details"><span class="survey-fact"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11"/><path d="M16 9v7l5 3"/></svg><strong>Takes about 6–8 minutes</strong></span><span class="fact-divider" aria-hidden="true"></span><span class="survey-fact"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M24 11a9 9 0 0 0-15-2l-2 2"/><path d="M7 6v5h5"/><path d="M8 21a9 9 0 0 0 15 2l2-2"/><path d="M25 26v-5h-5"/></svg><span>You can save and return anytime.</span></span></div>
 
     <section id="questionnairePanel" class="questionnaire-panel" hidden>
-      <div class="questionnaire-toolbar">
-        <div><span id="sectionPosition">Stage 1 of 5</span><strong id="saveStatus">Answers save automatically</strong></div>
-        <button class="text-button" id="returnToStages" type="button">Return to stages</button>
-      </div>
+      <div class="questionnaire-toolbar"><div><span id="sectionPosition">Stage 1 of 5</span><strong id="saveStatus">Answers save automatically</strong></div><button class="text-button" id="returnToStages" type="button">Return to stages</button></div>
       <div class="progress-wrap" aria-hidden="true"><div class="progress-track"><span id="progressBar"></span></div><span id="progressText">0% of this stage</span></div>
-      <div class="questionnaire-layout">
-        <aside class="section-nav" aria-label="Pages in this stage"><div id="sectionTabs"></div></aside>
-        <div class="section-viewport"><div id="sectionStage" class="section-stage"></div></div>
-      </div>
+      <div class="questionnaire-layout"><aside class="section-nav" aria-label="Pages in this stage"><div id="sectionTabs"></div></aside><div class="section-viewport"><div id="sectionStage" class="section-stage"></div></div></div>
       <p id="pageError" class="form-error" aria-live="assertive"></p>
-      <div class="questionnaire-actions">
-        <button class="button secondary" id="prevSection" type="button">Previous</button>
-        <span></span>
-        <button class="button primary" id="nextSection" type="button">Next</button>
-        <button class="button primary" id="completeStage" type="button" hidden>Complete stage</button>
-      </div>
+      <div class="questionnaire-actions"><button class="button secondary" id="prevSection" type="button">Previous</button><span></span><button class="button primary" id="nextSection" type="button">Next</button><button class="button primary" id="completeStage" type="button" hidden>Complete stage</button></div>
     </section>
 
-    <section id="completePanel" class="completion-panel" hidden>
-      <div class="completion-mark" aria-hidden="true">✓</div>
-      <p class="eyebrow">Questionnaire submitted</p>
-      <h2 tabindex="-1">Thank you. Your response has been recorded.</h2>
-      <p>You may stop here or choose an optional follow-up.</p>
-      <div class="button-row centered"><button class="button secondary" id="newResponse" type="button">Return to stages</button></div>
-    </section>
+    <section id="completePanel" class="completion-panel" hidden><div class="completion-mark" aria-hidden="true">✓</div><p class="eyebrow">Questionnaire submitted</p><h2 tabindex="-1">Thank you. Your response has been recorded.</h2><p>You may stop here or choose an optional follow-up.</p><div class="button-row centered"><button class="button secondary" id="newResponse" type="button">Return to stages</button></div></section>
 
-    <footer class="survey-frame-footer">
-      <span id="versionLabel"></span>
-      <div class="footer-links">
-        <button class="footer-link" type="button" data-dialog-open="aboutSurveyDialog">About This Survey</button>
-        <span aria-hidden="true">·</span>
-        <button class="footer-link" type="button" data-dialog-open="privacyDialog">Privacy</button>
-      </div>
-      <nav class="test-navigation-links" aria-label="Test navigation">
-        <a class="footer-link" id="thankYouPreviewLink" href="#thank-you">View Thank You</a>
-        <span aria-hidden="true">·</span>
-        <a class="footer-link" id="resultsLink" href="results.html">View results</a>
-      </nav>
-    </footer>
+    <footer class="survey-frame-footer"><span id="versionLabel"></span><div class="footer-links"><button class="footer-link" type="button" data-dialog-open="aboutSurveyDialog">About This Survey</button><span aria-hidden="true">·</span><button class="footer-link" type="button" data-dialog-open="privacyDialog">Privacy</button></div><nav class="test-navigation-links" aria-label="Test navigation"><a class="footer-link" id="thankYouPreviewLink" href="#thank-you">View Thank You</a><span aria-hidden="true">·</span><a class="footer-link" id="resultsLink" href="results.html">View results</a></nav></footer>
   </main>
 
-  <dialog id="aboutSurveyDialog">
-    <h2>About this survey</h2>
-    <p>This five-stage questionnaire asks about who WNMU-TV reaches, how people watch, what they value, and where the station should improve. After submitting, respondents may choose from optional linked follow-up questionnaires.</p>
-    <button class="button primary" type="button" data-dialog-close>Close</button>
-  </dialog>
-  <dialog id="privacyDialog">
-    <h2>Privacy</h2>
-    <p>Your answers, drafts, private follow-up access record, and optional follow-up responses are stored in this browser during testing. Main and follow-up responses are linked with random pseudonymous IDs. The questionnaire does not ask for your name or email address.</p>
-    <button class="button primary" type="button" data-dialog-close>Close</button>
-  </dialog>
+  <dialog id="aboutSurveyDialog"><h2>About this survey</h2><p>This five-stage questionnaire asks about who WNMU-TV reaches, how people watch television and online, what they value, and where the station should improve. After submitting, respondents may choose from optional linked follow-up questionnaires.</p><button class="button primary" type="button" data-dialog-close>Close</button></dialog>
+  <dialog id="privacyDialog"><h2>Privacy</h2><p>Your answers, drafts, private follow-up access record, and optional follow-up responses are stored in this browser during testing. Main and follow-up responses are linked with random pseudonymous IDs. The questionnaire does not ask for your name or email address.</p><button class="button primary" type="button" data-dialog-close>Close</button></dialog>
 
-  <script src="config.js?v=rebuild-0.2.2"></script>
-  <script src="questions.js?v=rebuild-0.2.1"></script>
-  <script src="storage.js?v=rebuild-0.2.1"></script>
-  <script src="app.js?v=rebuild-0.2.1"></script>
-  <script src="follow-up-definitions.js?v=rebuild-0.2.1"></script>
-  <script src="thank-you.js?v=rebuild-0.2.2"></script>
+  <script src="config.js?v=rebuild-0.3.0"></script>
+  <script src="questions.js?v=rebuild-0.3.0"></script>
+  <script src="storage.js?v=rebuild-0.3.0"></script>
+  <script src="app.js?v=rebuild-0.3.0"></script>
+  <script src="follow-up-definitions.js?v=rebuild-0.3.0"></script>
+  <script src="thank-you.js?v=rebuild-0.3.0"></script>
 </body>
 </html>
