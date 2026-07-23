@@ -24,6 +24,7 @@
   const allFollow = storage.getFollowUpResponses(false);
   const coreQuestions = survey.stages.flatMap((stage) => stage.pages.flatMap((page) => page.questions));
   const coreQuestionMap = new Map(coreQuestions.map((question) => [question.id, question]));
+  const allCoreById = new Map(allCore.map((response) => [response.responseId, response]));
 
   populateFilters();
   [els.viewerFilter, els.childrenFilter, els.countyFilter].forEach((control) => control.addEventListener("change", render));
@@ -109,16 +110,40 @@
   }
 
   function renderQuestionSummary(question, responses, source) {
-    const values = responses.map((response) => response.answers?.[question.id]).filter(hasValue);
+    const applicable = responses.filter((response) => source === "core" ? coreQuestionApplicable(question, response) : followUpQuestionApplicable(question, response));
+    const values = applicable.map((response) => response.answers?.[question.id]).filter(hasValue);
     const answered = values.length;
-    const header = `<header><h3>${escapeHtml(question.label)}</h3><p>${answered} answered · ${Math.max(0, responses.length - answered)} skipped</p></header>`;
+    const skipped = Math.max(0, applicable.length - answered);
+    const notApplicable = Math.max(0, responses.length - applicable.length);
+    const header = `<header><h3>${escapeHtml(question.label)}</h3><p>${answered} answered · ${skipped} skipped${notApplicable ? ` · ${notApplicable} not applicable` : ""}</p></header>`;
 
+    if (!applicable.length) return `<article class="result-question">${header}<p class="empty-answer">No applicable respondents in view.</p></article>`;
     if (!answered) return `<article class="result-question">${header}<p class="empty-answer">No answers in view.</p></article>`;
     if (question.type === "textarea") return `<article class="result-question text-results">${header}<ul>${values.map((value) => `<li>${escapeHtml(value)}</li>`).join("")}</ul></article>`;
     if (question.type === "matrix" || values.some((value) => value && typeof value === "object" && !Array.isArray(value))) {
       return `<article class="result-question matrix-results">${header}${renderMatrix(question, values, source)}</article>`;
     }
     return `<article class="result-question">${header}${renderCounts(question, values, answered, source)}</article>`;
+  }
+
+  function coreQuestionApplicable(question, response) {
+    const rule = question.when;
+    if (!rule) return true;
+    const role = response.routeProfile?.children_role;
+    const status = response.routeProfile?.viewer_status;
+    const methods = response.routeProfile?.viewing_methods || [];
+    if (rule.childrenRoleIn && !rule.childrenRoleIn.includes(role)) return false;
+    if (rule.viewerStatusIn && !rule.viewerStatusIn.includes(status)) return false;
+    if (rule.viewerStatusNotIn && rule.viewerStatusNotIn.includes(status)) return false;
+    if (rule.hasAnyMethod && !rule.hasAnyMethod.some((method) => methods.includes(method))) return false;
+    return true;
+  }
+
+  function followUpQuestionApplicable(question, response) {
+    const allowed = question.when?.coreChildrenRoleIn;
+    if (!allowed) return true;
+    const core = allCoreById.get(response.coreResponseId);
+    return Boolean(core && allowed.includes(core.routeProfile?.children_role));
   }
 
   function renderMatrix(question, values, source) {
@@ -128,8 +153,7 @@
     return `<div class="matrix-summary">${rows.map((row) => {
       const rowValues = values.map((value) => value?.[row.id]).filter(hasValue);
       if (!rowValues.length) return "";
-      const counts = countValues(rowValues);
-      return `<section><h4>${escapeHtml(row.label || row.id)}</h4>${renderCountRows(counts, rowValues.length, (value) => labelForValue(question, value, source))}</section>`;
+      return `<section><h4>${escapeHtml(row.label || row.id)}</h4>${renderCountRows(countValues(rowValues), rowValues.length, (value) => labelForValue(question, value, source))}</section>`;
     }).join("")}</div>`;
   }
 
@@ -200,5 +224,5 @@
     return value !== undefined && value !== null && value !== "";
   }
   function emptyState(message) { return `<div class="results-empty"><p>${escapeHtml(message)}</p></div>`; }
-  function escapeHtml(value) { return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+  function escapeHtml(value) { return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#039;"); }
 })();
