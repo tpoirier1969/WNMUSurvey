@@ -6,7 +6,7 @@
   <meta name="description" content="WNMU-TV viewer questionnaire about viewing habits, programming interests, and community needs." />
   <meta name="theme-color" content="#17345f" />
   <title>WNMU-TV Viewer Questionnaire</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=rebuild-0.2.0" />
 </head>
 <body>
   <a class="skip-link" href="#stageHub">Skip to questionnaire stages</a>
@@ -23,7 +23,7 @@
       <p class="welcome-instruction">Choose any stage to begin. You may complete them in any order.</p>
     </section>
 
-    <nav id="stageHub" class="stage-hub" aria-label="Questionnaire stages">
+    <nav id="stageHub" class="stage-hub" aria-label="Questionnaire stages" tabindex="-1">
       <button class="stage-card stage-blue" type="button" data-stage-id="about_you" data-status="not_started" style="--stage-progress: 0%">
         <span class="stage-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="11"/><path d="M15 52c1-12 8-18 17-18s16 6 17 18z"/></svg></span>
         <span class="stage-number">1</span><strong>About You</strong><span class="stage-divider" aria-hidden="true"></span><span class="stage-status">Not started</span>
@@ -102,63 +102,27 @@
       <nav class="test-navigation-links" aria-label="Test navigation">
         <a class="footer-link" id="thankYouPreviewLink" href="#thank-you">View Thank You</a>
         <span aria-hidden="true">·</span>
-        <a class="footer-link" id="resultsLink" href="../results.html" target="_blank" rel="noopener" aria-label="View results (opens in a new tab)">View results</a>
+        <a class="footer-link" id="resultsLink" href="results.html">View results</a>
       </nav>
     </footer>
   </main>
 
   <dialog id="aboutSurveyDialog">
     <h2>About this survey</h2>
-    <p>This five-stage questionnaire asks about who WNMU-TV reaches, how people watch, what they value, and where the station should improve. Most questions are optional, and some questions change based on earlier answers.</p>
+    <p>This five-stage questionnaire asks about who WNMU-TV reaches, how people watch, what they value, and where the station should improve. After submitting, respondents may choose from optional linked follow-up questionnaires.</p>
     <button class="button primary" type="button" data-dialog-close>Close</button>
   </dialog>
   <dialog id="privacyDialog">
     <h2>Privacy</h2>
-    <p>Your answers and draft are stored in this browser on this device. The questionnaire does not ask for your name or email address.</p>
+    <p>Your answers, drafts, private follow-up access record, and optional follow-up responses are stored in this browser during testing. Main and follow-up responses are linked with random pseudonymous IDs. The questionnaire does not ask for your name or email address.</p>
     <button class="button primary" type="button" data-dialog-close>Close</button>
   </dialog>
 
-  <script src="config.js?r=86b4847"></script>
-  <script src="questions.js"></script>
-  <script src="storage.js"></script>
-  <script src="app.js?r=86b4847"></script>
-  <script>
-    (function () {
-      "use strict";
-
-      const config = window.WNMU_REBUILD_CONFIG;
-      const testLinks = document.querySelector(".test-navigation-links");
-      const thankYouLink = document.getElementById("thankYouPreviewLink");
-      const newResponse = document.getElementById("newResponse");
-
-      if (testLinks) testLinks.hidden = config?.mode !== "test";
-      if (config?.mode !== "test") return;
-
-      function showThankYouPreview(event) {
-        event?.preventDefault();
-        const surveyApp = document.getElementById("surveyApp");
-        const completePanel = document.getElementById("completePanel");
-        if (!surveyApp || !completePanel) return;
-
-        surveyApp.dataset.view = "complete";
-        ["welcomePanel", "resumeBlock", "submitReadyPanel", "questionnairePanel"].forEach((id) => {
-          const panel = document.getElementById(id);
-          if (panel) panel.hidden = true;
-        });
-        const surveyFacts = surveyApp.querySelector(".survey-facts");
-        if (surveyFacts) surveyFacts.hidden = true;
-        completePanel.hidden = false;
-        completePanel.querySelector("h2")?.focus({ preventScroll: true });
-        window.history.replaceState(null, "", "#thank-you");
-        window.scrollTo({ top: 0, behavior: "auto" });
-      }
-
-      thankYouLink?.addEventListener("click", showThankYouPreview);
-      newResponse?.addEventListener("click", () => {
-        window.history.replaceState(null, "", window.location.pathname + window.location.search);
-      });
-      if (window.location.hash === "#thank-you") showThankYouPreview();
-    })();
-  </script>
+  <script src="config.js?v=rebuild-0.2.0"></script>
+  <script src="questions.js?v=rebuild-0.2.0"></script>
+  <script src="storage.js?v=rebuild-0.2.0"></script>
+  <script src="app.js?v=rebuild-0.2.0"></script>
+  <script src="follow-up-definitions.js?v=rebuild-0.2.0"></script>
+  <script src="thank-you.js?v=rebuild-0.2.0"></script>
 </body>
 </html>
