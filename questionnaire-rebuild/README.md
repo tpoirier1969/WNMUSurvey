@@ -4,42 +4,42 @@ This folder is a fully isolated rebuild of the WNMU-TV viewer questionnaire appl
 
 ## Required application scope
 
-The rebuild is not complete if it contains only the five-stage core questionnaire. Its required application boundary includes:
+1. five-stage main questionnaire
+2. successful submission and Thank You experience
+3. five optional follow-up questionnaires
+4. children follow-up eligibility and question-level professional-role routing
+5. private same-browser continuation links in Test Mode
+6. pseudonymous linkage through respondent, core response, and access IDs
+7. separate per-module drafts and submissions
+8. rebuild-native results with honest core, module, answered, skipped, and not-applicable denominators
 
-1. the five-stage main questionnaire
-2. successful core submission and a real Thank You experience
-3. five optional follow-up questionnaires offered from the Thank You page
-4. children and education follow-up eligibility based on the submitted `children_role`
-5. private same-browser continuation links in test mode
-6. pseudonymous linkage through `respondentId`, `coreResponseId`, and a separate access record
-7. separate per-module drafts and submitted follow-up records
-8. rebuild-native results that keep core and follow-up denominators honest
+Active schemas:
 
-The active follow-up schema remains `wnmu-viewer-follow-ups-v2`, with 40 live question IDs, eight in each module. The canonical question meanings and stored values remain governed by the root `QUESTIONNAIRE_SPEC.md` and `FOLLOW_UP_QUESTIONNAIRE_SPEC.md`.
+- core `wnmu-viewer-questionnaire-v7`, 31 live IDs
+- follow-up `wnmu-viewer-follow-ups-v3`, 35 live IDs
+- interface `rebuild-0.3.0`
+
+Version 7 separates television and online measures for current category viewing, interest, and WNMU programming priorities. Version 3 removes internal production and partnership questions, treats regional music neutrally as one regional subject, narrows online questions to WNMU-controlled actions, and routes institutional children's questions only to professional or mixed-role respondents.
 
 ## Shared layout contract
 
-The main questionnaire sets the visual scale for the entire rebuild. The Thank You, follow-up, and results pages must use the same responsive frame and panel constraints:
-
 - outer frame no wider than 1,316 pixels
-- primary content panel no wider than 1,160 pixels
+- primary panel no wider than 1,160 pixels
 - compact 20–22 pixel desktop panel padding
 - 44-pixel minimum interactive controls
-- the same 900-pixel and 680-pixel responsive breakpoints used by the main survey
+- 900-pixel and 680-pixel responsive breakpoints
 - no horizontal scrolling, overlapping controls, or oversized secondary-page headings
-
-Secondary pages may contain more data, but they must not introduce a larger visual scale than the questionnaire.
 
 ## Canonical rebuild files
 
 - `index.html`, `app.js`, `questions.js`: core questionnaire
-- `thank-you.js`: submission completion and optional follow-up offer
+- `thank-you.js`: completion and follow-up offer
 - `follow-up.html`, `follow-up-app.js`, `follow-up-definitions.js`: follow-up hub and modules
-- `results.html`, `results.js`: linked rebuild results
-- `config.js`: mode, schema, paths, and isolated storage keys
-- `storage.js`: core submissions, access records, follow-up drafts, and follow-up submissions
-- `styles.css`, `thank-you.css`, `follow-up.css`, `results.css`: interface styling by durable responsibility
+- `results.html`, `results.js`: linked results
+- `config.js`: mode, schemas, paths, and isolated storage keys
+- `storage.js`: core and follow-up browser records
+- CSS files: interface styling by durable responsibility
 
 ## Current mode and limitation
 
-The rebuild is currently in test mode and uses browser local storage. Private continuation links therefore work only in the browser and origin where the core questionnaire was submitted. Public production still requires approved protected server-side storage, protected results access, and production privacy language.
+The rebuild is in Test Mode and uses browser local storage. Private links work only in the browser and origin where the core questionnaire was submitted. Public production requires approved protected server-side storage, protected results access, and final privacy language.
